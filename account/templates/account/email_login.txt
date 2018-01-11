@@ -1,0 +1,5 @@
+Oh hi,
+
+you can login via {{protocol}}://{{domain}}{% url 'login_token' uidb64=uid token=token %}
+
+WT.
