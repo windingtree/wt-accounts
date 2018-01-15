@@ -1,13 +1,12 @@
 # Create your tests here.
 
 import pytest
-from django.contrib.auth.models import User
 from django.core import mail
 from django.forms import model_to_dict
 from django.urls import reverse
 
-from account.forms import RegistrationForm
-from account.models import create_link_context, send_login_email
+from accounts.forms import RegistrationForm
+from accounts.models import create_link_context, send_login_email, User
 
 EMAIL = 'tester@test.cz'
 
@@ -24,7 +23,7 @@ def test_RegistrationForm():
     form = RegistrationForm()
     assert form.is_valid() == False
 
-    form = RegistrationForm(data={'email': EMAIL})
+    form = RegistrationForm(data={'email': EMAIL.upper()})
     assert form.is_valid()
 
     user = form.save()
@@ -33,7 +32,7 @@ def test_RegistrationForm():
     assert user_data.pop('password').startswith('!')
     assert user_data.pop('date_joined')
     assert user_data == {
-        'email': 'tester@test.cz',
+        'email': 'tester@test.cz',  # is lowercase
         'first_name': '',
         'groups': [],
         'id': 1,
@@ -43,7 +42,9 @@ def test_RegistrationForm():
         'last_login': None,
         'last_name': '',
         'user_permissions': [],
-        'username': 'tester@test.cz'
+        'username': 'tester@test.cz',
+        'address': '',
+        'crypto_hash': '',
     }
 
 
@@ -51,7 +52,7 @@ def test_create_link_context(test_user):
     context = create_link_context(test_user)
     assert len(context.pop('token')) == 24
     assert context == {
-        'domain': 'www.wt.com',
+        'domain': 'localhost:8000',
         'email': 'tester@test.cz',
         'protocol': 'http',
         'uid': 'MQ',
@@ -69,7 +70,7 @@ def test_send_login_email(rf, settings, test_user):
     assert m.subject == 'WT login'
     assert m.from_email == settings.DEFAULT_FROM_EMAIL
     assert list(m.to) == [EMAIL]
-    assert 'https://www.wt.com/account/login/' in m.body
+    assert 'https://localhost:8000/accounts/login/' in m.body
 
     mail.outbox = []
 
@@ -79,9 +80,12 @@ def test_login_token_view(test_user, client):
     url = reverse('login_token', kwargs={
         'uidb64': context['uid'], 'token': context['token']})
 
+    assert test_user.last_login is None
     response = client.get(url)
 
+    test_user.refresh_from_db()
     assert response.status_code == 302
+    assert test_user.last_login
 
 
 def test_login_token_view_fail(test_user, client):
@@ -104,7 +108,7 @@ def test_login_view(test_user, client, caplog):
     assert response.status_code == 302
 
     assert caplog.record_tuples == [
-        ('account.views', 30, 'Attempt to login with non-existent email bad@email.cz')
+        ('accounts.views', 30, 'Attempt to login with non-existent email bad@email.cz')
     ]
     caplog.clear()
 
@@ -113,7 +117,7 @@ def test_login_view(test_user, client, caplog):
 
     assert response.status_code == 302
     assert caplog.record_tuples == [
-        ('account.views', 10, 'Sending email to tester@test.cz')
+        ('accounts.views', 10, 'Sending email to tester@test.cz')
     ]
     assert len(mail.outbox) == 1
 
@@ -122,7 +126,7 @@ def test_login_view(test_user, client, caplog):
 
 @pytest.mark.django_db
 def test_registration_view(client, caplog):
-    url = reverse('registration')
+    url = reverse('register')
     response = client.get(url)
 
     assert 'form' in response.context
@@ -138,9 +142,31 @@ def test_registration_view(client, caplog):
 
     assert response.status_code == 302
     assert caplog.record_tuples == [
-        ('account.views', 10, 'Registering new user new@email.cz'),
-        ('account.views', 10, 'Sending email to new@email.cz')
+        ('accounts.views', 10, 'Registering new user new@email.cz'),
+        ('accounts.views', 10, 'Sending email to new@email.cz')
     ]
     assert len(mail.outbox) == 1
 
     mail.outbox = []
+
+
+@pytest.mark.django_db
+def test_profile_view(client, admin_client):
+    url = reverse('profile')
+    response = client.get(url)
+
+    assert response.status_code == 302
+    assert response['Location'] == '/accounts/login/?next=/accounts/profile/'
+
+    # logged in user
+    response = admin_client.get(url)
+
+    assert response.status_code == 200
+    assert 'form' in response.context
+
+    response = admin_client.post(url, {'address': 'over the rainbow', 'crypto_hash': 'fapfapfap'})
+
+    user = User.objects.get(username='admin')
+    assert response.status_code == 302
+    assert user.address == 'over the rainbow'
+    assert user.crypto_hash == 'fapfapfap'

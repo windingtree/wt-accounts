@@ -124,7 +124,7 @@ SENSITIVE_FILENAMES = [
 OTHER_SENSITIVE_NAMES = [
     # Other names which could be problems depending on URL/subdomain
     # structure.
-    'account',
+    'accounts',
     'accounts',
     'blog',
     'buy',

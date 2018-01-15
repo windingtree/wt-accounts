@@ -1,8 +1,9 @@
 import logging
 
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import login as auth_login
-from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import render, resolve_url
@@ -11,8 +12,8 @@ from django.utils.http import urlsafe_base64_decode
 from django.views.decorators.cache import never_cache
 from django.views.decorators.debug import sensitive_post_parameters
 
-from account.forms import LoginForm, RegistrationForm
-from account.models import send_login_email
+from accounts.forms import LoginForm, RegistrationForm, ProfileForm
+from accounts.models import send_login_email, User
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +51,7 @@ def login(request):
                            form.cleaned_data['email'])
         return HttpResponseRedirect(reverse('login_sent'))
 
-    return render(request, 'account/login.html', {'form': form})
+    return render(request, 'accounts/login.html', {'form': form})
 
 
 def registration(request):
@@ -64,4 +65,14 @@ def registration(request):
 
         return HttpResponseRedirect(reverse('login_sent'))
 
-    return render(request, 'account/registration.html', {'form': form})
+    return render(request, 'accounts/registration.html', {'form': form})
+
+
+@login_required
+def profile(request):
+    form = ProfileForm(request.POST or None, instance=request.user)
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Your profile was updated')
+        return HttpResponseRedirect(reverse('profile'))
+    return render(request, 'accounts/profile.html', {'form': form})

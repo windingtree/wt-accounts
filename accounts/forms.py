@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from account import validators
+from accounts import validators
+from accounts.models import User
 
 
 class RegistrationForm(forms.ModelForm):
@@ -33,7 +33,7 @@ class RegistrationForm(forms.ModelForm):
         """
         if User.objects.filter(email__iexact=self.cleaned_data['email']):
             raise forms.ValidationError(validators.DUPLICATE_EMAIL)
-        return self.cleaned_data['email']
+        return self.cleaned_data['email'].lower()
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -56,3 +56,10 @@ class LoginForm(forms.Form):
             return User.objects.get(email=self.cleaned_data['email'])
         except User.DoesNotExist:
             return None
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('address', 'crypto_hash')
+        required_css_class = 'required'

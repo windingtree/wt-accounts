@@ -29,6 +29,7 @@ ALLOWED_HOSTS = []
 
 
 DOMAIN = 'www.wt.com'
+DOMAIN = 'localhost:8000'
 
 # Application definition
 
@@ -42,7 +43,7 @@ INSTALLED_APPS = [
 
     'bootstrap4',
 
-    'account',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -127,3 +128,7 @@ STATIC_URL = '/static/'
 
 #TODO remove
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+AUTH_USER_MODEL = 'accounts.User'
+LOGIN_REDIRECT_URL = 'profile'
+
