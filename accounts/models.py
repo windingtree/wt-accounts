@@ -10,7 +10,12 @@ from django.utils.translation import ugettext_lazy as _
 
 class User(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
-    address = models.TextField(_('address'), blank=True)
+    birth_date = models.DateField(_('date of birth'), blank=True, null=True)
+    country = models.DateField(_('country'), blank=True, null=True)
+    building_number = models.CharField(blank=True, max_length=100)
+    street = models.CharField(blank=True, max_length=100)
+    town = models.CharField(blank=True, max_length=100)
+    postcode = models.CharField(blank=True, max_length=100)
     crypto_hash = models.CharField(_('crypto_hash'), max_length=100, blank=True)
 
 

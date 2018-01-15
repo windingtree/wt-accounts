@@ -61,5 +61,6 @@ class LoginForm(forms.Form):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('address', 'crypto_hash')
+        fields = ('first_name', 'last_name', 'birth_date', 'country', 'building_number',
+                  'street', 'town', 'postcode', 'crypto_hash')
         required_css_class = 'required'

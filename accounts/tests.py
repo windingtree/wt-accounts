@@ -10,6 +10,9 @@ from accounts.models import create_link_context, send_login_email, User
 
 EMAIL = 'tester@test.cz'
 
+# will be equal to everything, usefull for ids and dates
+everything_equals = type('omnieq', (), {"__eq__": lambda x, y: True})()
+
 
 # TODO test confusable stuff a bit
 
@@ -35,7 +38,7 @@ def test_RegistrationForm():
         'email': 'tester@test.cz',  # is lowercase
         'first_name': '',
         'groups': [],
-        'id': 1,
+        'id': everything_equals,
         'is_active': True,
         'is_staff': False,
         'is_superuser': False,
@@ -43,7 +46,12 @@ def test_RegistrationForm():
         'last_name': '',
         'user_permissions': [],
         'username': 'tester@test.cz',
-        'address': '',
+        'birth_date': None,
+        'building_number': '',
+        'country': None,
+        'postcode': '',
+        'street': '',
+        'town': '',
         'crypto_hash': '',
     }
 
@@ -164,9 +172,9 @@ def test_profile_view(client, admin_client):
     assert response.status_code == 200
     assert 'form' in response.context
 
-    response = admin_client.post(url, {'address': 'over the rainbow', 'crypto_hash': 'fapfapfap'})
+    response = admin_client.post(url, {'street': 'over the rainbow', 'crypto_hash': 'fapfapfap'})
 
     user = User.objects.get(username='admin')
     assert response.status_code == 302
-    assert user.address == 'over the rainbow'
+    assert user.street == 'over the rainbow'
     assert user.crypto_hash == 'fapfapfap'
