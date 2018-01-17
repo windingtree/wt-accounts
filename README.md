@@ -6,6 +6,10 @@ pip install -r requirements.txt
 ```
 
 ## Usage
+
+Create your `settings/local.py` import the dev module if you want to get
+some developer goodies `from .dev import *`.
+
 ```
 ./manage.py migrate
 ./manage.py runserver
