@@ -1,4 +1,5 @@
 # Create your tests here.
+from unittest.mock import Mock
 
 import pytest
 from django.core import mail
@@ -22,11 +23,25 @@ def test_user(db):
 
 
 @pytest.mark.django_db
-def test_RegistrationForm():
+def test_RegistrationForm(monkeypatch):
     form = RegistrationForm()
     assert form.is_valid() == False
 
     form = RegistrationForm(data={'email': EMAIL.upper()})
+    assert form.is_valid() == False  # recaptcha..
+    assert form.errors['g_recaptcha_response'][0] == 'reCAPTCHA required'
+
+    # lets patch requests and the response to fail
+    monkeypatch.setattr("requests.post", lambda url, data: Mock(
+        **{'json.return_value': {'success': False, 'error-codes': ['server error']}}))
+    form = RegistrationForm(data={'email': EMAIL.upper(), 'g-recaptcha-response': '...'})
+    assert form.is_valid() == False  # recaptcha..
+    assert form.errors['g_recaptcha_response'][0] == "reCAPTCHA - ['server error']"
+
+    # lets patch requests and the response FTW
+    monkeypatch.setattr("requests.post", lambda url, data: Mock(
+        **{'json.return_value': {'success': True}}))
+    form = RegistrationForm(data={'email': EMAIL.upper(), 'g-recaptcha-response': '...'})
     assert form.is_valid()
 
     user = form.save()
@@ -133,12 +148,17 @@ def test_login_view(test_user, client, caplog):
 
 
 @pytest.mark.django_db
-def test_registration_view(client, caplog):
+def test_registration_view(client, caplog, monkeypatch):
     url = reverse('register')
+
     response = client.get(url)
 
     assert 'form' in response.context
     assert response.status_code == 200
+
+    # don't validate the reCAPTCHA
+    monkeypatch.setattr('accounts.forms.RegistrationForm.clean_g_recaptcha_response',
+                        lambda x: True)
 
     # wrong email
     response = client.post(url, {'email': 'bad@email'})
