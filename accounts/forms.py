@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+import requests
 from django import forms
+from django.conf import settings
+from django.core.validators import EMPTY_VALUES
 from django.utils.translation import ugettext_lazy as _
 from accounts import validators
 from accounts.models import User
@@ -13,6 +16,8 @@ class RegistrationForm(forms.ModelForm):
             validators.validate_confusables_email,
         ]
     )
+
+    g_recaptcha_response = forms.CharField(required=False)
 
     # tos = forms.BooleanField(
     #     widget=forms.CheckboxInput,
@@ -42,6 +47,25 @@ class RegistrationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+    def clean_g_recaptcha_response(self):
+        """
+        the actual value comes from `g-recaptcha-response` which I'm unable to get
+        easily from form.
+        """
+
+        g_recaptcha_response = self.data.get('g-recaptcha-response')
+        if g_recaptcha_response in EMPTY_VALUES:
+            raise forms.ValidationError('reCAPTCHA required')
+
+        r = requests.post('https://www.google.com/recaptcha/api/siteverify', {
+            'secret': settings.RECAPTCHA_SITE_SECRET,
+            'response': g_recaptcha_response,
+        })
+        r = r.json()
+        if not r['success']:
+            raise forms.ValidationError('reCAPTCHA - {}'.format(r['error-codes']))
+        return g_recaptcha_response
 
 
 class LoginForm(forms.Form):
