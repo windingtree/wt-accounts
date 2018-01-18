@@ -17,7 +17,7 @@ echo 'from .dev import *' > wt_accounts/settings/local.py
 ./manage.py runserver
 ```
 
-Go to http://localhost:8000/accounts/registration
+Go to http://localhost:8000/accounts/login
 
 ## TODO
 
