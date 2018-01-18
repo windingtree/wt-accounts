@@ -1,12 +1,25 @@
 {% extends 'accounts/base.html' %}
 {% load bootstrap4 %}
 
+{% block extra_head %}
+{#  https://developers.google.com/recaptcha/docs/display#}
+  <script src='https://www.google.com/recaptcha/api.js'></script>
+{% endblock %}
+
+
+
 {% block content %}
   <form action="." method="post" class="form">
     {% csrf_token %}
-    {% bootstrap_form form %}
+
+    {% bootstrap_form form exclude='g_recaptcha_response' %}
+
+    <div class="g-recaptcha" data-sitekey="6Lc3ZUEUAAAAANh3-cVedhhcOrfLU6uAtnnNij6P"></div>
+    <br>
+
     {% buttons %}
         <button type="submit" class="btn btn-primary">Submit</button>
     {% endbuttons %}
-</form>
+
+  </form>
 {% endblock %}
