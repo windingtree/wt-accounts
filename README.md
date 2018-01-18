@@ -7,10 +7,11 @@ pip install -r requirements.txt
 
 ## Usage
 
-Create your `settings/local.py` import the dev module if you want to get
-some developer goodies `from .dev import *`.
-
 ```
+# Create your `wt_accounts/settings/local.py` import the dev module if you want to get some developer goodies `from .dev import *`.
+echo 'from .dev import *' > wt_accounts/settings/local.py
+
+# Now create a database and you will be able to run the dev server
 ./manage.py migrate
 ./manage.py runserver
 ```
