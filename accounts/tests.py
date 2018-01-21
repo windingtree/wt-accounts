@@ -63,7 +63,7 @@ def test_RegistrationForm(monkeypatch):
         'username': 'tester@test.cz',
         'birth_date': None,
         'building_number': '',
-        'country': None,
+        'country': '',
         'postcode': '',
         'street': '',
         'town': '',
