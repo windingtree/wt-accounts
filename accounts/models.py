@@ -16,7 +16,7 @@ class User(AbstractUser):
     street = models.CharField(blank=True, max_length=100)
     town = models.CharField(blank=True, max_length=100)
     postcode = models.CharField(blank=True, max_length=100)
-    crypto_hash = models.CharField(_('crypto_hash'), max_length=100, blank=True)
+    eth_address = models.CharField(_('eth_address'), max_length=100, blank=True)
 
 
 def create_link_context(user, use_https=False):

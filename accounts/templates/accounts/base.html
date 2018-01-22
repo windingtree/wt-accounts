@@ -15,7 +15,6 @@
         href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
         integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
         crossorigin="anonymous">
-  <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
   <link rel="stylesheet" href="{% static 'css/wt.css' %}">
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -29,6 +28,32 @@
           crossorigin="anonymous"></script>
   {% block extra_head %}{% endblock %}
 </head>
+
+<style>
+
+  html {
+    background: #f3f6f8;
+    background: linear-gradient(to bottom, #F3F6F9 0%,#fff 750px);
+    background-attachment: fixed;
+    min-height: 100%;
+  }
+
+  body {
+    background: none;
+  }
+
+  .navbar {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: #fff;
+    box-shadow: 0 2px 3px rgba(0,0,0,.1);
+  }
+
+  .container {
+    margin-top: 20px;
+  }
+
+</style>
 
 <body>
 
