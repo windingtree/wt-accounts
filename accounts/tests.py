@@ -198,3 +198,28 @@ def test_profile_view(client, admin_client):
     assert response.status_code == 302
     assert user.street == 'over the rainbow'
     assert user.crypto_hash == 'fapfapfap'
+
+
+@pytest.mark.django_db
+def test_logout_view_get(client, admin_client):
+    url = reverse('logout')
+    response = client.get(url)
+
+    # not logged in can't visit
+    assert response.status_code == 302
+    assert response['Location'] == '/accounts/login/?next=/accounts/logout/'
+
+    # logged in user
+    response = admin_client.get(url)
+
+    assert response.status_code == 302
+    assert response['Location'] == '/accounts/login/'
+
+
+@pytest.mark.django_db
+def test_logout_view_post(admin_client):
+    url = reverse('logout')
+    response = admin_client.post(url)
+
+    assert response.status_code == 302
+    assert response['Location'] == '/accounts/login/'

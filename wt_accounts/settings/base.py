@@ -130,5 +130,6 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_REDIRECT_URL = 'profile'
+LOGOUT_REDIRECT_URL = 'login_form'
 
 RECAPTCHA_SITE_SECRET = '6Lc3ZUEUAAAAANvO8gyZesS5VmplliYYy-tX06SE'

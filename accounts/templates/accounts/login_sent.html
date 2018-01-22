@@ -1,5 +1,10 @@
 {% extends 'accounts/base.html' %}
 
+{% block navbar %}
+  {% include 'accounts/navbar.html' with active_item='login' %}
+{% endblock %}
+
+
 {% block content %}
   <p>Email was sent to your address, please click on the provided link to login.</p>
 {% endblock %}
