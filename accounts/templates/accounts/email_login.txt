@@ -1,4 +1,4 @@
-You are succesfully registered in Winding Tree acocunt system.
+You are succesfully registered in Winding Tree account system.
 
 You can only login via {{protocol}}://{{domain}}{% url 'login_token' uidb64=uid token=token %}
 
