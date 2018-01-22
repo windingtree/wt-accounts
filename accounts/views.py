@@ -53,6 +53,10 @@ def login(request):
 
     return render(request, 'accounts/login.html', {'form': form})
 
+def home(request):
+
+    return render(request, 'accounts/home.html')
+
 
 def registration(request):
     form = RegistrationForm(request.POST or None)

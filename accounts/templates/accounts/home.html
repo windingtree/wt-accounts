@@ -1,0 +1,31 @@
+{% extends 'accounts/base.html' %}
+{% load bootstrap4 %}
+
+{% block navbar %}
+  {% include 'accounts/navbar.html' with active_item='home' %}
+{% endblock %}
+
+{% block content %}
+  <h1>Winding Tree ICO Contribution System</h1>
+  <hr>
+  <h3>Want to contribute? follow this steps:</h3>
+  <ol>
+    <li>Register an account.</li>
+    <li> Login form your email.</li>
+    <li>Add your address.</li>
+    <li>Send your contribution.</li>
+    <li>If your contribution is higher than 10 ETH you will need to verify your account.</li>
+      <div class="alert alert-warning" role="alert">
+        We dont accept contributions from the US
+      </div>
+  </ol>
+  <hr>
+
+  <h3>Want to know more?</h3>
+
+  <h4><a href="windingtree.com">Website</a></h4>
+  <h4><a href="github.com/windingtree">Github</a></h4>
+  <h4><a href="demo.windingtree.com">WT Demo App</a></h4>
+  <h4><a href="twitter.com/windingtree">Twitter</a></h4>
+
+{% endblock %}

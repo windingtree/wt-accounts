@@ -67,7 +67,7 @@ def test_RegistrationForm(monkeypatch):
         'postcode': '',
         'street': '',
         'town': '',
-        'crypto_hash': '',
+        'eth_address': '',
     }
 
 
@@ -192,12 +192,12 @@ def test_profile_view(client, admin_client):
     assert response.status_code == 200
     assert 'form' in response.context
 
-    response = admin_client.post(url, {'street': 'over the rainbow', 'crypto_hash': 'fapfapfap'})
+    response = admin_client.post(url, {'street': 'over the rainbow', 'eth_address': 'fapfapfap'})
 
     user = User.objects.get(username='admin')
     assert response.status_code == 302
     assert user.street == 'over the rainbow'
-    assert user.crypto_hash == 'fapfapfap'
+    assert user.eth_address == 'fapfapfap'
 
 
 @pytest.mark.django_db

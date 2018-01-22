@@ -1,5 +1,11 @@
-Oh hi,
+You are succesfully registered in Winding Tree account system.
 
-you can login via {{protocol}}://{{domain}}{% url 'login_token' uidb64=uid token=token %}
+You can only login via {{protocol}}://{{domain}}{% url 'login_token' uidb64=uid token=token %}
 
-WT.
+Now you can enter, confirm you address and contribute with a maximun of 10 ETH.
+
+If you want to contribute more than 10 ETH you will need to verify your account.
+
+Thanks,
+
+Winding Tree Team
