@@ -1,9 +1,12 @@
 {% extends 'accounts/base.html' %}
 {% load bootstrap4 %}
 
-{% block content %}
-  Welcome {{ request.user }}
+{% block navbar %}
+  {% include 'accounts/navbar.html' with active_item='profile' %}
+{% endblock %}
 
+
+{% block content %}
   <form action="." method="post" class="form">
     {% csrf_token %}
     {% bootstrap_form form %}

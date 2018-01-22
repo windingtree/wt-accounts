@@ -1,6 +1,10 @@
 {% extends 'accounts/base.html' %}
 {% load bootstrap4 %}
 
+{% block navbar %}
+  {% include 'accounts/navbar.html' with active_item='login' %}
+{% endblock %}
+
 {% block content %}
   <form action="." method="post" class="form">
     {% csrf_token %}
