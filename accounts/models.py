@@ -6,6 +6,10 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import ugettext_lazy as _
+from django_extensions.db.fields.json import JSONField
+from django_extensions.db.models import TimeStampedModel
+
+from accounts import onfido_api
 
 
 class User(AbstractUser):
@@ -17,6 +21,29 @@ class User(AbstractUser):
     town = models.CharField(blank=True, max_length=100)
     postcode = models.CharField(blank=True, max_length=100)
     eth_address = models.CharField(_('ETH address'), max_length=100, blank=True)
+
+    def onfido_check(self):
+        applicant = onfido_api.create_applicant(self)
+        OnfidoCall.objects.create(user=self, type='applicant', response=applicant.to_dict())
+        check = onfido_api.check(applicant.id)
+        OnfidoCall.objects.create(user=self, type='check', response=check.to_dict(),
+                                  status=check.status, result=check.result)
+
+
+class OnfidoCall(TimeStampedModel):
+    TYPES = (
+        ('applicant', 'applicant'),
+        ('check', 'check'),
+    )
+    user = models.ForeignKey(User, related_name='onfidos', on_delete=models.DO_NOTHING)
+    type = models.CharField(choices=TYPES, max_length=20)
+    response = JSONField()
+    status = models.CharField(blank=True, max_length=20)
+    result = models.CharField(blank=True, max_length=20)
+
+    class Meta:
+        ordering = ['created']
+
 
 
 def create_link_context(user, use_https=False):
