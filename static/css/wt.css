@@ -1,0 +1,21 @@
+html {
+    background: #f3f6f8;
+    background: linear-gradient(to bottom, #F3F6F9 0%, #fff 750px);
+    background-attachment: fixed;
+    min-height: 100%;
+}
+
+body {
+    background: none;
+}
+
+.navbar {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: #fff;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
+}
+
+.container {
+    margin-top: 20px;
+}

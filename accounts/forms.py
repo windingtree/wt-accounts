@@ -86,5 +86,5 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'birth_date', 'country', 'building_number',
-                  'street', 'town', 'postcode', 'crypto_hash')
+                  'street', 'town', 'postcode', 'eth_address')
         required_css_class = 'required'

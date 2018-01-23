@@ -7,6 +7,10 @@
 {% endblock %}
 
 
+{% block navbar %}
+  {% include 'accounts/navbar.html' with active_item='register' %}
+{% endblock %}
+
 
 {% block content %}
   <form action="." method="post" class="form">

@@ -14,7 +14,7 @@ import wt_accounts
 from os import path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = path.dirname(path.abspath(wt_accounts.__file__))
+BASE_DIR = path.dirname(path.dirname(path.abspath(wt_accounts.__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -127,9 +127,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = path.join(BASE_DIR, "collected_static")
+STATICFILES_DIRS = [
+    path.join(BASE_DIR, "static"),
+]
 
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_REDIRECT_URL = 'profile'
+LOGOUT_REDIRECT_URL = 'login_form'
 
 RECAPTCHA_SITE_SECRET = '6Lc3ZUEUAAAAANvO8gyZesS5VmplliYYy-tX06SE'
 

@@ -2,7 +2,7 @@ import logging
 
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import login as auth_login
+from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
 from django.http import HttpResponseForbidden, HttpResponseRedirect
@@ -53,6 +53,10 @@ def login(request):
 
     return render(request, 'accounts/login.html', {'form': form})
 
+def home(request):
+
+    return render(request, 'accounts/home.html')
+
 
 def registration(request):
     form = RegistrationForm(request.POST or None)
@@ -76,3 +80,10 @@ def profile(request):
         messages.success(request, 'Your profile was updated')
         return HttpResponseRedirect(reverse('profile'))
     return render(request, 'accounts/profile.html', {'form': form})
+
+
+@login_required
+def logout(request):
+    auth_logout(request)
+    messages.success(request, 'You were logged out')
+    return HttpResponseRedirect(reverse(settings.LOGOUT_REDIRECT_URL))
