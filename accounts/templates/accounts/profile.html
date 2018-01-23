@@ -7,11 +7,17 @@
 
 
 {% block content %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    Your profile is not verified, you cant invest more than 10 ETH.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
   <form action="." method="post" class="form">
     {% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}
         <button type="submit" class="btn btn-primary">Submit</button>
     {% endbuttons %}
-</form>
+  </form>
 {% endblock %}
