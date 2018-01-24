@@ -2,6 +2,7 @@
 import datetime
 import onfido
 from django.conf import settings
+from django.forms import model_to_dict
 from onfido.rest import ApiException
 
 
@@ -15,10 +16,16 @@ def create_applicant(user):
     api = get_api()
 
     # setting applicant details
-    applicant = onfido.Applicant()
-    applicant.first_name = user.first_name
-    applicant.last_name = user.last_name
-    applicant.email = user.email
+    applicant = onfido.Applicant(**model_to_dict(user, fields=(
+        'first_name', 'last_name', 'email', 'mobile')))
+    applicant.dob = user.birth_date
+    applicant.country = user.country.alpha3
+
+    address = onfido.Address(**model_to_dict(user, fields=(
+        'street', 'building_number', 'town', 'postcode')))
+    address.country = user.country.alpha3
+
+    applicant.addresses = [address]
 
     # Be sure to note the applicant id from the response
     applicant_creation_response = api.create_applicant(data=applicant)
@@ -33,7 +40,6 @@ def check(applicant_id):
 
     report_ident = onfido.Report(name = 'identity')
     report_doc = onfido.Report(name = 'document')
-
 
     check.reports = [report_ident, report_doc]
 

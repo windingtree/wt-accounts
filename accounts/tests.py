@@ -27,8 +27,11 @@ def test_user(db):
 
 @pytest.fixture
 def onfido_test_user(db):
-    return User.objects.create_user(username=EMAIL, email=EMAIL,
-                                    first_name='Caligula', last_name='Tesla')
+    return User.objects.create_user(
+        username=EMAIL, email=EMAIL, first_name='Caligula', last_name='Tesla',
+        birth_date=date(1980, 1, 1), building_number='100', street='Main Street',
+        country='GBR', mobile='+420777619338'
+    )
 
 
 @pytest.mark.django_db
@@ -70,6 +73,13 @@ def test_RegistrationForm(monkeypatch):
         'last_name': '',
         'user_permissions': [],
         'username': 'tester@test.cz',
+        'birth_date': None,
+        'building_number': '',
+        'country': '',
+        'mobile': '',
+        'postcode': '',
+        'street': '',
+        'town': '',
         'eth_address': '',
     }
 

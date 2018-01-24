@@ -4,6 +4,7 @@ from django import forms
 from django.conf import settings
 from django.core.validators import EMPTY_VALUES
 from django.utils.translation import ugettext_lazy as _
+
 from accounts import validators
 from accounts.models import User
 
@@ -88,5 +89,7 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'eth_address')
+        fields = (
+            'first_name', 'last_name', 'birth_date', 'mobile', 'street', 'building_number', 'town',
+            'postcode', 'country', 'eth_address')
         required_css_class = 'required'
