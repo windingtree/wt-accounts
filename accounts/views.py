@@ -9,6 +9,7 @@ from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import render, resolve_url
 from django.urls import reverse
 from django.utils.http import urlsafe_base64_decode
+from django.utils.safestring import mark_safe
 from django.views.decorators.cache import never_cache
 from django.views.decorators.debug import sensitive_post_parameters
 
@@ -53,8 +54,8 @@ def login(request):
 
     return render(request, 'accounts/login.html', {'form': form})
 
-def home(request):
 
+def home(request):
     return render(request, 'accounts/home.html')
 
 
@@ -74,10 +75,26 @@ def registration(request):
 
 @login_required
 def profile(request):
+    verify = 'verify' in request.POST
+    if verify:
+        if not request.user.can_verify():
+            messages.error(request, 'All the fields must be filled for verification')
+        elif request.user.verify_status:
+            request.user.last_check.check_reload()
+            messages.error(request,
+                           'Current verification status: {}'.format(request.user.verify_status))
+        else:
+            onfido_check = request.user.onfido_check()
+            messages.success(request, mark_safe(
+                'Verification request sent, please check your '
+                'inbox or visit <a href="{0}">{0}</a>'.format(
+                    onfido_check.check_form_url)))
+        return HttpResponseRedirect(reverse('profile'))
+
     form = ProfileForm(request.POST or None, instance=request.user)
     if form.is_valid():
-        form.save()
         messages.success(request, 'Your profile was updated')
+        form.save()
         return HttpResponseRedirect(reverse('profile'))
     return render(request, 'accounts/profile.html', {'form': form})
 

@@ -19,17 +19,6 @@ def create_applicant(user):
     applicant.first_name = user.first_name
     applicant.last_name = user.last_name
     applicant.email = user.email
-    applicant.dob = user.birth_date
-    applicant.country = user.country
-
-    address = onfido.Address()
-    address.building_number = user.building_number
-    address.street = user.street
-    address.town = user.town
-    address.postcode = user.postcode
-    address.country = user.country
-
-    applicant.addresses = [address]
 
     # Be sure to note the applicant id from the response
     applicant_creation_response = api.create_applicant(data=applicant)
@@ -40,7 +29,7 @@ def check(applicant_id):
     api = get_api()
 
     check = onfido.CheckCreationRequest()
-    check.type = 'express'
+    check.type = 'standard'
 
     report = onfido.Report()
     report.name = 'identity'
@@ -49,3 +38,9 @@ def check(applicant_id):
 
     check_creation_response = api.create_check(applicant_id, data=check)
     return check_creation_response
+
+
+def check_reload(applicant_id, check_id):
+    api = get_api()
+    api_response = api.find_check(applicant_id, check_id)
+    return api_response

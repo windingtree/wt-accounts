@@ -24,12 +24,12 @@
       </li>
       <li class="nav-item">
         <a class="nav-link {% if active_item == 'verify' %}active{% endif %}"
-           href="{% url 'verify' %}">Account Verification (Not Submitted)</a>
+           href="">Account Verification (Not Submitted)</a>
       </li>
     </ul>
     {% if request.user.is_authenticated %}
       <span class="navbar-text">
-        {{ request.user.email }}
+        {{ request.user.email }} [{{ request.user.verify_status|default:'Not Verified' }}]
       </span>
       <form class="form-inline my-2 my-lg-0" action="{% url 'logout' %}" method="POST">
         {% csrf_token %}

@@ -1,4 +1,5 @@
 # Create your tests here.
+from pprint import pprint
 from unittest.mock import Mock
 
 import pytest
@@ -26,16 +27,8 @@ def test_user(db):
 
 @pytest.fixture
 def onfido_test_user(db):
-    user = User.objects.create_user(username=EMAIL, email=EMAIL)
-    user.first_name = 'Nikola'
-    user.last_name = 'Tesla'
-    user.birth_date = date(1980, 1, 1)
-    user.building_number = '100'
-    user.street = 'Main Street'
-    user.town = 'London'
-    user.postcode = 'SW4 6EH'
-    user.country = 'GBR'
-    return user
+    return User.objects.create_user(username=EMAIL, email=EMAIL,
+                                    first_name='Caligula', last_name='Tesla')
 
 
 @pytest.mark.django_db
@@ -77,12 +70,6 @@ def test_RegistrationForm(monkeypatch):
         'last_name': '',
         'user_permissions': [],
         'username': 'tester@test.cz',
-        'birth_date': None,
-        'building_number': '',
-        'country': '',
-        'postcode': '',
-        'street': '',
-        'town': '',
         'eth_address': '',
     }
 
@@ -208,11 +195,11 @@ def test_profile_view(client, admin_client):
     assert response.status_code == 200
     assert 'form' in response.context
 
-    response = admin_client.post(url, {'street': 'over the rainbow', 'eth_address': 'fapfapfap'})
+    response = admin_client.post(url, {'first_name': 'Jerry', 'eth_address': 'fapfapfap'})
 
     user = User.objects.get(username='admin')
     assert response.status_code == 302
-    assert user.street == 'over the rainbow'
+    assert user.first_name == 'Jerry'
     assert user.eth_address == 'fapfapfap'
 
 
@@ -244,27 +231,16 @@ def test_logout_view_post(admin_client):
 def test_onfido_create_applicant(onfido_test_user):
     result = onfido_api.create_applicant(onfido_test_user)
     assert result.to_dict() == {
-        'addresses': [{'building_name': None,
-                       'building_number': '100',
-                       'country': 'GBR',
-                       'end_date': None,
-                       'flat_number': None,
-                       'id': None,
-                       'postcode': 'SW4 6EH',
-                       'start_date': None,
-                       'state': None,
-                       'street': 'Main Street',
-                       'sub_street': None,
-                       'town': 'London'}],
+        'addresses': [],
         'country': 'gbr',
         'country_of_birth': None,
         'created_at': everything_equals,
-        'dob': date(1980, 1, 1),
+        'dob': None,
         'email': 'tester@test.cz',
-        'first_name': 'Nikola',
+        'first_name': 'Caligula',
         'gender': None,
-        'href': everything_equals,
-        'id': everything_equals,
+        'href': everything_equals,  # '/v2/applicants/294da182-2431-4d74-ad2b-c35e94ce7dbf',
+        'id': everything_equals,  # '294da182-2431-4d74-ad2b-c35e94ce7dbf',
         'id_numbers': [],
         'last_name': 'Tesla',
         'middle_name': None,
@@ -275,69 +251,89 @@ def test_onfido_create_applicant(onfido_test_user):
         'sandbox': True,
         'telephone': None,
         'title': None,
-        'town_of_birth': None
-    }
+        'town_of_birth': None}
 
 
 def test_onfido_check(onfido_test_user):
     applicant = onfido_api.create_applicant(onfido_test_user)
     check_result = onfido_api.check(applicant.id)
+    # pprint(check_result)
     assert check_result.to_dict() == {
         'created_at': everything_equals,
         'download_uri': everything_equals,
-        # 'https://onfido.com/dashboard/pdf/information_requests/8033882',
-        'form_uri': None,
+        # 'https://onfido.com/dashboard/pdf/information_requests/8078549'
+        'form_uri': everything_equals,
+        # 'https://onfido.com/information/d5a121b3-f81c-4509-85cb-e092b719332c',
         'href': everything_equals,
-        # '/v2/applicants/024fd02c-8b01-4ac9-9a9c-e5e9b6bae8e4/checks/63357bde-f5b8-435e-b77f-d3dc0d6d3f9b',
-        'id': everything_equals,
+        # '/v2/applicants/876e88c7-fa28-4134-b550-ace6497c9eb4/checks/d5a121b3-f81c-4509-85cb-e092b719332c',
+        'id': everything_equals,  # 'd5a121b3-f81c-4509-85cb-e092b719332c',
         'redirect_uri': None,
-        'reports': [
-            {'breakdown': {
-                'address': {
-                    'breakdown': {
-                        'credit_agencies': {'properties': {'number_of_credit_agencies': '1'},
-                                            'result': 'clear'},
-                        'telephone_database': {'properties': {}, 'result': 'clear'},
-                        'voting_register': {'properties': {}, 'result': 'clear'}},
-                    'result': 'clear'},
-                'date_of_birth': {
-                    'breakdown': {'credit_agencies': {'properties': {}, 'result': 'clear'},
-                                  'voting_register': {'properties': {}, 'result': 'clear'}},
-                    'result': 'clear'},
-                'mortality': {'result': None}},
-                'created_at': everything_equals,
-                'href': everything_equals,
-                # '/v2/checks/63357bde-f5b8-435e-b77f-d3dc0d6d3f9b/reports/e1d09b30-ff66-4b5e-be6c-1763040d4da1',
-                'id': everything_equals,
-                'name': 'identity',
-                'properties': {
-                    'matched_address': everything_equals,  # 4281266,
-                    'matched_addresses': [
-                        {'id': everything_equals,
-                         'match_types': ['credit_agencies', 'voting_register']}]},
-                'result': 'clear',
-                'status': 'complete',
-                'sub_result': None,
-                'variant': 'standard'}],
-        'result': 'clear',
+        'reports': [{'breakdown': {},
+                     'created_at': everything_equals,  # '2018-01-24T09:39:57Z',
+                     'href': everything_equals,
+                     # '/v2/checks/d5a121b3-f81c-4509-85cb-e092b719332c/reports/a77327a7-04f0-45af-991f-b620e394c942',
+                     'id': everything_equals,  # 'a77327a7-04f0-45af-991f-b620e394c942',
+                     'name': 'identity',
+                     'properties': {},
+                     'result': None,
+                     'status': 'awaiting_data',
+                     'sub_result': None,
+                     'variant': 'standard'}],
+        'result': None,
         'results_uri': everything_equals,
-        # 'https://onfido.com/dashboard/information_requests/8033882',
-        'status': 'complete',
+        # 'https://onfido.com/dashboard/information_requests/8078549',
+        'status': 'awaiting_applicant',
         'tags': [],
-        'type': 'express'
+        'type': 'standard'
     }
 
 
+def test_onfido_check_reload(onfido_test_user):
+    applicant = onfido_api.create_applicant(onfido_test_user)
+    check_result = onfido_api.check(applicant.id)
+    reload_check_result = onfido_api.check_reload(applicant.id, check_result.id)
+    assert reload_check_result.to_dict() == {
+        'created_at': everything_equals,
+        'download_uri': everything_equals,
+        # 'https://onfido.com/dashboard/pdf/information_requests/8078952',
+        'form_uri': everything_equals,
+        # 'https://onfido.com/information/44d63663-1449-4623-883b-a549d3eeab9d',
+        'href': everything_equals,
+        # '/v2/applicants/c52662b7-808f-4422-98ca-816df8593b08/checks/44d63663-1449-4623-883b-a549d3eeab9d',
+        'id': everything_equals,  # '44d63663-1449-4623-883b-a549d3eeab9d',
+        'redirect_uri': None,
+        'reports': [everything_equals],
+        'result': None,
+        'results_uri': everything_equals,
+        # 'https://onfido.com/dashboard/information_requests/8078952',
+        'status': 'awaiting_applicant',
+        'tags': [],
+        'type': 'standard'}
+
+
 def test_test_onfido_check_model(onfido_test_user):
-    assert onfido_test_user.onfido_check() is None
+    check = onfido_test_user.onfido_check()
     onfidos = list(onfido_test_user.onfidos.all())
     assert len(onfidos) == 2
     applicant_model = onfidos[0]
+    assert applicant_model.applicant_id
     assert applicant_model.type == 'applicant'
     assert applicant_model.response
     assert applicant_model.result == ''
 
-    check_model = onfidos[1]
-    assert check_model.type == 'check'
-    assert check_model.response
-    assert check_model.result == 'clear'
+    assert check.applicant_id
+    assert check.type == 'check'
+    assert check.response
+    assert check.result == ''
+    assert check.status == 'awaiting_applicant'
+
+    # test reload
+    reload = onfido_test_user.last_check.check_reload()
+    onfidos = list(onfido_test_user.onfidos.all())
+    assert len(onfidos) == 3
+    assert reload.id == onfidos[2].id
+    assert check.applicant_id == reload.applicant_id
+    assert reload.type == 'check'
+    assert reload.response
+    assert reload.result == ''
+    assert reload.status == 'awaiting_applicant'

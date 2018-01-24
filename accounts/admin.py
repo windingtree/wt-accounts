@@ -4,7 +4,8 @@ from django.contrib.auth.admin import UserAdmin
 
 
 class OnfidoCallAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('created', 'user', 'type', 'status', 'result')
+    list_filter = ('type', 'status', 'result')
 
 
 admin.site.register(User, UserAdmin)
