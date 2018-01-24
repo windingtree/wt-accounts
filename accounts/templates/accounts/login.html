@@ -6,13 +6,15 @@
 {% endblock %}
 
 {% block content %}
-  <form action="." method="post" class="form">
+  <form action="." method="post" class="form responsive-form">
     {% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}
         <button type="submit" class="btn btn-primary">Submit</button>
     {% endbuttons %}
+    <hr>
+    <p>Don't have an account yet? <strong><a href="{% url 'register' %}">Register</a></strong></p>
   </form>
-  <p>Don't have an account yet? <strong><a href="{% url 'register' %}">Register</a></strong></p>
+
 
 {% endblock %}
