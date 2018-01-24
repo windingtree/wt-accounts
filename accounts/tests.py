@@ -257,7 +257,6 @@ def test_onfido_create_applicant(onfido_test_user):
 def test_onfido_check(onfido_test_user):
     applicant = onfido_api.create_applicant(onfido_test_user)
     check_result = onfido_api.check(applicant.id)
-    # pprint(check_result)
     assert check_result.to_dict() == {
         'created_at': everything_equals,
         'download_uri': everything_equals,
@@ -269,6 +268,16 @@ def test_onfido_check(onfido_test_user):
         'id': everything_equals,  # 'd5a121b3-f81c-4509-85cb-e092b719332c',
         'redirect_uri': None,
         'reports': [{'breakdown': {},
+                     'created_at': everything_equals,
+                     'href': everything_equals,  #'/v2/checks/a80ca04e-ffe4-4a6f-b18f-4a7219f1106b/reports/6595886f-2554-4cc2-998d-ba5c7334f1f8',
+                     'id': everything_equals,  #'6595886f-2554-4cc2-998d-ba5c7334f1f8',
+                     'name': 'document',
+                     'properties': {},
+                     'result': None,
+                     'status': 'awaiting_data',
+                     'sub_result': None,
+                     'variant': 'standard'},
+                    {'breakdown': {},
                      'created_at': everything_equals,  # '2018-01-24T09:39:57Z',
                      'href': everything_equals,
                      # '/v2/checks/d5a121b3-f81c-4509-85cb-e092b719332c/reports/a77327a7-04f0-45af-991f-b620e394c942',
@@ -292,6 +301,7 @@ def test_onfido_check_reload(onfido_test_user):
     applicant = onfido_api.create_applicant(onfido_test_user)
     check_result = onfido_api.check(applicant.id)
     reload_check_result = onfido_api.check_reload(applicant.id, check_result.id)
+    pprint(check_result)
     assert reload_check_result.to_dict() == {
         'created_at': everything_equals,
         'download_uri': everything_equals,
@@ -302,7 +312,7 @@ def test_onfido_check_reload(onfido_test_user):
         # '/v2/applicants/c52662b7-808f-4422-98ca-816df8593b08/checks/44d63663-1449-4623-883b-a549d3eeab9d',
         'id': everything_equals,  # '44d63663-1449-4623-883b-a549d3eeab9d',
         'redirect_uri': None,
-        'reports': [everything_equals],
+        'reports': [everything_equals, everything_equals],
         'result': None,
         'results_uri': everything_equals,
         # 'https://onfido.com/dashboard/information_requests/8078952',
@@ -315,7 +325,7 @@ def test_test_onfido_check_model(onfido_test_user):
     check = onfido_test_user.onfido_check()
     onfidos = list(onfido_test_user.onfidos.all())
     assert len(onfidos) == 2
-    applicant_model = onfidos[0]
+    applicant_model = onfidos[1]
     assert applicant_model.applicant_id
     assert applicant_model.type == 'applicant'
     assert applicant_model.response
@@ -331,7 +341,7 @@ def test_test_onfido_check_model(onfido_test_user):
     reload = onfido_test_user.last_check.check_reload()
     onfidos = list(onfido_test_user.onfidos.all())
     assert len(onfidos) == 3
-    assert reload.id == onfidos[2].id
+    assert reload.id == onfidos[0].id
     assert check.applicant_id == reload.applicant_id
     assert reload.type == 'check'
     assert reload.response

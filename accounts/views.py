@@ -87,7 +87,7 @@ def profile(request):
             onfido_check = request.user.onfido_check()
             messages.success(request, mark_safe(
                 'Verification request sent, please check your '
-                'inbox or visit <a href="{0}">{0}</a>'.format(
+                'inbox or visit <a target="_blank" href="{0}">{0}</a>'.format(
                     onfido_check.check_form_url)))
         return HttpResponseRedirect(reverse('profile'))
 

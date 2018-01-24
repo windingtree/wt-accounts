@@ -31,10 +31,11 @@ def check(applicant_id):
     check = onfido.CheckCreationRequest()
     check.type = 'standard'
 
-    report = onfido.Report()
-    report.name = 'identity'
+    report_ident = onfido.Report(name = 'identity')
+    report_doc = onfido.Report(name = 'document')
 
-    check.reports = [report]
+
+    check.reports = [report_ident, report_doc]
 
     check_creation_response = api.create_check(applicant_id, data=check)
     return check_creation_response
