@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import logging
+
 import requests
 from django import forms
 from django.conf import settings
@@ -6,6 +8,8 @@ from django.core.validators import EMPTY_VALUES
 from django.utils.translation import ugettext_lazy as _
 from accounts import validators
 from accounts.models import User
+
+logger = logging.getLogger(__name__)
 
 
 class RegistrationForm(forms.ModelForm):
@@ -73,6 +77,13 @@ class LoginForm(forms.Form):
         help_text=_(u'email address'),
         widget=forms.TextInput(attrs={'autofocus': True}),
     )
+
+    def clean_email(self):
+        value = self.cleaned_data['email']
+        if not User.objects.filter(email=value).exists():
+            logger.warning('Attempt to login with non-existent email %s', value)
+            raise forms.ValidationError('No such account, please register first')
+        return value
 
     @property
     def user(self):
