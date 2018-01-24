@@ -19,3 +19,40 @@ body {
 .container {
     margin-top: 20px;
 }
+
+.navbar-text {
+    margin-right: 10px;
+}
+
+
+/* Large desktop */
+@media (min-width: 1200px) {
+  .responsive-form {
+    width: 800px;
+    margin: auto;
+  }
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+  .responsive-form {
+    width: 800px;
+    margin: auto;
+  }
+}
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+  .responsive-form {
+    width: 700px;
+    margin: auto;
+  }
+}
+
+/* Landscape phones and down */
+@media (max-width: 480px) {
+  .responsive-form {
+    width: 480px;
+    margin: auto;
+  }
+}
