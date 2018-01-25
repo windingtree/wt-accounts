@@ -44,12 +44,8 @@ def login(request):
 
     if form.is_valid():
         user = form.user
-        if user:
-            logger.debug('Sending email to %s', user.email)
-            send_login_email(request, user)
-        else:
-            logger.warning('Attempt to login with non-existent email %s',
-                           form.cleaned_data['email'])
+        logger.debug('Sending email to %s', user.email)
+        send_login_email(request, user)
         return HttpResponseRedirect(reverse('login_sent'))
 
     return render(request, 'accounts/login.html', {'form': form})

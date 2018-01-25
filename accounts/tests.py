@@ -141,10 +141,11 @@ def test_login_view(test_user, client, caplog):
 
     # wrong email
     response = client.post(url, {'email': 'bad@email.cz'})
-    assert response.status_code == 302
 
+    assert response.status_code == 200
+    assert response.context['form'].errors == {'email': ['No such account, please register first']}
     assert caplog.record_tuples == [
-        ('accounts.views', 30, 'Attempt to login with non-existent email bad@email.cz')
+        ('accounts.forms', 30, 'Attempt to login with non-existent email bad@email.cz')
     ]
     caplog.clear()
 
