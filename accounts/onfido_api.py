@@ -40,8 +40,10 @@ def check(applicant_id):
 
     report_ident = onfido.Report(name = 'identity')
     report_doc = onfido.Report(name = 'document')
+    #report_street = onfido.Report(name = 'street_level')
+    report_facial = onfido.Report(name = 'facial_similarity')
 
-    check.reports = [report_ident, report_doc]
+    check.reports = [report_ident, report_doc, report_facial]
 
     check_creation_response = api.create_check(applicant_id, data=check)
     return check_creation_response
