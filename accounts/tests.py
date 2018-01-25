@@ -10,7 +10,7 @@ from django.urls import reverse
 
 from accounts import onfido_api
 from accounts.forms import RegistrationForm
-from accounts.models import create_link_context, send_login_email, User
+from accounts.models import create_link_context, send_login_email, User, OnfidoCall
 
 EMAIL = 'tester@test.cz'
 
@@ -358,3 +358,23 @@ def test_test_onfido_check_model(onfido_test_user):
     assert reload.response
     assert reload.result == ''
     assert reload.status == 'awaiting_applicant'
+
+
+def test_onfido_webhook(client, test_user):
+    url = reverse('onfido_webhook')
+    OnfidoCall.objects.create(onfido_id='b9bc1173-fd77-403e-af99-a07e476a5214', applicant_id='apld',
+                              user=test_user, type='check')
+
+    response = client.post(url, data="""{"payload": {
+            "action": "report.completed",
+            "resource_type": "report",
+            "object": {
+                "completed_at": "2018-01-25 21:10:26 UTC",
+                "href": "https://api.onfido.com/v2/checks/4e7769d3-c292-4db1-bbb7-21aa746816f6/reports/b9bc1173-fd77-403e-af99-a07e476a5214",
+                "id": "b9bc1173-fd77-403e-af99-a07e476a5214",
+                "status": "complete"
+            }
+        }
+    }""", content_type='application/json')
+    assert response.status_code == 200
+    assert response.content == b'OK'

@@ -1,3 +1,4 @@
+import json
 import logging
 
 from django.conf import settings
@@ -5,16 +6,17 @@ from django.contrib import messages
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
-from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, resolve_url
 from django.urls import reverse
 from django.utils.http import urlsafe_base64_decode
 from django.utils.safestring import mark_safe
 from django.views.decorators.cache import never_cache
 from django.views.decorators.debug import sensitive_post_parameters
+from django.views.decorators.http import require_POST
 
 from accounts.forms import LoginForm, RegistrationForm, ProfileForm
-from accounts.models import send_login_email, User
+from accounts.models import send_login_email, User, OnfidoCall
 
 logger = logging.getLogger(__name__)
 
@@ -100,3 +102,16 @@ def logout(request):
     auth_logout(request)
     messages.success(request, 'You were logged out')
     return HttpResponseRedirect(reverse(settings.LOGOUT_REDIRECT_URL))
+
+
+@require_POST
+def onfido_webhook(request):
+    # TODO validate  X-Signature https://documentation.onfido.com/#webhooks
+    logger.debug('Incomming webhook %s', request.body)
+    body = json.loads(request.body.decode('utf-8'))
+    if body['payload']['action'] in {'check.completed', }:
+        check_id = body['payload']['object']['id']
+        oc = OnfidoCall.objects.get(type='check', onfido_id=check_id)
+        # oc.user
+        # TODO notify user that check is completed and he should press verify again
+    return HttpResponse('OK')

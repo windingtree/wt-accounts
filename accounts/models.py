@@ -47,17 +47,18 @@ class User(AbstractUser):
     def onfido_check(self):
         applicant = onfido_api.create_applicant(self)
         OnfidoCall.objects.create(user=self, type='applicant', applicant_id=applicant.id,
-                                  response=applicant.to_dict())
+                                  onfido_id=applicant.id, response=applicant.to_dict())
         check = onfido_api.check(applicant.id)
         return OnfidoCall.objects.create(user=self, type='check', response=check.to_dict(),
                                          applicant_id=applicant.id, status=check.status or '',
-                                         result=check.result or '')
+                                         onfido_id=check.id, result=check.result or '')
 
 
 class OnfidoCall(TimeStampedModel):
     TYPES = (
         ('applicant', 'applicant'),
         ('check', 'check'),
+        ('webhook', 'webhook'),
     )
     user = models.ForeignKey(User, related_name='onfidos', on_delete=models.DO_NOTHING)
     type = models.CharField(choices=TYPES, max_length=20)
@@ -65,6 +66,7 @@ class OnfidoCall(TimeStampedModel):
     status = models.CharField(blank=True, max_length=20)
     result = models.CharField(blank=True, max_length=20)
     applicant_id = models.CharField(blank=True, max_length=40)
+    onfido_id = models.CharField(max_length=40)
 
     class Meta:
         ordering = ['-created']
