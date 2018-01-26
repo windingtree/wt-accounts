@@ -4,6 +4,8 @@ from unittest.mock import Mock
 
 import pytest
 from datetime import date
+
+from django.conf import settings
 from django.core import mail
 from django.forms import model_to_dict
 from django.urls import reverse
@@ -366,8 +368,8 @@ def test_onfido_webhook(client, test_user):
                               user=test_user, type='check')
 
     response = client.post(url, data="""{"payload": {
-            "action": "report.completed",
-            "resource_type": "report",
+            "action": "check.completed",
+            "resource_type": "check",
             "object": {
                 "completed_at": "2018-01-25 21:10:26 UTC",
                 "href": "https://api.onfido.com/v2/checks/4e7769d3-c292-4db1-bbb7-21aa746816f6/reports/b9bc1173-fd77-403e-af99-a07e476a5214",
@@ -378,3 +380,14 @@ def test_onfido_webhook(client, test_user):
     }""", content_type='application/json')
     assert response.status_code == 200
     assert response.content == b'OK'
+
+    m = mail.outbox[0]
+
+    assert m.subject == 'WT verification status'
+    assert m.from_email == settings.DEFAULT_FROM_EMAIL
+    assert list(m.to) == [EMAIL]
+    assert 'http://localhost:8000/accounts/login/' in m.body
+
+    mail.outbox = []
+
+

@@ -1,0 +1,9 @@
+Your Onfido verification status has changed,
+
+please login via {{protocol}}://{{domain}}{% url 'login_token' uidb64=uid token=token %}
+
+and find out if you are verified by clicking on the "Verify" button on the profile page.
+
+Thanks,
+
+Winding Tree Team

@@ -16,7 +16,7 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.http import require_POST
 
 from accounts.forms import LoginForm, RegistrationForm, ProfileForm
-from accounts.models import send_login_email, User, OnfidoCall
+from accounts.models import send_login_email, User, OnfidoCall, send_verification_status_email
 
 logger = logging.getLogger(__name__)
 
@@ -112,6 +112,5 @@ def onfido_webhook(request):
     if body['payload']['action'] in {'check.completed', }:
         check_id = body['payload']['object']['id']
         oc = OnfidoCall.objects.get(type='check', onfido_id=check_id)
-        # oc.user
-        # TODO notify user that check is completed and he should press verify again
+        send_verification_status_email(request, oc.user)
     return HttpResponse('OK')
