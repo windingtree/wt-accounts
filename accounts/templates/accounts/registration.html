@@ -1,4 +1,4 @@
-{% extends 'accounts/base.html' %}
+{% extends 'base.html' %}
 {% load bootstrap4 %}
 
 {% block extra_head %}
@@ -8,12 +8,12 @@
 
 
 {% block navbar %}
-  {% include 'accounts/navbar.html' with active_item='register' %}
+  {% include 'navbar.html' with active_item='register' %}
 {% endblock %}
 
 
 {% block content %}
-  <form action="." method="post" class="form">
+  <form action="." method="post" class="form responsive-form">
     {% csrf_token %}
 
     {% bootstrap_form form exclude='g_recaptcha_response' %}

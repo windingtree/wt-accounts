@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'bootstrap4',
+    'django_countries',
 
     'accounts',
 ]
@@ -63,7 +64,7 @@ ROOT_URLCONF = 'wt_accounts.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [path.join(BASE_DIR, "wt_accounts", "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,3 +138,5 @@ LOGIN_REDIRECT_URL = 'profile'
 LOGOUT_REDIRECT_URL = 'login_form'
 
 RECAPTCHA_SITE_SECRET = '6Lc3ZUEUAAAAANvO8gyZesS5VmplliYYy-tX06SE'
+
+ONFIDO_TOKEN = 'test_d5XQ33ZWvga8O6DesG2w8pb6gB43PMY9'

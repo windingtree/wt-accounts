@@ -1,13 +1,19 @@
 # Create your tests here.
+from pprint import pprint
 from unittest.mock import Mock
 
 import pytest
+from datetime import date
+
+from django.conf import settings
 from django.core import mail
+from django.core.exceptions import ValidationError
 from django.forms import model_to_dict
 from django.urls import reverse
 
+from accounts import onfido_api
 from accounts.forms import RegistrationForm
-from accounts.models import create_link_context, send_login_email, User
+from accounts.models import create_link_context, send_login_email, User, OnfidoCall
 
 EMAIL = 'tester@test.cz'
 
@@ -20,6 +26,15 @@ everything_equals = type('omnieq', (), {"__eq__": lambda x, y: True})()
 @pytest.fixture
 def test_user(db):
     return User.objects.create_user(username=EMAIL, email=EMAIL)
+
+
+@pytest.fixture
+def onfido_test_user(db):
+    return User.objects.create_user(
+        username=EMAIL, email=EMAIL, first_name='Caligula', last_name='Tesla',
+        birth_date=date(1980, 1, 1), building_number='100', street='Main Street',
+        town='London', postcode='SW4 6EH', country='GBR', mobile='+420777619338'
+    )
 
 
 @pytest.mark.django_db
@@ -64,6 +79,7 @@ def test_RegistrationForm(monkeypatch):
         'birth_date': None,
         'building_number': '',
         'country': '',
+        'mobile': '',
         'postcode': '',
         'street': '',
         'town': '',
@@ -193,11 +209,11 @@ def test_profile_view(client, admin_client):
     assert response.status_code == 200
     assert 'form' in response.context
 
-    response = admin_client.post(url, {'street': 'over the rainbow', 'eth_address': 'fapfapfap'})
+    response = admin_client.post(url, {'first_name': 'Jerry', 'eth_address': 'fapfapfap'})
 
     user = User.objects.get(username='admin')
     assert response.status_code == 302
-    assert user.street == 'over the rainbow'
+    assert user.first_name == 'Jerry'
     assert user.eth_address == 'fapfapfap'
 
 
@@ -224,3 +240,168 @@ def test_logout_view_post(admin_client):
 
     assert response.status_code == 302
     assert response['Location'] == '/accounts/login/'
+
+
+def test_onfido_create_applicant(onfido_test_user):
+    result = onfido_api.create_applicant(onfido_test_user)
+    assert result.to_dict() == {
+        'addresses': [{'building_name': None, 'id': None, 'town': 'London', 'flat_number': None,
+                       'postcode': 'SW4 6EH', 'start_date': None, 'street': 'Main Street',
+                       'state': None, 'country': 'GBR', 'building_number': '100', 'end_date': None,
+                       'sub_street': None}],
+        'country': 'gbr',
+        'country_of_birth': None,
+        'created_at': everything_equals,
+        'dob': date(1980, 1, 1),
+        'email': 'tester@test.cz',
+        'first_name': 'Caligula',
+        'gender': None,
+        'href': everything_equals,  # '/v2/applicants/294da182-2431-4d74-ad2b-c35e94ce7dbf',
+        'id': everything_equals,  # '294da182-2431-4d74-ad2b-c35e94ce7dbf',
+        'id_numbers': [],
+        'last_name': 'Tesla',
+        'middle_name': None,
+        'mobile': '+420777619338',
+        'mothers_maiden_name': None,
+        'nationality': None,
+        'previous_last_name': None,
+        'sandbox': True,
+        'telephone': None,
+        'title': None,
+        'town_of_birth': None}
+
+
+def test_onfido_create_applicant_handle_err(onfido_test_user):
+    onfido_test_user.postcode = '111'
+    with pytest.raises(ValidationError) as e:
+        onfido_api.create_applicant(onfido_test_user)
+    assert e.value.message == "There was a validation error on this request " \
+                              "{'addresses': [{'postcode': ['invalid postcode']}]}"
+
+
+
+def test_onfido_check(onfido_test_user):
+    applicant = onfido_api.create_applicant(onfido_test_user)
+    check_result = onfido_api.check(applicant.id)
+    assert check_result.to_dict() == {
+        'created_at': everything_equals,
+        'download_uri': everything_equals,
+        # 'https://onfido.com/dashboard/pdf/information_requests/8078549'
+        'form_uri': everything_equals,
+        # 'https://onfido.com/information/d5a121b3-f81c-4509-85cb-e092b719332c',
+        'href': everything_equals,
+        # '/v2/applicants/876e88c7-fa28-4134-b550-ace6497c9eb4/checks/d5a121b3-f81c-4509-85cb-e092b719332c',
+        'id': everything_equals,  # 'd5a121b3-f81c-4509-85cb-e092b719332c',
+        'redirect_uri': None,
+        'reports': [{'breakdown': {},
+                     'created_at': everything_equals,
+                     'href': everything_equals,  #'/v2/checks/a80ca04e-ffe4-4a6f-b18f-4a7219f1106b/reports/6595886f-2554-4cc2-998d-ba5c7334f1f8',
+                     'id': everything_equals,  #'6595886f-2554-4cc2-998d-ba5c7334f1f8',
+                     'name': 'document',
+                     'properties': {},
+                     'result': None,
+                     'status': 'awaiting_data',
+                     'sub_result': None,
+                     'variant': 'standard'},
+                    {'breakdown': {},
+                     'created_at': everything_equals,  # '2018-01-24T09:39:57Z',
+                     'href': everything_equals,
+                     # '/v2/checks/d5a121b3-f81c-4509-85cb-e092b719332c/reports/a77327a7-04f0-45af-991f-b620e394c942',
+                     'id': everything_equals,  # 'a77327a7-04f0-45af-991f-b620e394c942',
+                     'name': 'identity',
+                     'properties': {},
+                     'result': None,
+                     'status': 'awaiting_data',
+                     'sub_result': None,
+                     'variant': 'standard'}],
+        'result': None,
+        'results_uri': everything_equals,
+        # 'https://onfido.com/dashboard/information_requests/8078549',
+        'status': 'awaiting_applicant',
+        'tags': [],
+        'type': 'standard'
+    }
+
+
+def test_onfido_check_reload(onfido_test_user):
+    applicant = onfido_api.create_applicant(onfido_test_user)
+    check_result = onfido_api.check(applicant.id)
+    reload_check_result = onfido_api.check_reload(applicant.id, check_result.id)
+    # pprint(check_result)
+    assert reload_check_result.to_dict() == {
+        'created_at': everything_equals,
+        'download_uri': everything_equals,
+        # 'https://onfido.com/dashboard/pdf/information_requests/8078952',
+        'form_uri': everything_equals,
+        # 'https://onfido.com/information/44d63663-1449-4623-883b-a549d3eeab9d',
+        'href': everything_equals,
+        # '/v2/applicants/c52662b7-808f-4422-98ca-816df8593b08/checks/44d63663-1449-4623-883b-a549d3eeab9d',
+        'id': everything_equals,  # '44d63663-1449-4623-883b-a549d3eeab9d',
+        'redirect_uri': None,
+        'reports': [everything_equals, everything_equals],
+        'result': None,
+        'results_uri': everything_equals,
+        # 'https://onfido.com/dashboard/information_requests/8078952',
+        'status': 'awaiting_applicant',
+        'tags': [],
+        'type': 'standard'}
+
+
+def test_test_onfido_check_model(onfido_test_user):
+    check = onfido_test_user.onfido_check()
+    onfidos = list(onfido_test_user.onfidos.all())
+    assert len(onfidos) == 2
+    applicant_model = onfidos[1]
+    assert applicant_model.applicant_id
+    assert applicant_model.type == 'applicant'
+    assert applicant_model.response
+    assert applicant_model.result == ''
+
+    assert check.applicant_id
+    assert check.type == 'check'
+    assert check.response
+    assert check.result == ''
+    assert check.status == 'awaiting_applicant'
+
+    # test reload
+    reload = onfido_test_user.last_check.check_reload()
+    onfidos = list(onfido_test_user.onfidos.all())
+    assert len(onfidos) == 3
+    assert reload.id == onfidos[0].id
+    assert check.applicant_id == reload.applicant_id
+    assert reload.type == 'check'
+    assert reload.response
+    assert reload.result == ''
+    assert reload.status == 'awaiting_applicant'
+
+
+def test_onfido_webhook(client, test_user):
+    url = reverse('onfido_webhook')
+    OnfidoCall.objects.create(onfido_id='b9bc1173-fd77-403e-af99-a07e476a5214', applicant_id='apld',
+                              user=test_user, type='check')
+
+    response = client.post(url, data="""{"payload": {
+            "action": "check.completed",
+            "resource_type": "check",
+            "object": {
+                "completed_at": "2018-01-25 21:10:26 UTC",
+                "href": "https://api.onfido.com/v2/checks/4e7769d3-c292-4db1-bbb7-21aa746816f6/reports/b9bc1173-fd77-403e-af99-a07e476a5214",
+                "id": "b9bc1173-fd77-403e-af99-a07e476a5214",
+                "status": "complete"
+            }
+        }
+    }""", content_type='application/json',
+                           **{'X-SIGNATURE': '609e6fe1dc23b7fdf2452f43dce9ce409dcbad61'})
+    assert response.status_code == 200
+    assert response.content == b'OK'
+
+    m = mail.outbox[0]
+
+    assert m.subject == 'WT verification status'
+    assert m.from_email == settings.DEFAULT_FROM_EMAIL
+    assert list(m.to) == [EMAIL]
+    assert 'http://localhost:8000/accounts/login/' in m.body
+
+    mail.outbox = []
+
+

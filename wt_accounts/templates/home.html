@@ -1,8 +1,9 @@
-{% extends 'accounts/base.html' %}
+{% extends 'base.html' %}
 {% load bootstrap4 %}
+{% load static %}
 
 {% block navbar %}
-  {% include 'accounts/navbar.html' with active_item='home' %}
+  {% include 'navbar.html' with active_item='home' %}
 {% endblock %}
 
 {% block content %}
@@ -28,9 +29,9 @@
 
   <h3>Want to know more?</h3>
 
-  <h4><a href="windingtree.com">Website</a></h4>
-  <h4><a href="github.com/windingtree">Github</a></h4>
-  <h4><a href="demo.windingtree.com">WT Demo App</a></h4>
-  <h4><a href="twitter.com/windingtree">Twitter</a></h4>
+  <h4><img src="{% static 'img/wt-social-website.svg' %}" height="20" alt=""> <a href="windingtree.com">Website</a></h4>
+  <h4><img src="{% static 'img/wt-social-website.svg' %}" height="20" alt=""> <a href="demo.windingtree.com">WT Demo App</a></h4>
+  <h4><img src="{% static 'img/wt-social-github.svg' %}" height="20" alt=""> <a href="github.com/windingtree">Github</a></h4>
+  <h4><img src="{% static 'img/wt-social-twitter.svg' %}" height="20" alt=""> <a href="twitter.com/windingtree">Twitter</a></h4>
 
 {% endblock %}

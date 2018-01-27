@@ -6,6 +6,7 @@ from django import forms
 from django.conf import settings
 from django.core.validators import EMPTY_VALUES
 from django.utils.translation import ugettext_lazy as _
+
 from accounts import validators
 from accounts.models import User
 
@@ -94,8 +95,25 @@ class LoginForm(forms.Form):
 
 
 class ProfileForm(forms.ModelForm):
+    first_name = forms.CharField(min_length=2, required=False)
+    last_name = forms.CharField(min_length=2, required=False)
+
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'birth_date', 'country', 'building_number',
-                  'street', 'town', 'postcode', 'eth_address')
+        fields = (
+            'first_name', 'last_name', 'birth_date', 'mobile', 'street', 'building_number', 'town',
+            'postcode', 'country', 'eth_address')
         required_css_class = 'required'
+
+
+class VerifyForm(forms.Form):
+
+    def __init__(self, *args, user, **kwargs):
+        self.user = user
+        self.onfido_check = None
+        super().__init__(*args, **kwargs)
+
+    def clean(self):
+        super(VerifyForm, self).clean()
+        self.onfido_check = self.user.onfido_check()
+        return self.cleaned_data

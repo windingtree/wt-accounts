@@ -1,23 +1,62 @@
-{% extends 'accounts/base.html' %}
+{% extends 'base.html' %}
+{% load static %}
 {% load bootstrap4 %}
 
 {% block navbar %}
-  {% include 'accounts/navbar.html' with active_item='profile' %}
+  {% include 'navbar.html' with active_item='profile' %}
 {% endblock %}
 
 
 {% block content %}
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    Your profile is not verified, you cant invest more than 10 ETH.
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
+
+  <div class="row justify-content-md-center">
+    <div class="col col-lg-8">
+    {% if request.user.eth_address %}
+      <h3>ICO address: <strong>0x00000000000000000000000000</strong></h3>
+      <h3>Your address: 0x00000000000000000000000000</h3>
+      <h3>ETH sent at 1000 Lif per ETH: 0</h3>
+      <h3>ETH sent at 900 Lif per ETH: 0</h3>
+      <h3>Total ETH Sent: <strong>0</strong></h3>
+      <h3>Your Lif balance: <strong>0</strong></h3>
+    {% endif %}
+    {% if request.user.eth_address and not request.user.is_verified %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Your profile is not verified, you can't invest more than 10 ETH.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endif %}
+    {% if not request.user.eth_address %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Your profile is not complete, you need to complete your profile to contribute up to 10 ETH.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endif %}
+    </div>
   </div>
-  <form action="." method="post" class="form">
+  <hr>
+
+  {% if verify_form %}
+    {% bootstrap_form verify_form %}
+  {% endif %}
+
+  <form action="." method="post" class="form responsive-form">
     {% csrf_token %}
     {% bootstrap_form form %}
+    <p>
+      By submitting my profile I accept the <a href="{% static 'Token Sale T&Cs.pdf' %}"> Terms and Conditions</a>
+    </p>
     {% buttons %}
-        <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary">Save (Maximun contribution 10 ETH)</button>
+      {% if request.user.can_verify and request.user.eth_address %}
+      <button type="submit" name="verify"
+              class="btn btn-info disabled">
+              Verify for +10 ETH contribution
+      </button>
+      {% endif %}
     {% endbuttons %}
   </form>
 {% endblock %}

@@ -15,4 +15,6 @@ urlpatterns = [
     path('login/<uidb64>/<token>/', views.login_token, name='login_token'),
     path('profile/', views.profile, name='profile'),
 
+    path('webhook/onfido/', views.onfido_webhook, name='onfido_webhook'),
+
 ]
