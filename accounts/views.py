@@ -1,3 +1,5 @@
+import hashlib
+import hmac
 import json
 import logging
 
@@ -6,7 +8,8 @@ from django.contrib import messages
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
-from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, \
+    HttpResponseBadRequest
 from django.shortcuts import render, resolve_url
 from django.urls import reverse
 from django.utils.http import urlsafe_base64_decode
@@ -111,8 +114,13 @@ def logout(request):
 
 @require_POST
 def onfido_webhook(request):
-    # TODO validate  X-Signature https://documentation.onfido.com/#webhooks
     logger.debug('Incomming webhook %s', request.body)
+    expected_signature = request.META['X-SIGNATURE']
+    digest = hmac.new(settings.ONFIDO_TOKEN.encode('ascii'), request.body, hashlib.sha1).hexdigest()
+    if expected_signature != digest:
+        logger.error('Differing signatures expected %s actual %s', expected_signature, digest)
+        return HttpResponseBadRequest(
+            'Differing signatures expected %s actual %s' % (expected_signature, digest))
     body = json.loads(request.body.decode('utf-8'))
     if body['payload']['action'] in {'check.completed', }:
         check_id = body['payload']['object']['id']
