@@ -104,3 +104,16 @@ class ProfileForm(forms.ModelForm):
             'first_name', 'last_name', 'birth_date', 'mobile', 'street', 'building_number', 'town',
             'postcode', 'country', 'eth_address')
         required_css_class = 'required'
+
+
+class VerifyForm(forms.Form):
+
+    def __init__(self, *args, user, **kwargs):
+        self.user = user
+        self.onfido_check = None
+        super().__init__(*args, **kwargs)
+
+    def clean(self):
+        super(VerifyForm, self).clean()
+        self.onfido_check = self.user.onfido_check()
+        return self.cleaned_data

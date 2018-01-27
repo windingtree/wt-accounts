@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 import datetime
+import json
+
 import onfido
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.forms import model_to_dict
 from onfido.rest import ApiException
 
@@ -10,6 +13,15 @@ def get_api():
     onfido.configuration.api_key['Authorization'] = 'token=' + settings.ONFIDO_TOKEN
     onfido.configuration.api_key_prefix['Authorization'] = 'Token'
     return onfido.DefaultApi()
+
+
+def handle_exception(exc):
+    body = json.loads(exc.body)
+    if body.get('error', {}).get('type', '') == 'validation_error':
+        message = body['error']['message'] + ' ' + str(body['error'].get('fields', ''))
+        raise ValidationError(message)
+    raise exc
+    # {"error":{"type":"validation_error","message":"There was a validation error on this request","fields":{"addresses":[{"town":["can't be blank"]}]}}}
 
 
 def create_applicant(user):
@@ -28,7 +40,10 @@ def create_applicant(user):
     applicant.addresses = [address]
 
     # Be sure to note the applicant id from the response
-    applicant_creation_response = api.create_applicant(data=applicant)
+    try:
+        applicant_creation_response = api.create_applicant(data=applicant)
+    except ApiException as e:
+        handle_exception(e)
     return applicant_creation_response
 
 

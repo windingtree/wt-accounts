@@ -1,8 +1,8 @@
-{% extends 'accounts/base.html' %}
+{% extends 'base.html' %}
 {% load bootstrap4 %}
 
 {% block navbar %}
-  {% include 'accounts/navbar.html' with active_item='profile' %}
+  {% include 'navbar.html' with active_item='profile' %}
 {% endblock %}
 
 
@@ -37,6 +37,11 @@
     </div>
   </div>
   <hr>
+
+  {% if verify_form %}
+    {% bootstrap_form verify_form %}
+  {% endif %}
+
   <form action="." method="post" class="form responsive-form">
     {% csrf_token %}
     {% bootstrap_form form %}

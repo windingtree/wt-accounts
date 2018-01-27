@@ -15,7 +15,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.http import require_POST
 
-from accounts.forms import LoginForm, RegistrationForm, ProfileForm
+from accounts.forms import LoginForm, RegistrationForm, ProfileForm, VerifyForm
 from accounts.models import send_login_email, User, OnfidoCall, send_verification_status_email
 
 logger = logging.getLogger(__name__)
@@ -54,7 +54,7 @@ def login(request):
 
 
 def home(request):
-    return render(request, 'accounts/home.html')
+    return render(request, 'home.html')
 
 
 def registration(request):
@@ -75,6 +75,7 @@ def registration(request):
 def profile(request):
     verify = 'verify' in request.POST
     if verify:
+        form = ProfileForm(instance=request.user)
         if not request.user.can_verify():
             messages.error(request, 'All the fields must be filled for verification')
         elif request.user.verify_status:
@@ -82,11 +83,15 @@ def profile(request):
             messages.error(request,
                            'Current verification status: {}'.format(request.user.verify_status))
         else:
-            onfido_check = request.user.onfido_check()
-            messages.success(request, mark_safe(
-                'Verification request sent, please check your '
-                'inbox or visit <a target="_blank" href="{0}">{0}</a>'.format(
-                    onfido_check.check_form_url)))
+            verify_form = VerifyForm(request.POST, user=request.user)
+            if verify_form.is_valid():
+                onfido_check = verify_form.onfido_check
+                messages.success(request, mark_safe(
+                    'Verification request sent, please check your '
+                    'inbox or visit <a target="_blank" href="{0}">{0}</a>'.format(
+                        onfido_check.check_form_url)))
+            return render(request, 'accounts/profile.html',
+                          {'form': form, 'verify_form': verify_form})
         return HttpResponseRedirect(reverse('profile'))
 
     form = ProfileForm(request.POST or None, instance=request.user)

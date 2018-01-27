@@ -29,7 +29,9 @@ class User(AbstractUser):
     eth_address = models.CharField(_('ETH address'), max_length=100, blank=True)
 
     def can_verify(self):
-        return self.first_name and self.last_name and self.email
+        must = ('first_name', 'last_name', 'birth_date', 'mobile', 'street',
+                'building_number', 'town', 'postcode', 'country')
+        return all(getattr(self, f) for f in must)
 
     @property
     def last_check(self):

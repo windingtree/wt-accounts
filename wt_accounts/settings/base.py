@@ -64,7 +64,7 @@ ROOT_URLCONF = 'wt_accounts.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [path.join(BASE_DIR, "wt_accounts", "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

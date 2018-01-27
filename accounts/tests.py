@@ -7,6 +7,7 @@ from datetime import date
 
 from django.conf import settings
 from django.core import mail
+from django.core.exceptions import ValidationError
 from django.forms import model_to_dict
 from django.urls import reverse
 
@@ -32,7 +33,7 @@ def onfido_test_user(db):
     return User.objects.create_user(
         username=EMAIL, email=EMAIL, first_name='Caligula', last_name='Tesla',
         birth_date=date(1980, 1, 1), building_number='100', street='Main Street',
-        country='GBR', mobile='+420777619338'
+        town='London', postcode='SW4 6EH', country='GBR', mobile='+420777619338'
     )
 
 
@@ -244,11 +245,14 @@ def test_logout_view_post(admin_client):
 def test_onfido_create_applicant(onfido_test_user):
     result = onfido_api.create_applicant(onfido_test_user)
     assert result.to_dict() == {
-        'addresses': [],
+        'addresses': [{'building_name': None, 'id': None, 'town': 'London', 'flat_number': None,
+                       'postcode': 'SW4 6EH', 'start_date': None, 'street': 'Main Street',
+                       'state': None, 'country': 'GBR', 'building_number': '100', 'end_date': None,
+                       'sub_street': None}],
         'country': 'gbr',
         'country_of_birth': None,
         'created_at': everything_equals,
-        'dob': None,
+        'dob': date(1980, 1, 1),
         'email': 'tester@test.cz',
         'first_name': 'Caligula',
         'gender': None,
@@ -257,7 +261,7 @@ def test_onfido_create_applicant(onfido_test_user):
         'id_numbers': [],
         'last_name': 'Tesla',
         'middle_name': None,
-        'mobile': None,
+        'mobile': '+420777619338',
         'mothers_maiden_name': None,
         'nationality': None,
         'previous_last_name': None,
@@ -265,6 +269,15 @@ def test_onfido_create_applicant(onfido_test_user):
         'telephone': None,
         'title': None,
         'town_of_birth': None}
+
+
+def test_onfido_create_applicant_handle_err(onfido_test_user):
+    onfido_test_user.postcode = '111'
+    with pytest.raises(ValidationError) as e:
+        onfido_api.create_applicant(onfido_test_user)
+    assert e.value.message == "There was a validation error on this request " \
+                              "{'addresses': [{'postcode': ['invalid postcode']}]}"
+
 
 
 def test_onfido_check(onfido_test_user):
@@ -314,7 +327,7 @@ def test_onfido_check_reload(onfido_test_user):
     applicant = onfido_api.create_applicant(onfido_test_user)
     check_result = onfido_api.check(applicant.id)
     reload_check_result = onfido_api.check_reload(applicant.id, check_result.id)
-    pprint(check_result)
+    # pprint(check_result)
     assert reload_check_result.to_dict() == {
         'created_at': everything_equals,
         'download_uri': everything_equals,
@@ -377,7 +390,8 @@ def test_onfido_webhook(client, test_user):
                 "status": "complete"
             }
         }
-    }""", content_type='application/json')
+    }""", content_type='application/json',
+                           **{'X-SIGNATURE': '609e6fe1dc23b7fdf2452f43dce9ce409dcbad61'})
     assert response.status_code == 200
     assert response.content == b'OK'
 
