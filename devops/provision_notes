@@ -49,9 +49,6 @@ sudo systemctl restart nginx
 
 
 
-bAx0Ky4GZLBgk0aZj61ro
-
-
 
 
 sudo apt-get install mysql-client -y
