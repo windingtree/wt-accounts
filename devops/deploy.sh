@@ -25,7 +25,7 @@ deploy() {
         $SUDO_ROOT supervisorctl update
         $SUDO_ROOT supervisorctl restart web-1
         $SUDO_ROOT supervisorctl restart web-2
-        sudo /etc/init.d/nginx reload
+        $SUDO_ROOT /etc/init.d/nginx reload
 
 EOF
 
