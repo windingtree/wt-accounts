@@ -18,6 +18,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.http import require_POST
 
+from accounts import etherscan
 from accounts.forms import LoginForm, RegistrationForm, ProfileForm, VerifyForm
 from accounts.models import send_login_email, User, OnfidoCall, send_verification_status_email
 
@@ -127,3 +128,15 @@ def onfido_webhook(request):
         oc = OnfidoCall.objects.get(type='check', onfido_id=check_id)
         send_verification_status_email(request, oc.user)
     return HttpResponse('OK')
+
+
+@login_required
+def eth_sums(request):
+    users = User.objects.exclude(eth_address='')
+    users_by_eth_address = {u.eth_address: u for u in users}
+    transactions = etherscan.get_transactions()
+    total = etherscan.eth_get_total(transactions)
+    sum_for_accounts = etherscan.get_sum_for_accounts(transactions, users_by_eth_address.keys())
+    for account, sum in sum_for_accounts.items():
+        users_by_eth_address[account].eth_sum = sum
+    return render(request, 'accounts/eth_sums.html', {'total': total, 'users': users})

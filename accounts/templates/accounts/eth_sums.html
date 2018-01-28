@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <h1>Total: {{ total|stringformat:"E" }}</h1>
+
+  <ul>
+    {% for u in users %}
+      <li>{{ u }}: {{ u.eth_sum|stringformat:"E" }}</li>
+    {% endfor %}
+  </ul>
+
+{% endblock %}
