@@ -6,7 +6,7 @@ DEBUG = False
 DOMAIN = 'ec2-54-178-125-223.ap-northeast-1.compute.amazonaws.com'
 ALLOWED_HOSTS = [
     'ec2-54-178-125-223.ap-northeast-1.compute.amazonaws.com',
-    'wt-accounts-2096655128.ap-northeast-1.elb.amazonaws.com'
+    'wt-accounts-2096655128.ap-northeast-1.elb.amazonaws.com',
 ]
 
 DATABASES = {
@@ -38,4 +38,9 @@ RAVEN_CONFIG = {
     # release based on the git info.
     'release': raven.fetch_git_sha(BASE_DIR),
 }
+
+# mailing
+EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
+MAILGUN_ACCESS_KEY = ''
+MAILGUN_SERVER_NAME = 'mg.windingtree.com'
 
