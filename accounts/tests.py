@@ -12,6 +12,7 @@ from django.forms import model_to_dict
 from django.urls import reverse
 
 from accounts import onfido_api
+from accounts.etherscan import eth_get_total, get_transactions, get_sum_for_accounts
 from accounts.forms import RegistrationForm
 from accounts.models import create_link_context, send_login_email, User, OnfidoCall
 
@@ -405,3 +406,17 @@ def test_onfido_webhook(client, test_user):
     mail.outbox = []
 
 
+def test_eth_get_total():
+    transactions = get_transactions()
+    total = eth_get_total(transactions)
+    print(total / (10 ** 18))
+    assert total == 2576817159433516273420
+
+
+def test_get_sum_for_accounts():
+    accounts = ['0x67ee267ff3c58d4248ff4ab2a0d44ee1b9289d69',
+                '0x1d64480c8ae05e25169274022987e7089921302a']
+    transactions = get_transactions()
+    sums = get_sum_for_accounts(transactions, accounts)
+    assert sums == {'0x1d64480c8ae05e25169274022987e7089921302a': 2000000000000000000,
+                    '0x67ee267ff3c58d4248ff4ab2a0d44ee1b9289d69': 1000000000000000000}

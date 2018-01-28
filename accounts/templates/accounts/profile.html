@@ -10,14 +10,13 @@
 {% block content %}
 
   <div class="row justify-content-md-center">
-    <div class="col col-lg-8">
+    <div class="col col-lg-10">
     {% if request.user.eth_address %}
-      <h3>ICO address: <strong>0x00000000000000000000000000</strong></h3>
-      <h3>Your address: 0x00000000000000000000000000</h3>
-      <h3>ETH sent at 1000 Lif per ETH: 0</h3>
-      <h3>ETH sent at 900 Lif per ETH: 0</h3>
-      <h3>Total ETH Sent: <strong>0</strong></h3>
-      <h3>Your Lif balance: <strong>0</strong></h3>
+      <h4>ICO address: <strong id="icoAddress">0x5a91baB64ECe3428fC4E6B1CB327cd00387B5dEd</strong></h4>
+      <h4>Token address: <strong id="tokenAddress">0xE674746A7bc6f53EB48caEd0c810C669C705caD2</strong></h4>
+      <h4>Your address: <span id="userAddress">{{ request.user.eth_address }}</span></h4>
+      <h4>Total ETH Sent: <strong id="totalETHSent">0</strong></h4>
+      <h4>Your Lif balance: <strong id="totalLifBalance">0</strong></h4>
     {% endif %}
     {% if request.user.eth_address and not request.user.is_verified %}
       <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -47,12 +46,12 @@
     {% csrf_token %}
     {% bootstrap_form form %}
     <p>
-      By submitting my profile I accept the <a href="{% static 'Token Sale T&Cs.pdf' %}"> Terms and Conditions</a>
+      By submitting my profile I accept the <a class="home-link" href="{% static 'Token Sale T&Cs.pdf' %}"> Terms and Conditions</a>
     </p>
     {% buttons %}
       <button type="submit" class="btn btn-primary">Save (Maximun contribution 10 ETH)</button>
       {% if request.user.can_verify and request.user.eth_address %}
-      <button type="submit" name="verify"
+      <button id="verify-profile" type="submit" name="verify"
               class="btn btn-info disabled">
               Verify for +10 ETH contribution
       </button>
