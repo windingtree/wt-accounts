@@ -53,7 +53,8 @@ coverage.xml
 
 # Django stuff:
 *.log
-local.py
+/wt_accounts/settings/local.py
+/wt_accounts/settings/production.py
 db.sqlite3
 collected_static/
 
