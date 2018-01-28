@@ -13,12 +13,12 @@
 
 
 {% block content %}
-  <form action="." method="post" class="form responsive-form">
+  <form action="." method="post" class="form responsive-form jumbotron">
     {% csrf_token %}
 
     {% bootstrap_form form exclude='g_recaptcha_response' %}
 
-    <div class="g-recaptcha" data-sitekey="6Lc3ZUEUAAAAANh3-cVedhhcOrfLU6uAtnnNij6P"></div>
+    <div class="g-recaptcha" data-sitekey="{{ form.recaptcha_site_key }}"></div>
     <br>
 
     {% buttons %}

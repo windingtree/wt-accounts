@@ -44,3 +44,8 @@ hr { background-color: white; height: 1px; border: 0; }
   width: 70%;
   margin: auto;
 }
+
+.jumbotron {
+  color: black;
+  padding: 20px 20px;
+}

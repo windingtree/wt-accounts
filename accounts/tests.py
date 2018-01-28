@@ -210,7 +210,8 @@ def test_profile_view(client, admin_client):
     assert response.status_code == 200
     assert 'form' in response.context
 
-    response = admin_client.post(url, {'first_name': 'Jerry', 'eth_address': 'fapfapfap'})
+    response = admin_client.post(url, {'first_name': 'Jerry',
+                                       'eth_address': '0x4a4ac8d0b6a2f296c155c15c2bcaf04641818b78'})
 
     user = User.objects.get(username='admin')
     assert response.status_code == 302
@@ -380,19 +381,10 @@ def test_onfido_webhook(client, test_user):
     url = reverse('onfido_webhook')
     OnfidoCall.objects.create(onfido_id='b9bc1173-fd77-403e-af99-a07e476a5214', applicant_id='apld',
                               user=test_user, type='check')
-
-    response = client.post(url, data="""{"payload": {
-            "action": "check.completed",
-            "resource_type": "check",
-            "object": {
-                "completed_at": "2018-01-25 21:10:26 UTC",
-                "href": "https://api.onfido.com/v2/checks/4e7769d3-c292-4db1-bbb7-21aa746816f6/reports/b9bc1173-fd77-403e-af99-a07e476a5214",
-                "id": "b9bc1173-fd77-403e-af99-a07e476a5214",
-                "status": "complete"
-            }
-        }
-    }""", content_type='application/json',
-                           **{'X-SIGNATURE': '609e6fe1dc23b7fdf2452f43dce9ce409dcbad61'})
+    response = client.post(url,
+                           data="""{"payload":{"action":"check.completed","resource_type":"check","object":{"completed_at":"2018-01-27 18:16:44 UTC","href":"https://api.onfido.com/v2/applicants/0f449cf6-3ac1-490e-866c-810f4cd34dd8/checks/36ce8df1-9af0-41e5-a6f9-6c6639210680","id":"36ce8df1-9af0-41e5-a6f9-6c6639210680","status":"complete"}}}""",
+                           content_type='application/json',
+                           **{'X-SIGNATURE': '2fd29c40d8891055fb6bbc3c45d77436aced0897'})
     assert response.status_code == 200
     assert response.content == b'OK'
 

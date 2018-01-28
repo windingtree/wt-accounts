@@ -63,6 +63,8 @@ def home(request):
 
 def registration(request):
     form = RegistrationForm(request.POST or None)
+    # data-sitekey
+    form.recaptcha_site_key = settings.RECAPTCHA_SITE_KEY
     if form.is_valid():
         user = form.save()
         logger.debug('Registering new user %s', user.email)
