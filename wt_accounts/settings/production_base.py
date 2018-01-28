@@ -11,7 +11,7 @@ DATABASES = {
         'USER': 'wt',
         'PASSWORD': '',
         'HOST': 'wt-accounts.cvlintg75rfu.ap-northeast-1.rds.amazonaws.com',
-        'OPTIONS': {'charset': 'utf8mb4'},
+        'OPTIONS': {'charset': 'utf8'},
     }
 }
 

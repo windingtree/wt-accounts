@@ -1,0 +1,68 @@
+# Users and packages
+sudo adduser web
+sudo apt-get update
+sudo apt-get install supervisor -y
+sudo apt-get install git -y
+sudo apt-get install python3-venv -y
+sudo apt-get install nginx -y
+
+
+
+
+# Sources and homedir
+# sudo -u web git clone git@github.com:windingtree/wt-accounts.git ~web/src
+sudo -u web mkdir ~web/run
+
+
+# Dependecies
+sudo -u web python3 -mvenv ~web/venv
+sudo -H -u web ~web/venv/bin/pip install setuptools pip --upgrade
+sudo -H -u web ~web/venv/bin/pip install -r ~web/src/requirements.txt
+
+
+
+# Services setup
+sudo systemctl enable nginx
+sudo systemctl start nginx
+sudo systemctl enable supervisor
+sudo systemctl start supervisor
+
+
+# Supervisor setup
+sudo ln -s ~web/src/devops/supervisord.conf /etc/supervisor/conf.d/web.conf
+sudo supervisorctl status
+sudo supervisorctl update
+sudo supervisorctl start all
+
+
+
+echo 'from .production_base import *' | sudo -u web tee ~web/src/wt_accounts/settings/production.py
+
+
+
+
+# Nginx Setup
+sudo ln -s ~web/src/devops/nginx.conf /etc/nginx/sites-available/web.conf
+sudo ln -s /etc/nginx/sites-available/web.conf /etc/nginx/sites-enabled/
+sudo rm /etc/nginx/sites-enabled/default
+sudo systemctl restart nginx
+
+
+
+bAx0Ky4GZLBgk0aZj61ro
+
+
+
+
+sudo apt-get install mysql-client -y
+sudo apt-get install mysql-config -y
+sudo apt-get install libmysqlclient-dev -y
+sudo apt-get install gcc -y
+sudo apt-get install python3-dev -y
+
+sudo -H -u web ~web/venv/bin/pip install mysqlclient
+
+
+# Database settings
+# sudo -u web ~web/venv/bin/python manage.py dbshell --settings=wt_accounts.settings.production
+# CREATE DATABASE wt;
