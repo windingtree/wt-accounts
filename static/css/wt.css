@@ -1,58 +1,46 @@
 html {
-    background: #f3f6f8;
-    background: linear-gradient(to bottom, #F3F6F9 0%, #fff 750px);
-    background-attachment: fixed;
-    min-height: 100%;
+  background-color: #0a0b32;
+  min-height: 100%;
 }
 
 body {
-    background: none;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-style: normal;
+  background-color: #0a0b32;
+  background-image: url(/static/img/wt-coins-bg.png);
+  background-repeat: repeat-x;
+  background-position: center 80px;
+  color: #fff;
+  font-weight: 300;
+  min-height: 100%;
+}
+
+.home-link {
+  color: #fff !important;
+  text-decoration: underline;
 }
 
 .navbar {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background: #fff;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: #fff;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
 }
 
+hr { background-color: white; height: 1px; border: 0; }
+
+#verify-profile {
+  display: none;
+}
 .container {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .navbar-text {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
-
-/* Large desktop */
-@media (min-width: 1200px) {
-  .responsive-form {
-    width: 800px;
-    margin: auto;
-  }
-}
-
-/* Portrait tablet to landscape and desktop */
-@media (min-width: 768px) and (max-width: 979px) {
-  .responsive-form {
-    width: 800px;
-    margin: auto;
-  }
-}
-
-/* Landscape phone to portrait tablet */
-@media (max-width: 767px) {
-  .responsive-form {
-    width: 700px;
-    margin: auto;
-  }
-}
-
-/* Landscape phones and down */
-@media (max-width: 480px) {
-  .responsive-form {
-    width: 480px;
-    margin: auto;
-  }
+.responsive-form {
+  width: 70%;
+  margin: auto;
 }
