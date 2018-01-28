@@ -35,3 +35,4 @@ EOF
 }
 
 deploy ubuntu@wt-web-1
+deploy ubuntu@wt-web-2
