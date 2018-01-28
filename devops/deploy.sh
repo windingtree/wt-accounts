@@ -13,10 +13,7 @@ deploy() {
 
         set -xve
 
-        echo \$SSH_AUTH_SOCK
-        $SUDO_ROOT chown web:web -R \$(dirname "\$SSH_AUTH_SOCK")    
         cd $SRC_DIR && $SUDO_WEB git pull
-        $SUDO_ROOT chown \$(whoami):\$(whoami) -R \$(dirname "\$SSH_AUTH_SOCK")    
 
         $SUDO_WEB $VENV_DIR/bin/pip install -r $SRC_DIR/requirements.txt
 
