@@ -95,8 +95,6 @@ class LoginForm(forms.Form):
 
 
 class ProfileForm(forms.ModelForm):
-    first_name = forms.CharField(min_length=2, required=False)
-    last_name = forms.CharField(min_length=2, required=False)
 
     class Meta:
         model = User
