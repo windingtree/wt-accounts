@@ -16,22 +16,37 @@
   </div>
 
   <h1>Winding Tree ICO Contribution System</h1>
-  <hr>
-  <h3>Want to contribute? follow this steps:</h3>
-  <ol>
-    <li>Register an account.</li>
-    <li>Login using the link you received in your email.</li>
-    <li>Complete your profile and set your ETH address.</li>
-    <li>Send your contribution to <a class="home-link" href="http://etherscan.com/ico.windingtree.eth">http://etherscan.com/ico.windingtree.eth</a>.</li>
-    <li>If your contribution is higher than 10 ETH you will need to verify your account.</li>
-  </ol>
-  <hr>
+  <br>
+  <div class="jumbotron">
+    <div class="row justify-content-around">
+      <strong id="softCap">0.1 ETH Soft Cap</strong> |
+      <strong id="ethRaised">0 ETH Raised</strong> |
+      <strong id="totalLif">0 Lif Tokens</strong>
+    </div>
+    <br>
+    <div class="progress">
+      <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%">
+        0 ETH Raised
+      </div>
+    </div>
+  </div>
 
-  <h3>Want to know more?</h3>
+  <div class="jumbotron">
+    <h3>Want to contribute? follow this steps:</h3>
+    <ol>
+      <li>Register an account.</li>
+      <li>Login using the link you received in your email.</li>
+      <li>Complete your profile and set your ETH address.</li>
+      <li>Send your contribution to <a href="http://etherscan.com/ico.windingtree.eth">http://etherscan.com/ico.windingtree.eth</a>.</li>
+      <li>If your contribution is higher than 10 ETH you will need to verify your account.</li>
+    </ol>
+  </div>
 
-  <h4><img class="home-icon" src="{% static 'img/wt-social-website.svg' %}" height="20" alt=""> <a class="home-link" href="windingtree.com">Website</a></h4>
-  <h4><img src="{% static 'img/wt-social-website.svg' %}" height="20" alt=""> <a class="home-link" href="demo.windingtree.com">WT Demo App</a></h4>
-  <h4><img src="{% static 'img/wt-social-github.svg' %}" height="20" alt=""> <a class="home-link" href="github.com/windingtree">Github</a></h4>
-  <h4><img src="{% static 'img/wt-social-twitter.svg' %}" height="20" alt=""> <a class="home-link" href="twitter.com/windingtree">Twitter</a></h4>
-
+  <div class="jumbotron">
+    <h3>Want to know more?</h3>
+    <h4><img class="home-icon" src="{% static 'img/wt-social-website.svg' %}" height="20" alt=""> <a  href="windingtree.com">Website</a></h4>
+    <h4><img src="{% static 'img/wt-social-website.svg' %}" height="20" alt=""> <a  href="demo.windingtree.com">WT Demo App</a></h4>
+    <h4><img src="{% static 'img/wt-social-github.svg' %}" height="20" alt=""> <a  href="github.com/windingtree">Github</a></h4>
+    <h4><img src="{% static 'img/wt-social-twitter.svg' %}" height="20" alt=""> <a  href="twitter.com/windingtree">Twitter</a></h4>
+  </div>
 {% endblock %}
