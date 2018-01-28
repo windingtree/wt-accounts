@@ -31,3 +31,11 @@ EMAIL_USE_TLS = True
 RECAPTCHA_SITE_KEY = '6Ld090IUAAAAAHZZuWyteUJcLGZRBgUgOlQGspjO'
 RECAPTCHA_SITE_SECRET = ''
 
+import raven
+RAVEN_CONFIG = {
+    'dsn': '',
+    # If you are using git, you can also automatically configure the
+    # release based on the git info.
+    'release': raven.fetch_git_sha(BASE_DIR),
+}
+

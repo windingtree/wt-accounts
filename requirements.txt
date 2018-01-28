@@ -6,6 +6,7 @@ pytz==2017.3
 pytest==3.3.2
 pytest-django==3.1.2
 confusable_homoglyphs==3.0.0
+raven==6.5.0
 requests==2.18.4
 git+https://github.com/onfido/api-python-client.git@86fbf421eb069ce3b8a32479237b18b696010c1d
 gunicorn==19.7.1
