@@ -14,7 +14,9 @@
   <link rel="stylesheet" href="{% static 'libs/bootstrap.min.css' %}">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/wt.css' %}">
-
+  <script type="text/javascript">
+   var userAddress = "{{request.user.eth_address}}";
+  </script>
   <script src="{% static 'libs/jquery.min.js' %}"></script>
   <script src="{% static 'libs/popper.min.js' %}"></script>
   <script src="{% static 'libs/bootstrap.min.js' %}"></script>
