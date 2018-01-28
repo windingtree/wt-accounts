@@ -3,6 +3,7 @@ import logging
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.tokens import default_token_generator
+from django.core.validators import RegexValidator
 from django.db import models
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
@@ -16,6 +17,12 @@ from accounts import onfido_api
 
 logger = logging.getLogger(__name__)
 
+validate_eth_address = RegexValidator(
+    r'^(0x)?[0-9a-fA-F]{40}$',
+    _("Enter a valid ethereum address, example: '0x4a4ac8d0b6a2f296c155c15c2bcaf04641818b78'"),
+    'invalid'
+)
+
 
 class User(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
@@ -26,7 +33,8 @@ class User(AbstractUser):
     street = models.CharField(blank=True, max_length=100)
     town = models.CharField(blank=True, max_length=100)
     postcode = models.CharField(blank=True, max_length=100)
-    eth_address = models.CharField(_('ETH address'), max_length=100, blank=True)
+    eth_address = models.CharField(_('ETH address'), max_length=100, blank=True,
+                                   validators=[validate_eth_address])
 
     def can_verify(self):
         must = ('first_name', 'last_name', 'birth_date', 'mobile', 'street',
