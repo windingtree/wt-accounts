@@ -9,14 +9,6 @@
 
 {% block content %}
   <div class="row justify-content-md-center">
-    <div class="col col-lg-10">
-    {% if request.user.eth_address %}
-      <h4>ICO address: <strong id="icoAddress">0x5a91baB64ECe3428fC4E6B1CB327cd00387B5dEd</strong></h4>
-      <h4>Token address: <strong id="tokenAddress">0xE674746A7bc6f53EB48caEd0c810C669C705caD2</strong></h4>
-      <h4>Your address: <span id="userAddress">{{ request.user.eth_address }}</span></h4>
-      <h4>Total ETH Sent: <strong id="totalETHSent">0</strong></h4>
-      <h4>Your Lif balance: <strong id="totalLifBalance">0</strong></h4>
-    {% endif %}
     {% if request.user.eth_address and not request.user.is_verified %}
       <div class="alert alert-warning alert-dismissible fade show" role="alert">
         Your profile is not verified, you can't invest more than 10 ETH.
@@ -24,6 +16,13 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+    {% endif %}
+    <div class="col col-lg-10 jumbotron">
+    {% if request.user.eth_address %}
+      <h4>ICO address: <strong id="icoAddress">0x5a91baB64ECe3428fC4E6B1CB327cd00387B5dEd</strong></h4>
+      <h4>Your address: <span id="userAddress">{{ request.user.eth_address }}</span></h4>
+      <h4>Total ETH Sent: <strong id="totalETHSent">0</strong></h4>
+      <h4>Your Lif balance: <strong id="totalLifBalance">0</strong></h4>
     {% endif %}
     {% if not request.user.eth_address %}
       <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -35,18 +34,28 @@
     {% endif %}
     </div>
   </div>
-  <hr>
 
   {% if verify_form %}
     {% bootstrap_form verify_form %}
   {% endif %}
 
-  <form action="." method="post" class="form responsive-form">
+  <form action="." method="post" class="form responsive-form jumbotron">
     {% csrf_token %}
     {% bootstrap_form form %}
-    <p>
-      By submitting my profile I accept the <a class="home-link" href="{% static 'Token Sale T&Cs.pdf' %}"> Terms and Conditions</a>
-    </p>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="termsAndConditions">
+      <label class="form-check-label" for="termsAndConditions">
+        I accept the <a href="{% static 'Token Sale T&Cs.pdf' %}"> Terms and Conditions</a>
+      </label>
+    </div>
+    <br>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="usResident">
+      <label class="form-check-label" for="usResident">
+        I am not a US resident
+      </label>
+    </div>
+    <br>
     {% buttons %}
       <button type="submit" class="btn btn-primary">Save (Maximun contribution 10 ETH)</button>
       {% if request.user.can_verify and request.user.eth_address %}

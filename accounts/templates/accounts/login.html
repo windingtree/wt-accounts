@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-  <form action="." method="post" class="form responsive-form">
+  <form action="." method="post" class="form responsive-form jumbotron">
     {% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}
