@@ -30,7 +30,20 @@
     </ul>
     {% if request.user.is_authenticated %}
       <span class="navbar-text">
-        {{ request.user.email }} [{{ request.user.verify_status|default:'Not Verified' }}]
+        {{ request.user.email }}
+        {% if request.user.verify_status == 'awaiting_applicant' %}
+          <span class="badge badge-secondary">Verification Not Submitted</span>
+        {% elif request.user.verify_status == 'in_progress' %}
+          <span class="badge badge-light">Verification In Progress</span>
+        {% elif request.user.verify_status == 'complete' %}
+          <span class="badge badge-primary">Verification Complete</span>
+        {% elif request.user.verify_status == 'withdrawn' %}
+          <span class="badge badge-danger">Verification Withdrawn</span>
+        {% elif request.user.verify_status == 'paused' %}
+          <span class="badge badge-info">Verification Paused</span>
+        {% elif request.user.verify_status == 'reopened' %}
+          <span class="badge badge-info">Verification Reopened</span>
+        {% endif %}
       </span>
       <form class="form-inline my-2 my-lg-0" action="{% url 'logout' %}" method="POST">
         {% csrf_token %}
