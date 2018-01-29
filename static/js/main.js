@@ -1,15 +1,67 @@
 
 // TGE Scripts
 var SOFT_CAP = 0.1;
-var icoAddress = "0x175a349186f228e7758cce1c1ba125e0d0514df4";
-var tokenAddress = "0x275a9048bf6d775a7f8b200cb2e258c33dbf6bdf";
+var icoAddress = "0x175A349186f228e7758ccE1c1bA125e0D0514df4";
+var tokenAddress = "0xaDA83270510b6284e27c757096d660F0Fcf6A90b";
 var contributorAddress = userAddress;
 var maxUnverifiedContribution = 0.01;
 
 //Set addresses
-$('#icoAddress').text(icoAddress.toString());
-$('#tokenAddress').text(tokenAddress.toString());
+$('#icoAddress').text(icoAddress);
 $('#userAddress').text(contributorAddress.toString());
+
+
+// Countdown
+
+var startDate = 1517472000*1000;
+var endDate = 1518652800*1000;
+
+function refreshCountdown() {
+  var now = new Date().getTime();
+
+  if (now < endDate) {
+    var distance = startDate - now;
+    if (distance < 0) {
+      distance = endDate - now;
+      $('#countdown-until').text("Until the sale ends at February 14, 2018 (12PM UTC)");
+    }
+
+    var days = ''+Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours = ''+Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = ''+Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = ''+Math.floor((distance % (1000 * 60)) / 1000);
+
+    if (days.length < 2) {
+        days = "0" + days;
+    }
+    if (hours.length < 2) {
+        hours = "0" + hours;
+    }
+    if (minutes.length < 2) {
+        minutes = "0" + minutes;
+    }
+    if (seconds.length < 2) {
+        seconds = "0" + seconds;
+    }
+    $('#countdown').text(days + "d : " + hours + "h : " + minutes + "m : " + seconds + "s");
+
+    if (distance < 0) {
+      clearInterval(x);
+      $('#countdown').text('00d : 00h : 00m : 00s');
+    }
+  } else {
+    $('#countdown').text("Registration Closed");
+    $('#countdown-until').text("The token sale ended at February 15, 2018 (8AM UTC)");
+    $('#submit-profile').hide();
+    $('#verify-profile').hide();
+    $('.form-check').hide();
+    $('#instructions').hide();
+  }
+
+
+}
+var x = setInterval(refreshCountdown, 1000);
+refreshCountdown();
 
 // Get total ETH raised in wei unit, returns promise
 function getEthSent(contributor) {
@@ -71,7 +123,7 @@ function refreshUserContribution() {
         console.log('ETH Sent:', ETHSent);
         if (ETHSent > maxUnverifiedContribution)
           $('#verify-profile').show();
-        $('#totalETHSent').text(parseFloat(ETHSent).toFixed(2)+' ETH');
+        $('#totalETHSent').text(parseFloat(ETHSent).toFixed(4)+' ETH');
       });
     else
       $('#totalETHSent').text('0 ETH')
@@ -79,8 +131,8 @@ function refreshUserContribution() {
     if (tokenAddress != "0x0000000000000000000000000000000000000000")
       getLifBalance(contributorAddress).then(function(balance) {
         var libBalance = (Number(balance.result) / 1e18);
-        console.log('Lif Balance:', libBalance);
-        $('#totalLifBalance').text(parseFloat(libBalance).toFixed(2)+' LIFs');
+        console.log('Lif Balance:', balance);
+        $('#totalLifBalance').text(parseFloat(libBalance).toFixed(4)+' LIFs');
       });
     else
       $$('#totalLifBalance').text('0 LIFs');
