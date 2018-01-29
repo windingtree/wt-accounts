@@ -27,6 +27,10 @@ body {
   box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
 }
 
+.navbar {
+  font-size: 20px;
+}
+
 hr { background-color: white; height: 1px; border: 0; }
 
 #verify-profile {
