@@ -49,6 +49,14 @@ hr { background-color: white; height: 1px; border: 0; }
   margin: auto;
 }
 
+.form-check {
+  margin-top: 20px;
+}
+
+#submit-profile {
+  margin-top: 20px;
+}
+
 .jumbotron {
   color: black;
   padding: 20px 20px;
