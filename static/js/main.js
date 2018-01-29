@@ -2,7 +2,7 @@
 // TGE Scripts
 var SOFT_CAP = 0.1;
 var icoAddress = "0x175a349186f228e7758cce1c1ba125e0d0514df4";
-var tokenAddress = "0x275a9048bf6d775a7f8b200cb2e258c33dbf6bdf";
+var tokenAddress = "0xaDA83270510b6284e27c757096d660F0Fcf6A90b";
 var contributorAddress = userAddress;
 var maxUnverifiedContribution = 0.01;
 
@@ -71,7 +71,7 @@ function refreshUserContribution() {
         console.log('ETH Sent:', ETHSent);
         if (ETHSent > maxUnverifiedContribution)
           $('#verify-profile').show();
-        $('#totalETHSent').text(parseFloat(ETHSent).toFixed(2)+' ETH');
+        $('#totalETHSent').text(parseFloat(ETHSent).toFixed(4)+' ETH');
       });
     else
       $('#totalETHSent').text('0 ETH')
@@ -79,8 +79,8 @@ function refreshUserContribution() {
     if (tokenAddress != "0x0000000000000000000000000000000000000000")
       getLifBalance(contributorAddress).then(function(balance) {
         var libBalance = (Number(balance.result) / 1e18);
-        console.log('Lif Balance:', libBalance);
-        $('#totalLifBalance').text(parseFloat(libBalance).toFixed(2)+' LIFs');
+        console.log('Lif Balance:', balance);
+        $('#totalLifBalance').text(parseFloat(libBalance).toFixed(4)+' LIFs');
       });
     else
       $$('#totalLifBalance').text('0 LIFs');
