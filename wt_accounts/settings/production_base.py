@@ -2,11 +2,11 @@ from .base import *
 
 DEBUG = False
 
-# http://ec2-54-178-125-223.ap-northeast-1.compute.amazonaws.com/
-DOMAIN = 'ec2-54-178-125-223.ap-northeast-1.compute.amazonaws.com'
+# https://lif.windingtree.com/
+DOMAIN = 'lif.windingtree.com'
 ALLOWED_HOSTS = [
-    'ec2-54-178-125-223.ap-northeast-1.compute.amazonaws.com',
-    'wt-accounts-2096655128.ap-northeast-1.elb.amazonaws.com',
+    'wt-accounts-2096655128.ap-northeast-1.elb.amazonaws.com', # elb
+    'lif.windingtree.com',
 ]
 
 DATABASES = {
