@@ -42,19 +42,6 @@
   <form action="." method="post" class="form responsive-form jumbotron">
     {% csrf_token %}
     {% bootstrap_form form %}
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="" id="termsAndConditions">
-      <label class="form-check-label" for="termsAndConditions">
-        I accept the <a href="{% static 'Token Sale T&Cs.pdf' %}"> Terms and Conditions</a>
-      </label>
-    </div>
-    <br>
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="" id="usResident">
-      <label class="form-check-label" for="usResident">
-        I am not a US resident
-      </label>
-    </div>
     <br>
     {% buttons %}
       <button type="submit" class="btn btn-primary">Save (Maximun contribution 10 ETH)</button>

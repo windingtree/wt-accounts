@@ -100,7 +100,7 @@ class ProfileForm(forms.ModelForm):
         model = User
         fields = (
             'first_name', 'last_name', 'birth_date', 'mobile', 'street', 'building_number', 'town',
-            'postcode', 'country', 'eth_address')
+            'postcode', 'country', 'eth_address', 'terms_accepted', 'non_us_resident')
         required_css_class = 'required'
 
 

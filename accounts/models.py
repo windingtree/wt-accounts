@@ -35,6 +35,10 @@ class User(AbstractUser):
     postcode = models.CharField(blank=True, max_length=100)
     eth_address = models.CharField(_('ETH address'), max_length=100, blank=True,
                                    validators=[validate_eth_address])
+    terms_accepted = models.BooleanField(_('I accept the <a href="%sToken Sale T&Cs.pdf">'
+                                           'Terms and Conditions</a>') % settings.STATIC_URL,
+                                         default=False)
+    non_us_resident = models.BooleanField(_('I am not a US resident'), default=False)
 
     def can_verify(self):
         must = ('first_name', 'last_name', 'birth_date', 'mobile', 'street',
