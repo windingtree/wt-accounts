@@ -85,6 +85,8 @@ def test_RegistrationForm(monkeypatch):
         'street': '',
         'town': '',
         'eth_address': '',
+        'non_us_resident': False,
+        'terms_accepted': False
     }
 
 
@@ -211,12 +213,15 @@ def test_profile_view(client, admin_client):
     assert 'form' in response.context
 
     response = admin_client.post(url, {'first_name': 'Jerry',
-                                       'eth_address': '0x4a4ac8d0b6a2f296c155c15c2bcaf04641818b78'})
+                                       'eth_address': '0x4a4ac8d0b6a2f296c155c15c2bcaf04641818b78',
+                                       'terms_accepted': True,
+                                       'non_us_resident': True,
+                                       })
 
     user = User.objects.get(username='admin')
     assert response.status_code == 302
     assert user.first_name == 'Jerry'
-    assert user.eth_address == 'fapfapfap'
+    assert user.eth_address == '0x4a4ac8d0b6a2f296c155c15c2bcaf04641818b78'
 
 
 @pytest.mark.django_db
@@ -285,6 +290,7 @@ def test_onfido_create_applicant_handle_err(onfido_test_user):
 def test_onfido_check(onfido_test_user):
     applicant = onfido_api.create_applicant(onfido_test_user)
     check_result = onfido_api.check(applicant.id)
+    # pprint(check_result)
     assert check_result.to_dict() == {
         'created_at': everything_equals,
         'download_uri': everything_equals,
@@ -296,6 +302,16 @@ def test_onfido_check(onfido_test_user):
         'id': everything_equals,  # 'd5a121b3-f81c-4509-85cb-e092b719332c',
         'redirect_uri': None,
         'reports': [{'breakdown': {},
+                     'created_at': everything_equals,
+                     'href': everything_equals,
+                     'id': everything_equals,
+                     'name': 'facial_similarity',
+                     'properties': {},
+                     'result': None,
+                     'status': 'awaiting_data',
+                     'sub_result': None,
+                     'variant': 'standard'},
+                    {'breakdown': {},
                      'created_at': everything_equals,
                      'href': everything_equals,  #'/v2/checks/a80ca04e-ffe4-4a6f-b18f-4a7219f1106b/reports/6595886f-2554-4cc2-998d-ba5c7334f1f8',
                      'id': everything_equals,  #'6595886f-2554-4cc2-998d-ba5c7334f1f8',
@@ -329,7 +345,7 @@ def test_onfido_check_reload(onfido_test_user):
     applicant = onfido_api.create_applicant(onfido_test_user)
     check_result = onfido_api.check(applicant.id)
     reload_check_result = onfido_api.check_reload(applicant.id, check_result.id)
-    # pprint(check_result)
+    # pprint(reload_check_result)
     assert reload_check_result.to_dict() == {
         'created_at': everything_equals,
         'download_uri': everything_equals,
@@ -340,7 +356,7 @@ def test_onfido_check_reload(onfido_test_user):
         # '/v2/applicants/c52662b7-808f-4422-98ca-816df8593b08/checks/44d63663-1449-4623-883b-a549d3eeab9d',
         'id': everything_equals,  # '44d63663-1449-4623-883b-a549d3eeab9d',
         'redirect_uri': None,
-        'reports': [everything_equals, everything_equals],
+        'reports': [everything_equals, everything_equals, everything_equals],
         'result': None,
         'results_uri': everything_equals,
         # 'https://onfido.com/dashboard/information_requests/8078952',
@@ -379,12 +395,16 @@ def test_test_onfido_check_model(onfido_test_user):
 
 def test_onfido_webhook(client, test_user):
     url = reverse('onfido_webhook')
-    OnfidoCall.objects.create(onfido_id='b9bc1173-fd77-403e-af99-a07e476a5214', applicant_id='apld',
+    OnfidoCall.objects.create(onfido_id='36ce8df1-9af0-41e5-a6f9-6c6639210680', applicant_id='apld',
                               user=test_user, type='check')
     response = client.post(url,
-                           data="""{"payload":{"action":"check.completed","resource_type":"check","object":{"completed_at":"2018-01-27 18:16:44 UTC","href":"https://api.onfido.com/v2/applicants/0f449cf6-3ac1-490e-866c-810f4cd34dd8/checks/36ce8df1-9af0-41e5-a6f9-6c6639210680","id":"36ce8df1-9af0-41e5-a6f9-6c6639210680","status":"complete"}}}""",
+                           data='{"payload":{"action":"check.completed","resource_type":"check",'
+                                '"object":{"completed_at":"2018-01-27 18:16:44 UTC",'
+                                '"href":"https://api.onfido.com/v2/applicants/0f449cf6-3ac1-490e-'
+                                '866c-810f4cd34dd8/checks/36ce8df1-9af0-41e5-a6f9-6c6639210680",'
+                                '"id":"36ce8df1-9af0-41e5-a6f9-6c6639210680","status":"complete"}}}',
                            content_type='application/json',
-                           **{'X-SIGNATURE': '2fd29c40d8891055fb6bbc3c45d77436aced0897'})
+                           **{'X-SIGNATURE': '6d5a90dc14ba276dfeda5d4fb8552a50dbeaf936'})
     assert response.status_code == 200
     assert response.content == b'OK'
 

@@ -96,11 +96,16 @@ class LoginForm(forms.Form):
 
 class ProfileForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['terms_accepted'].required = True
+        self.fields['non_us_resident'].required = True
+
     class Meta:
         model = User
         fields = (
             'first_name', 'last_name', 'birth_date', 'mobile', 'street', 'building_number', 'town',
-            'postcode', 'country', 'eth_address')
+            'postcode', 'country', 'eth_address', 'terms_accepted', 'non_us_resident')
         required_css_class = 'required'
 
 
