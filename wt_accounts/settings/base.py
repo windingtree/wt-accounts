@@ -156,23 +156,49 @@ ONFIDO_WEBHOOK_TOKEN = 'L2PCFXFOF5yDDzHX_3aZCC13nARKW-AA'
 ETHERSCAN_TOKEN='IZVUZTKZU5PSUKUAX4R2P2KJXMHY4JS75I'
 ETH_WALLET = '0x4a4ac8d0b6a2f296c155c15c2bcaf04641818b78'
 
+
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
+    'root': {
+        'level': 'WARNING',
+        'handlers': ['sentry'],
+    },
     'formatters': {
         'verbose': {
-            'format': '[%(asctime)s] [%(levelname)s] %(module)s %(message)s'
+            'format': '[%(asctime)s] [%(levelname)s] %(module)s %(message)s',
         },
     },
     'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
+        'sentry': {
+            'level': 'WARNING', # To capture more than ERROR, change to WARNING, INFO, etc.
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+            'tags': {'custom-tag': 'x'},
         },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
     },
     'loggers': {
-        'accounts': {
+        'django.db.backends': {
+            'level': 'ERROR',
             'handlers': ['console'],
+            'propagate': False,
+        },
+        'raven': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'accounts': {
+            'handlers': ['console', ],
             'level': 'DEBUG',
         },
     },
