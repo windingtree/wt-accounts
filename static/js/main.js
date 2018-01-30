@@ -4,7 +4,7 @@ var SOFT_CAP = 0.1;
 var icoAddress = "0x175A349186f228e7758ccE1c1bA125e0D0514df4";
 var tokenAddress = "0xaDA83270510b6284e27c757096d660F0Fcf6A90b";
 var contributorAddress = userAddress;
-var maxUnverifiedContribution = 0.01;
+var maxUnverifiedContribution = 10;
 
 //Set addresses
 $('#icoAddress').text(icoAddress);
@@ -121,8 +121,10 @@ function refreshUserContribution() {
       getEthSent(contributorAddress).then(function(weiSent) {
         var ETHSent = (Number(weiSent.result) / 1e18);
         console.log('ETH Sent:', ETHSent);
-        if (ETHSent > maxUnverifiedContribution)
+        if (ETHSent > maxUnverifiedContribution && verifiedUser) {
           $('#verify-profile').show();
+          $('#verify-alert').show();
+        }
         $('#totalETHSent').text(parseFloat(ETHSent).toFixed(4)+' ETH');
       });
     else

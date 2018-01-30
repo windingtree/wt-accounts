@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% load static %}
 
 {% block extra_head %}
 {#  https://developers.google.com/recaptcha/docs/display#}
@@ -13,17 +14,28 @@
 
 
 {% block content %}
-  <form action="." method="post" class="form responsive-form jumbotron">
-    {% csrf_token %}
 
-    {% bootstrap_form form exclude='g_recaptcha_response' %}
+  <div class="row justify-content-around">
+    <div class="col-lg-9 col-sm-12">
+      <form action="." method="post" class="form jumbotron">
+        {% csrf_token %}
 
-    <div class="g-recaptcha" data-sitekey="{{ form.recaptcha_site_key }}"></div>
-    <br>
+        {% bootstrap_form form exclude='g_recaptcha_response' %}
+        <div class="row justify-content-around">
+          <div class="g-recaptcha" data-sitekey="{{ form.recaptcha_site_key }}"></div>
+        </div>
 
-    {% buttons %}
-        <button type="submit" class="btn btn-primary">Submit</button>
-    {% endbuttons %}
+        <br>
+        <p>* Due to US regulations we wont be accepting contribution from US residents and this measure will be enforced by geofencing the sale details</p>
+        <p>By registering to contribute I certify that I am not a US resident and I agree with
+          Winding Tree ICO <a href="{% static 'Token Sale T&Cs.pdf' %}">terms and conditions</a></p>
+        <div class="row justify-content-around">
+          {% buttons %}
+            <button type="submit" class="btn btn-lg btn-primary">Register</button>
+          {% endbuttons %}
+        </div>
+      </form>
+    </div>
+  </div>
 
-  </form>
 {% endblock %}

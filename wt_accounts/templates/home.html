@@ -8,13 +8,6 @@
 
 {% block content %}
 
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    We dont accept contributions from the US
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-
   <h1>Winding Tree ICO Contribution System</h1>
   <br>
   <div class="jumbotron">
@@ -41,12 +34,14 @@
   <div class="jumbotron" id="instructions">
     <h3>Want to contribute? follow this steps:</h3>
     <ol>
-      <li>Register an account.</li>
-      <li>Login using the link you received in your email.</li>
-      <li>Complete your profile and set your ETH address.</li>
-      <li>Send your contribution to <a href="http://etherscan.com/ico.windingtree.eth">http://etherscan.com/ico.windingtree.eth</a>.</li>
-      <li>If your contribution is higher than 10 ETH you will need to verify your account.</li>
+      <li>Register an account - <strong><a href="{% url 'register' %}">Register</a></strong></li>
+      <li>Click the link you receive in your mailbox to login.</li>
+      <li>Complete your profile & provide the ETH wallet address from which you’ll be contributing.</li>
+      <li>Send your contribution to the Winding Tree ICO address that will be displayed for you.</li>
+      <li>On the same page you’ll be prompted to complete a quick ID verification if your contribution is 10 or more ETH.</li>
     </ol>
+    <h4><a href="https://blog.windingtree.com/how-to-participate-in-winding-tree-ico-l%C3%ADf-token-on-feb-1-2018-fa7299d5a673">How to participate guide</a></h4>
+    <h4>For question we are in <a href="https://t.me/windingtree">Telegram</a></h4>
   </div>
 
   <div class="jumbotron text-center">
