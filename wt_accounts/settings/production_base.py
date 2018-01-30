@@ -20,13 +20,6 @@ DATABASES = {
     }
 }
 
-# will be replaced by mailgun
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = "jakub.vysoky@gmail.com"
-EMAIL_HOST_PASSWORD = '<replace-in-production>'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
 # recaptcha
 RECAPTCHA_SITE_KEY = '6Ld090IUAAAAAHZZuWyteUJcLGZRBgUgOlQGspjO'
 RECAPTCHA_SITE_SECRET = ''
