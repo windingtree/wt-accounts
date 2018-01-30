@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     'bootstrap4',
     'django_countries',
+    'django_s3_storage',
 
     'accounts',
 ]
@@ -133,6 +134,13 @@ STATICFILES_DIRS = [
     path.join(BASE_DIR, "static"),
 ]
 
+AWS_REGION = "ap-northeast-1"
+# TO BE REPLACED in prod
+AWS_ACCESS_KEY_ID = ""
+AWS_SECRET_ACCESS_KEY = ""
+AWS_S3_BUCKET_NAME = ""
+
+
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_REDIRECT_URL = 'profile'
 LOGOUT_REDIRECT_URL = 'login_form'
@@ -141,6 +149,8 @@ RECAPTCHA_SITE_KEY = '6Lc3ZUEUAAAAANh3-cVedhhcOrfLU6uAtnnNij6P'
 RECAPTCHA_SITE_SECRET = '6Lc3ZUEUAAAAANvO8gyZesS5VmplliYYy-tX06SE'
 
 ONFIDO_TOKEN = 'test_d5XQ33ZWvga8O6DesG2w8pb6gB43PMY9'
+#each webhook has it's own
+ONFIDO_WEBHOOK_TOKEN = 'L2PCFXFOF5yDDzHX_3aZCC13nARKW-AA'
 
 ETHERSCAN_TOKEN='IZVUZTKZU5PSUKUAX4R2P2KJXMHY4JS75I'
 ETH_WALLET = '0x4a4ac8d0b6a2f296c155c15c2bcaf04641818b78'
