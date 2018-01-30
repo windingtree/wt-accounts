@@ -10,4 +10,9 @@
     {% endfor %}
   </ul>
 
+  {% if request.user.is_staff %}
+    <form action="" method="post">{% csrf_token %}
+      <button type="submit" class="btn btn-primary">Save values to Profiles</button>
+    </form>
+  {% endif %}
 {% endblock %}

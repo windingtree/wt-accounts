@@ -137,6 +137,9 @@ def onfido_webhook(request):
 
 @login_required
 def eth_sums(request):
+    store_to_profiles = request.method == 'POST' and request.user.is_staff
+    if store_to_profiles:
+        logger.debug('Storing contributions to users')
     users = User.objects.exclude(eth_address='')
     users_by_eth_address = {u.eth_address: u for u in users}
     transactions = etherscan.get_transactions()
@@ -144,4 +147,7 @@ def eth_sums(request):
     sum_for_accounts = etherscan.get_sum_for_accounts(transactions, users_by_eth_address.keys())
     for account, sum in sum_for_accounts.items():
         users_by_eth_address[account].eth_sum = sum
+        if store_to_profiles:
+            users_by_eth_address[account].eth_contrib = str(sum)
+            users_by_eth_address[account].save(update_fields=['eth_contrib'])
     return render(request, 'accounts/eth_sums.html', {'total': total, 'users': users})
