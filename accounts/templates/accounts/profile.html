@@ -39,7 +39,8 @@
     {% bootstrap_form verify_form %}
   {% endif %}
 
-  <form action="." method="post" class="form responsive-form jumbotron">
+  <form action="." method="post" enctype="multipart/form-data"
+        class="form responsive-form jumbotron">
     {% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}

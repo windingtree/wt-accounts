@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     'bootstrap4',
     'django_countries',
+    'django_s3_storage',
 
     'accounts',
 ]
@@ -132,6 +133,13 @@ STATIC_ROOT = path.join(BASE_DIR, "collected_static")
 STATICFILES_DIRS = [
     path.join(BASE_DIR, "static"),
 ]
+
+AWS_REGION = "ap-northeast-1"
+# TO BE REPLACED in prod
+AWS_ACCESS_KEY_ID = ""
+AWS_SECRET_ACCESS_KEY = ""
+AWS_S3_BUCKET_NAME = ""
+
 
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_REDIRECT_URL = 'profile'
