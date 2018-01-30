@@ -15,6 +15,7 @@ from django.urls import reverse
 from django.utils.http import urlsafe_base64_decode
 from django.utils.safestring import mark_safe
 from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.http import require_POST
 
@@ -116,11 +117,14 @@ def logout(request):
 
 
 @require_POST
+@csrf_exempt
 def onfido_webhook(request):
     logger.debug('Incomming webhook %s', request.body)
-    expected_signature = request.META['X-SIGNATURE']
-    digest = hmac.new(settings.ONFIDO_TOKEN.encode('ascii'), request.body, hashlib.sha1).hexdigest()
-    if expected_signature != digest:
+    test = b'"resource_type":"test_resource"' in request.body
+    expected_signature = request.META.get('HTTP_X_SIGNATURE', '')
+    digest = hmac.new(settings.ONFIDO_WEBHOOK_TOKEN.encode('ascii'), request.body,
+                      hashlib.sha1).hexdigest()
+    if not test and expected_signature != digest:
         logger.error('Differing signatures expected %s actual %s', expected_signature, digest)
         return HttpResponseBadRequest(
             'Differing signatures expected %s actual %s' % (expected_signature, digest))

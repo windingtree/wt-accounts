@@ -109,7 +109,7 @@ def test_send_login_email(rf, settings, test_user):
     send_login_email(rf, test_user)
     m = mail.outbox[0]
 
-    assert m.subject == 'WT login'
+    assert m.subject == 'Winding Tree account login'
     assert m.from_email == settings.DEFAULT_FROM_EMAIL
     assert list(m.to) == [EMAIL]
     assert 'https://localhost:8000/accounts/login/' in m.body
@@ -395,16 +395,16 @@ def test_test_onfido_check_model(onfido_test_user):
 
 def test_onfido_webhook(client, test_user):
     url = reverse('onfido_webhook')
-    OnfidoCall.objects.create(onfido_id='36ce8df1-9af0-41e5-a6f9-6c6639210680', applicant_id='apld',
+    OnfidoCall.objects.create(onfido_id='8cb4b77a-7527-40e1-bc24-c5ef46a7f421', applicant_id='apld',
                               user=test_user, type='check')
     response = client.post(url,
-                           data='{"payload":{"action":"check.completed","resource_type":"check",'
-                                '"object":{"completed_at":"2018-01-27 18:16:44 UTC",'
-                                '"href":"https://api.onfido.com/v2/applicants/0f449cf6-3ac1-490e-'
-                                '866c-810f4cd34dd8/checks/36ce8df1-9af0-41e5-a6f9-6c6639210680",'
-                                '"id":"36ce8df1-9af0-41e5-a6f9-6c6639210680","status":"complete"}}}',
+                           data='{"payload":{"resource_type":"check","action":"check.completed",'
+                                '"object":{"id":"8cb4b77a-7527-40e1-bc24-c5ef46a7f421",'
+                                '"status":"complete","completed_at":"2018-01-30 12:45:54 UTC",'
+                                '"href":"https://api.onfido.com/v2/applicants/46a86d94-5413-4c25-'
+                                '9228-6e6ec648f2f6/checks/8cb4b77a-7527-40e1-bc24-c5ef46a7f421"}}}',
                            content_type='application/json',
-                           **{'X-SIGNATURE': '6d5a90dc14ba276dfeda5d4fb8552a50dbeaf936'})
+                           **{'HTTP_X_SIGNATURE': '607033bfe696a0c5d62b1b354add0bec7801beb7'})
     assert response.status_code == 200
     assert response.content == b'OK'
 
