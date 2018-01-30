@@ -27,7 +27,8 @@ class RegistrationForm(forms.ModelForm):
                                                 'Terms and Conditions</a>') % settings.STATIC_URL,
                                         error_messages={'required': validators.TOS_REQUIRED}
                                         )
-    non_us_resident = forms.BooleanField(label=_('I am not a US resident'))
+    non_us_resident = forms.BooleanField(label=_('I hereby certify that I am not a U.S. citizen '
+                                                 'nor currently residing in the U.S.'))
 
     class Meta:
         model = User
