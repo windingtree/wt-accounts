@@ -55,6 +55,7 @@ coverage.xml
 *.log
 /wt_accounts/settings/local.py
 /wt_accounts/settings/production.py
+/wt_accounts/settings/production-web*.py
 db.sqlite3
 collected_static/
 

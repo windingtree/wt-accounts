@@ -1,0 +1,26 @@
+
+add this to your `.ssh/config` file:
+
+Host wt-web-1
+       User ubuntu
+       HostName ec2-54-250-98-22.ap-northeast-1.compute.amazonaws.com
+
+Host wt-web-2
+       User ubuntu
+       HostName ec2-54-178-125-223.ap-northeast-1.compute.amazonaws.com
+
+
+once you have your ssh keys on the machines, you will be able to run:
+
+$ ./devops/deploy.sh
+
+
+if you need to change production settings, you have to download them
+from the boxes (only place they are stored), change and upload back again
+
+$ ssh wt-web-1 'cat /home/web/src/wt_accounts/settings/production.py' > wt_accounts/settings/production-web1.py
+$ ssh wt-web-2 'cat /home/web/src/wt_accounts/settings/production.py' > wt_accounts/settings/production-web2.py
+
+$ ssh wt-web-1 'sudo -u web tee /home/web/src/wt_accounts/settings/production.py' < wt_accounts/settings/production-web1.py
+$ ssh wt-web-2 'sudo -u web tee /home/web/src/wt_accounts/settings/production.py' < wt_accounts/settings/production-web2.py
+
