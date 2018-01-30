@@ -63,6 +63,9 @@ def home(request):
 
 
 def registration(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(resolve_url(settings.LOGIN_REDIRECT_URL))
+
     form = RegistrationForm(request.POST or None)
     # data-sitekey
     form.recaptcha_site_key = settings.RECAPTCHA_SITE_KEY
