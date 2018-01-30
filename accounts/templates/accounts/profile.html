@@ -11,30 +11,16 @@
 <div class="row justify-content-around">
   <div class="col-lg-10 col-sm-12">
 
+    {% if request.user.eth_address %}
     <div class="row justify-content-md-center">
-      <div id="verify-alert" class="alert alert-warning alert-dismissible fade show hidden" role="alert">
-        Your profile is not verified, you can't invest more than 10 ETH.
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
       <div class="jumbotron">
-      {% if request.user.eth_address %}
         <h4>ICO address: <strong id="icoAddress">0x175A349186f228e7758ccE1c1bA125e0D0514df4</strong></h4>
         <h4>Your address: <span id="userAddress">{{ request.user.eth_address }}</span></h4>
         <h4>Total ETH Sent: <strong id="totalETHSent">0</strong></h4>
         <h4>Your Lif balance: <strong id="totalLifBalance">0</strong></h4>
-      {% endif %}
-      {% if not request.user.eth_address %}
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-          Your profile is not complete, you need to complete your profile to contribute up to 10 ETH.
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-      {% endif %}
       </div>
     </div>
+    {% endif %}
 
     {% if verify_form %}
       {% bootstrap_form verify_form %}
