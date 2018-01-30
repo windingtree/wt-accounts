@@ -154,3 +154,25 @@ ONFIDO_WEBHOOK_TOKEN = 'L2PCFXFOF5yDDzHX_3aZCC13nARKW-AA'
 
 ETHERSCAN_TOKEN='IZVUZTKZU5PSUKUAX4R2P2KJXMHY4JS75I'
 ETH_WALLET = '0x4a4ac8d0b6a2f296c155c15c2bcaf04641818b78'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s [%(levelname)s] %(module)s %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'accounts': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
