@@ -42,6 +42,7 @@ class User(AbstractUser):
                                            'Terms and Conditions</a>') % settings.STATIC_URL,
                                          default=False)
     non_us_resident = models.BooleanField(_('I am not a US resident'), default=False)
+    eth_contrib = models.CharField(blank=True, max_length=30)
 
     def can_verify(self):
         must = ('first_name', 'last_name', 'birth_date', 'mobile', 'street',
@@ -70,6 +71,9 @@ class User(AbstractUser):
                                          applicant_id=applicant.id, status=check.status or '',
                                          onfido_id=check.id, result=check.result or '')
 
+    @property
+    def eth_contrib_int(self):
+        return int(self.eth_contrib)
 
 class OnfidoCall(TimeStampedModel):
     TYPES = (
