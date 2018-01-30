@@ -27,14 +27,17 @@ validate_eth_address = RegexValidator(
 class User(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
     mobile = models.CharField(_('mobile'), blank=True, max_length=30)
-    birth_date = models.DateField(_('date of birth'), blank=True, null=True)
-    country = CountryField(_('country'), blank=True)
+    birth_date = models.DateField(_('date of birth'), blank=True, null=True,
+                                  help_text='Accepted format is YYYY-MM-DD')
+    country = CountryField(_('Country'), blank=True)
     building_number = models.CharField(blank=True, max_length=100)
     street = models.CharField(blank=True, max_length=100)
-    town = models.CharField(blank=True, max_length=100)
+    town = models.CharField(_('City'), blank=True, max_length=100)
     postcode = models.CharField(blank=True, max_length=100)
-    eth_address = models.CharField(_('ETH address'), max_length=100, blank=True,
-                                   validators=[validate_eth_address])
+    eth_address = models.CharField(
+        _('Your ETH wallet address from which you’ll be sending your contribution'), max_length=100,
+        blank=True,
+        validators=[validate_eth_address])
     terms_accepted = models.BooleanField(_('I accept the <a href="%sToken Sale T&Cs.pdf">'
                                            'Terms and Conditions</a>') % settings.STATIC_URL,
                                          default=False)
@@ -116,7 +119,7 @@ def send_login_email(request, user):
     context = create_link_context(user, use_https=request.is_secure())
     email_content = render_to_string('accounts/email_login.txt', context=context, request=request)
     # sending to settings.DEFAULT_FROM_EMAIL
-    user.email_user('WT login', email_content)
+    user.email_user('Winding Tree account login', email_content)
 
 
 def send_verification_status_email(request, user):
