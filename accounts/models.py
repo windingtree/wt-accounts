@@ -39,10 +39,6 @@ class User(AbstractUser):
         _('Your ETH wallet address from which you’ll be sending your contribution'), max_length=100,
         blank=True,
         validators=[validate_eth_address])
-    terms_accepted = models.BooleanField(_('I accept the <a href="%sToken Sale T&Cs.pdf">'
-                                           'Terms and Conditions</a>') % settings.STATIC_URL,
-                                         default=False)
-    non_us_resident = models.BooleanField(_('I am not a US resident'), default=False)
     eth_contrib = models.CharField(blank=True, max_length=30)
     proof_of_address_file = models.FileField(_('Proof of address'), storage=S3Storage(),
                                              blank=True, null=True, upload_to='proof_of_address')
