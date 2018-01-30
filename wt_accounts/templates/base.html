@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="{% static 'css/wt.css' %}">
   <script type="text/javascript">
    var userAddress = "{{request.user.eth_address}}";
+   var verifiedUser = "{{request.user.is_verified}}";
   </script>
   <script src="{% static 'libs/jquery.min.js' %}"></script>
   <script src="{% static 'libs/popper.min.js' %}"></script>
