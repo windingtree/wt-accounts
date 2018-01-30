@@ -421,7 +421,7 @@ def test_onfido_webhook(client, test_user):
 def test_eth_get_total():
     transactions = get_transactions()
     total = eth_get_total(transactions)
-    print(total / (10 ** 18))
+    # print(total / (10 ** 18))
     assert total == 2576817159433516273420
 
 
