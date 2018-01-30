@@ -100,8 +100,7 @@ def profile(request):
             return render(request, 'accounts/profile.html',
                           {'form': form, 'verify_form': verify_form})
         return HttpResponseRedirect(reverse('profile'))
-
-    form = ProfileForm(request.POST or None, instance=request.user)
+    form = ProfileForm(request.POST or None, request.FILES or None, instance=request.user)
     if form.is_valid():
         messages.success(request, 'Your profile was updated')
         form.save()

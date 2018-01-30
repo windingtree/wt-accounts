@@ -11,3 +11,4 @@ raven==6.5.0
 requests==2.18.4
 git+https://github.com/onfido/api-python-client.git@86fbf421eb069ce3b8a32479237b18b696010c1d
 gunicorn==19.7.1
+django-s3-storage==0.12.3
