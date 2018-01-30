@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'django_countries',
     'django_s3_storage',
+    'raven.contrib.django.raven_compat',
 
     'accounts',
 ]
