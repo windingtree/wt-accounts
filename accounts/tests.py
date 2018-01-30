@@ -57,7 +57,8 @@ def test_RegistrationForm(monkeypatch):
     # lets patch requests and the response FTW
     monkeypatch.setattr("requests.post", lambda url, data: Mock(
         **{'json.return_value': {'success': True}}))
-    form = RegistrationForm(data={'email': EMAIL.upper(), 'g-recaptcha-response': '...'})
+    form = RegistrationForm(data={'email': EMAIL.upper(), 'g-recaptcha-response': '...',
+                                  'terms_accepted': True, 'non_us_resident': True})
     assert form.is_valid()
 
     user = form.save()
@@ -85,8 +86,8 @@ def test_RegistrationForm(monkeypatch):
         'street': '',
         'town': '',
         'eth_address': '',
-        'non_us_resident': False,
-        'terms_accepted': False
+        'eth_contrib': '',
+        'proof_of_address_file': everything_equals,
     }
 
 
@@ -181,12 +182,14 @@ def test_registration_view(client, caplog, monkeypatch):
                         lambda x: True)
 
     # wrong email
-    response = client.post(url, {'email': 'bad@email'})
+    response = client.post(url, {'email': 'bad@email',
+                                 'terms_accepted': True, 'non_us_resident': True})
     assert response.status_code == 200
     assert response.context['form'].errors
 
     # ok email
-    response = client.post(url, {'email': 'new@email.cz'})
+    response = client.post(url, {'email': 'new@email.cz',
+                                 'terms_accepted': True, 'non_us_resident': True})
 
     assert response.status_code == 302
     assert caplog.record_tuples == [
@@ -214,8 +217,6 @@ def test_profile_view(client, admin_client):
 
     response = admin_client.post(url, {'first_name': 'Jerry',
                                        'eth_address': '0x4a4ac8d0b6a2f296c155c15c2bcaf04641818b78',
-                                       'terms_accepted': True,
-                                       'non_us_resident': True,
                                        })
 
     user = User.objects.get(username='admin')

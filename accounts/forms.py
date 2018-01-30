@@ -23,14 +23,11 @@ class RegistrationForm(forms.ModelForm):
     )
 
     g_recaptcha_response = forms.CharField(required=False)
-
-    # tos = forms.BooleanField(
-    #     widget=forms.CheckboxInput,
-    #     label=_(u'I have read and agree to the Terms of Service'),
-    #     error_messages={
-    #         'required': validators.TOS_REQUIRED,
-    #     }
-    # )
+    terms_accepted = forms.BooleanField(label=_('I accept the <a href="%sToken Sale T&Cs.pdf">'
+                                                'Terms and Conditions</a>') % settings.STATIC_URL,
+                                        error_messages={'required': validators.TOS_REQUIRED}
+                                        )
+    non_us_resident = forms.BooleanField(label=_('I am not a US resident'))
 
     class Meta:
         model = User
@@ -96,17 +93,11 @@ class LoginForm(forms.Form):
 
 class ProfileForm(forms.ModelForm):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['terms_accepted'].required = True
-        self.fields['non_us_resident'].required = True
-
     class Meta:
         model = User
         fields = (
             'first_name', 'last_name', 'birth_date', 'mobile', 'street', 'building_number',
-            'town', 'postcode', 'country', 'eth_address', 'terms_accepted', 'non_us_resident',
-            'proof_of_address_file')
+            'town', 'postcode', 'country', 'eth_address', 'proof_of_address_file')
         required_css_class = 'required'
 
 
