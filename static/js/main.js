@@ -1,15 +1,14 @@
 
 // TGE Scripts
 var SOFT_CAP = 0.1;
-var icoAddress = "0x175A349186f228e7758ccE1c1bA125e0D0514df4";
-var tokenAddress = "0xaDA83270510b6284e27c757096d660F0Fcf6A90b";
+var icoAddress = "0x9df3a24d738ae98dea766cd89c3aef16583a4daf";
+var tokenAddress = "0xeb9951021698b42e4399f9cbb6267aa35f82d59d";
 var contributorAddress = userAddress;
-var maxUnverifiedContribution = 10;
+var maxUnverifiedContribution = 15;
 
 //Set addresses
 $('#icoAddress').text(icoAddress);
 $('#userAddress').text(contributorAddress.toString());
-
 
 // Countdown
 
@@ -121,10 +120,12 @@ function refreshUserContribution() {
       getEthSent(contributorAddress).then(function(weiSent) {
         var ETHSent = (Number(weiSent.result) / 1e18);
         console.log('ETH Sent:', ETHSent);
-        if (ETHSent > maxUnverifiedContribution && verifiedUser) {
-          $('#verify-profile').show();
-          $('#verify-alert').show();
-        }
+        // if (ETHSent > maxUnverifiedContribution && verifiedUser) {
+        //   $('#verify-profile').show();
+        //   $('#verify-alert').show();
+        // }
+        $('#verify-profile').show();
+        $('#verify-alert').show();
         $('#totalETHSent').text(parseFloat(ETHSent).toFixed(4)+' ETH');
       });
     else
