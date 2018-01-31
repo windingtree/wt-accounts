@@ -21,5 +21,5 @@ from accounts.views import home
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('ico/', include('accounts.urls')),
-    path('', home),
+    path('', home, name='home'),
 ]

@@ -61,6 +61,8 @@ def login(request):
 def home(request):
     return render(request, 'home.html')
 
+def status(request):
+    return render(request, 'accounts/status.html')
 
 def registration(request):
     if request.user.is_authenticated:
