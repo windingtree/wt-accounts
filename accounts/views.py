@@ -71,6 +71,9 @@ def home(request):
 
 
 def registration(request):
+    if is_from_banned_country(request):
+        return HttpResponseRedirect(reverse('geofence'))
+
     if request.user.is_authenticated:
         return HttpResponseRedirect(resolve_url(settings.LOGIN_REDIRECT_URL))
 
@@ -169,6 +172,12 @@ def eth_sums(request):
             users_by_eth_address[account].eth_contrib = str(sum)
             users_by_eth_address[account].save(update_fields=['eth_contrib'])
     return render(request, 'accounts/eth_sums.html', {'total': total, 'users': users})
+
+def is_from_banned_country(request):
+    return False
+    banned_countries = ['US', 'china']
+    geoip_header = request.META.get('HTTP_CF_IPCOUNTRY', '')
+    return geoip_header in banned_countries
 
 def headers(request):
     forbidden = ['US', 'CZ']
