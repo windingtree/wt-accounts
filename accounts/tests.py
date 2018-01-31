@@ -207,7 +207,7 @@ def test_profile_view(client, admin_client):
     response = client.get(url)
 
     assert response.status_code == 302
-    assert response['Location'] == '/ico/login/?next=/accounts/profile/'
+    assert response['Location'] == '/ico/login/?next=/ico/profile/'
 
     # logged in user
     response = admin_client.get(url)
@@ -232,7 +232,7 @@ def test_logout_view_get(client, admin_client):
 
     # not logged in can't visit
     assert response.status_code == 302
-    assert response['Location'] == '/ico/login/?next=/accounts/logout/'
+    assert response['Location'] == '/ico/login/?next=/ico/logout/'
 
     # logged in user
     response = admin_client.get(url)
