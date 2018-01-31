@@ -110,7 +110,7 @@ def test_send_login_email(rf, settings, test_user):
     send_login_email(rf, test_user)
     m = mail.outbox[0]
 
-    assert m.subject == 'Winding Tree account login'
+    assert m.subject == 'Your Winding Tree Account'
     assert m.from_email == settings.DEFAULT_FROM_EMAIL
     assert list(m.to) == [EMAIL]
     assert 'https://localhost:8000/ico/login/' in m.body
@@ -136,7 +136,8 @@ def test_login_token_view_fail(test_user, client):
 
     response = client.get(url)
 
-    assert response.status_code == 403
+    assert response.status_code == 302
+    assert response['Location'] == '/ico/login/expired/'
 
 
 def test_login_view(test_user, client, caplog):
@@ -216,13 +217,19 @@ def test_profile_view(client, admin_client):
     assert 'form' in response.context
 
     response = admin_client.post(url, {'first_name': 'Jerry',
+                                       'last_name': 'Tesla',
+                                       'birth_date': date(1980, 1, 1),
+                                       'building_number': '100', 'street': 'Main Street',
+                                       'town': 'London', 'postcode': 'SW4 6EH',
+                                       'country': 'CZ', 'mobile': '+420777619338',
                                        'eth_address': '0x4a4ac8d0b6a2f296c155c15c2bcaf04641818b78',
                                        })
 
     user = User.objects.get(username='admin')
     assert response.status_code == 302
+    assert response['Location'] == '/ico/'
     assert user.first_name == 'Jerry'
-    assert user.eth_address == '0x4a4ac8d0b6a2f296c155c15c2bcaf04641818b78'
+    assert user.last_name == 'Tesla'
 
 
 @pytest.mark.django_db
@@ -238,7 +245,7 @@ def test_logout_view_get(client, admin_client):
     response = admin_client.get(url)
 
     assert response.status_code == 302
-    assert response['Location'] == '/ico/login/'
+    assert response['Location'] == '/'
 
 
 @pytest.mark.django_db
@@ -247,7 +254,7 @@ def test_logout_view_post(admin_client):
     response = admin_client.post(url)
 
     assert response.status_code == 302
-    assert response['Location'] == '/ico/login/'
+    assert response['Location'] == '/'
 
 
 def test_onfido_create_applicant(onfido_test_user):

@@ -97,18 +97,24 @@ class ProfileForm(forms.ModelForm):
         model = User
         fields = (
             'first_name', 'last_name', 'birth_date', 'mobile', 'street', 'building_number',
-            'town', 'postcode', 'country', 'eth_address', 'proof_of_address_file')
+            'town', 'postcode', 'country', 'eth_address')
         required_css_class = 'required'
 
 
-class VerifyForm(forms.Form):
+class VerifyForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('proof_of_address_file',)
 
-    def __init__(self, *args, user, **kwargs):
-        self.user = user
+    def __init__(self, *args, **kwargs):
         self.onfido_check = None
         super().__init__(*args, **kwargs)
+        self.fields['proof_of_address_file'].required = True
 
     def clean(self):
         super(VerifyForm, self).clean()
-        self.onfido_check = self.user.onfido_check()
+        if not self.instance.can_verify():
+            raise forms.ValidationError('All the fields must be filled for verification')
+
+        self.onfido_check = self.instance.onfido_check()
         return self.cleaned_data

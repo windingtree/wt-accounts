@@ -27,21 +27,20 @@ validate_eth_address = RegexValidator(
 
 class User(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
-    mobile = models.CharField(_('mobile'), blank=True, max_length=30)
-    birth_date = models.DateField(_('date of birth'), blank=True, null=True,
+    mobile = models.CharField(_('mobile'), max_length=30)
+    birth_date = models.DateField(_('date of birth'), null=True,
                                   help_text='Accepted format is YYYY-MM-DD')
-    country = CountryField(_('Country'), blank=True)
-    building_number = models.CharField(blank=True, max_length=100)
-    street = models.CharField(blank=True, max_length=100)
-    town = models.CharField(_('City'), blank=True, max_length=100)
-    postcode = models.CharField(blank=True, max_length=100)
+    country = CountryField(_('Country'))
+    building_number = models.CharField(max_length=100)
+    street = models.CharField(max_length=100)
+    town = models.CharField(_('City'), max_length=100)
+    postcode = models.CharField(max_length=100)
     eth_address = models.CharField(
         _('Your ETH wallet address from which you’ll be sending your contribution'), max_length=100,
-        blank=True,
         validators=[validate_eth_address])
     eth_contrib = models.CharField(blank=True, max_length=30)
     proof_of_address_file = models.FileField(_('Proof of address'), storage=S3Storage(),
-                                             blank=True, null=True, upload_to='proof_of_address')
+                                             null=True, upload_to='proof_of_address')
 
     def can_verify(self):
         must = ('first_name', 'last_name', 'birth_date', 'mobile', 'street',
