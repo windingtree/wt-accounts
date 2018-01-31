@@ -10,59 +10,6 @@ var maxUnverifiedContribution = 10;
 $('#icoAddress').text(icoAddress);
 $('#userAddress').text(contributorAddress.toString());
 
-
-// Countdown
-
-var startDate = 1517472000*1000;
-var endDate = 1518652800*1000;
-
-function refreshCountdown() {
-  var now = new Date().getTime();
-
-  if (now < endDate) {
-    var distance = startDate - now;
-    if (distance < 0) {
-      distance = endDate - now;
-      $('#countdown-until').text("Until the sale ends at February 14, 2018 (12PM UTC)");
-    }
-
-    var days = ''+Math.floor(distance / (1000 * 60 * 60 * 24));
-    var hours = ''+Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = ''+Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = ''+Math.floor((distance % (1000 * 60)) / 1000);
-
-    if (days.length < 2) {
-        days = "0" + days;
-    }
-    if (hours.length < 2) {
-        hours = "0" + hours;
-    }
-    if (minutes.length < 2) {
-        minutes = "0" + minutes;
-    }
-    if (seconds.length < 2) {
-        seconds = "0" + seconds;
-    }
-    $('#countdown').text(days + "d : " + hours + "h : " + minutes + "m : " + seconds + "s");
-
-    if (distance < 0) {
-      clearInterval(x);
-      $('#countdown').text('00d : 00h : 00m : 00s');
-    }
-  } else {
-    $('#countdown').text("Registration Closed");
-    $('#countdown-until').text("The token sale ended at February 15, 2018 (8AM UTC)");
-    $('#submit-profile').hide();
-    $('#verify-profile').hide();
-    $('.form-check').hide();
-    $('#instructions').hide();
-  }
-
-
-}
-var x = setInterval(refreshCountdown, 1000);
-refreshCountdown();
-
 // Get total ETH raised in wei unit, returns promise
 function getEthSent(contributor) {
   var params = $.param({
