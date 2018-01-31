@@ -122,7 +122,7 @@ def send_login_email(request, user):
     context = create_link_context(user, use_https=request.is_secure())
     email_content = render_to_string('accounts/email_login.txt', context=context, request=request)
     # sending to settings.DEFAULT_FROM_EMAIL
-    user.email_user('Winding Tree account login', email_content)
+    user.email_user('Your Winding Tree Account', email_content)
 
 
 def send_verification_status_email(request, user):

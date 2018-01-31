@@ -17,7 +17,14 @@
 
   <div class="row justify-content-around">
     <div class="col-lg-9 col-sm-12">
-      <form action="." method="post" class="form jumbotron">
+      <div class="jumbotron">
+        <h2 class="text-center">Register to Contribute to Winding Tree ICO</h2>
+        <p class="text-center">
+          To contribute you will need to register an account and create a profile. <br>
+          Enter your email here and we'll email you next steps.
+        </p>
+
+        <form action="." method="post" class="form">
         {% csrf_token %}
 
         {% bootstrap_form form exclude='g_recaptcha_response' %}
@@ -35,6 +42,7 @@
           {% endbuttons %}
         </div>
       </form>
+      </div>
     </div>
   </div>
 
