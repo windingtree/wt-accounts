@@ -165,3 +165,8 @@ def eth_sums(request):
             users_by_eth_address[account].eth_contrib = str(sum)
             users_by_eth_address[account].save(update_fields=['eth_contrib'])
     return render(request, 'accounts/eth_sums.html', {'total': total, 'users': users})
+
+def headers(request):
+    data = '\n'.join('{}: {}'.format(key, request.META[key]) for key in request.META)
+    return HttpResponse('<pre>{}</pre>'.format(data))
+
