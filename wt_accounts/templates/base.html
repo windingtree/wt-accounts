@@ -30,12 +30,15 @@
   <meta name="msapplication-TileImage" content="/images/icons/ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff">
 
+  <!--[if lte IE 8]><script src="{% static 'js/ie/html5shiv.js' %}"></script><![endif]-->
   <link rel="stylesheet" href="{% static 'css/stellar.css' %}">
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <!--[if lte IE 9]><link rel="stylesheet" href="{% static 'css/ie9.css' %}" /><![endif]-->
+  <!--[if lte IE 8]><link rel="stylesheet" href="{% static 'css/ie8.css' %}" /><![endif]-->
 
   <script type="text/javascript">
-   var userAddress = "{{request.user.eth_address}}";
-   var verifiedUser = "{{request.user.is_verified}}";
+    var userAddress = "{{request.user.eth_address}}";
+    var verifiedUser = "{{request.user.is_verified}}";
   </script>
 
   {% block extra_head %}{% endblock %}
@@ -53,8 +56,7 @@
 
   </main>
 
-  <script src="{% static 'libs/jquery.min.js' %}"></script>
-  <script src="{% static 'libs/popper.min.js' %}"></script>
+  <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="{% static 'js/main.js' %}"></script>
 
   {% block javascript_inline_bottom %}{% endblock %}
