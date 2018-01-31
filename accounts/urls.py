@@ -13,6 +13,7 @@ urlpatterns = [
     path('login/sent/', TemplateView.as_view(template_name='accounts/login_sent.html'),
          name='login_sent'),
     path('login/<uidb64>/<token>/', views.login_token, name='login_token'),
+    path('login/expired/', views.login_token_expired, name='login_token_expired'),
     path('profile/', views.profile, name='profile'),
     path('eth_sums/', views.eth_sums, name='eth_sums'),
 

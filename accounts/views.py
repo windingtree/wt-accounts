@@ -40,10 +40,10 @@ def login_token(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         logger.debug('Logging in user=%s', user)
         auth_login(request, user)
-        return HttpResponseRedirect(resolve_url(settings.LOGIN_REDIRECT_URL))
+        return HttpResponseRedirect(resolve_url(''))
     else:
         logger.warning('Denied access for  uidb64=%s, token=%s, user=%s', uidb64, token, user)
-        return HttpResponseForbidden()
+        return HttpResponseRedirect(resolve_url('/ico/login/expired/'))
 
 
 def login(request):
@@ -57,6 +57,8 @@ def login(request):
 
     return render(request, 'accounts/login.html', {'form': form})
 
+def login_token_expired(request):
+    return render(request, 'accounts/login_expired.html')
 
 def home(request):
     return render(request, 'home.html')
