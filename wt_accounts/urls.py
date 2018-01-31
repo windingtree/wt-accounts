@@ -17,9 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 
 from accounts.views import home
+from accounts.views import geofence
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
-    path('', home),
+    path('ico/', include('accounts.urls')),
+    path('restricted/', geofence, name='geofence'),
+    path('', home, name='home'),
 ]

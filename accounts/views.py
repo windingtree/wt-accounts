@@ -43,7 +43,11 @@ def login_token(request, uidb64, token):
         return HttpResponseRedirect(resolve_url(settings.LOGIN_REDIRECT_URL))
     else:
         logger.warning('Denied access for  uidb64=%s, token=%s, user=%s', uidb64, token, user)
-        return HttpResponseForbidden()
+        return HttpResponseRedirect(reverse('login_token_expired'))
+
+
+def geofence(request):
+    return render(request, 'geofence.html')
 
 
 def login(request):
@@ -58,11 +62,18 @@ def login(request):
     return render(request, 'accounts/login.html', {'form': form})
 
 
+def login_token_expired(request):
+    return render(request, 'accounts/login_expired.html')
+
+
 def home(request):
     return render(request, 'home.html')
 
 
 def registration(request):
+    if is_from_banned_country(request):
+        return HttpResponseRedirect(reverse('geofence'))
+
     if request.user.is_authenticated:
         return HttpResponseRedirect(resolve_url(settings.LOGIN_REDIRECT_URL))
 
@@ -79,6 +90,13 @@ def registration(request):
         return HttpResponseRedirect(reverse('login_sent'))
 
     return render(request, 'accounts/registration.html', {'form': form})
+
+
+@login_required
+def status(request):
+    if not request.user.can_verify() or request.user.eth_address == '':
+        return HttpResponseRedirect(reverse('profile'))
+    return render(request, 'accounts/status.html')
 
 
 @login_required
@@ -154,3 +172,26 @@ def eth_sums(request):
             users_by_eth_address[account].eth_contrib = str(sum)
             users_by_eth_address[account].save(update_fields=['eth_contrib'])
     return render(request, 'accounts/eth_sums.html', {'total': total, 'users': users})
+
+def is_from_banned_country(request):
+    return False
+    banned_countries = ['US', 'china']
+    geoip_header = request.META.get('HTTP_CF_IPCOUNTRY', '')
+    return geoip_header in banned_countries
+
+def headers(request):
+    forbidden = ['US', 'CZ']
+    geoip = 'HTTP_CF_IPCOUNTRY'
+    lines = [
+        '{}{}{}: {}{}{}'.format(
+            '<strong>' if geoip == key else '',
+            '<font color=red>' if request.META[key] in forbidden else '',
+            key,
+            request.META[key],
+            '</font>' if request.META[key] in forbidden else '',
+            '</strong>' if geoip == key else '',
+        ) for key in request.META
+    ]
+    data = '\n'.join(lines)
+    return HttpResponse('<pre>{}</pre>'.format(data))
+
