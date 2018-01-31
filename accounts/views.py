@@ -63,7 +63,10 @@ def login_token_expired(request):
 def home(request):
     return render(request, 'home.html')
 
+@login_required
 def status(request):
+    if not request.user.can_verify() or request.user.eth_address == '':
+        return HttpResponseRedirect(reverse('profile'))
     return render(request, 'accounts/status.html')
 
 def registration(request):
