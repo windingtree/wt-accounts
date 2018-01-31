@@ -144,7 +144,7 @@ AWS_S3_BUCKET_NAME = ""
 
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_REDIRECT_URL = 'status'
-LOGOUT_REDIRECT_URL = 'login_form'
+LOGOUT_REDIRECT_URL = 'home'
 LOGIN_URL = '/ico/login/'
 
 RECAPTCHA_SITE_KEY = '6Lc3ZUEUAAAAANh3-cVedhhcOrfLU6uAtnnNij6P'
