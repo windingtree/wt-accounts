@@ -1,28 +1,43 @@
 {% load static %}
-{% load bootstrap4 %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>WT ICO</title>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="author" content="Maksim Izmaylov">
 
-  <link rel="icon" href="{% static 'img/favicon.png' %}">
-  <link rel="icon" type="image/png" href="{% static 'img/favicon-32x32.png' %}" sizes="32x32">
-  <link rel="icon" type="image/png" href="{% static 'img/favicon-16x16.png' %}" sizes="16x16">
+  <title>Winding Tree &mdash; Líf Token Generation Event</title>
+  <meta name="description" content="Winding Tree, Líf Token Generation Event">
+  <meta name=viewport content="user-scalable=no, width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, minimal-ui">
+  <meta http-equiv=x-ua-compatible content="ie=edge">
 
-  <link rel="stylesheet" href="{% static 'libs/bootstrap.min.css' %}">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/wt.css' %}">
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/icons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/icons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/icons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/icons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/icons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/icons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/icons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/icons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/icons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/images/icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/images/icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icons/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icons/favicon.png" />
+  <link rel="manifest" href="/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/images/icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="{% static 'css/stellar.css' %}">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
   <script type="text/javascript">
    var userAddress = "{{request.user.eth_address}}";
    var verifiedUser = "{{request.user.is_verified}}";
   </script>
-  <script src="{% static 'libs/jquery.min.js' %}"></script>
-  <script src="{% static 'libs/popper.min.js' %}"></script>
-  <script src="{% static 'libs/bootstrap.min.js' %}"></script>
-  <script src="{% static 'js/main.js' %}"></script>
+
   {% block extra_head %}{% endblock %}
 </head>
 
@@ -34,13 +49,14 @@
 
   <main role="main" class="container">
 
-    {% bootstrap_messages %}
+    {% block content %}{% endblock %}
 
-    {% block content %}
-    {% endblock %}
   </main>
 
-  {% block javascript_inline_bottom %}
-  {% endblock %}
+  <script src="{% static 'libs/jquery.min.js' %}"></script>
+  <script src="{% static 'libs/popper.min.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+
+  {% block javascript_inline_bottom %}{% endblock %}
   </body>
 </html>
