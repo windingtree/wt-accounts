@@ -167,6 +167,11 @@ def eth_sums(request):
     return render(request, 'accounts/eth_sums.html', {'total': total, 'users': users})
 
 def headers(request):
-    data = '\n'.join('{}: {}'.format(key, request.META[key]) for key in request.META)
+    geoip = 'HTTP_CF_IPCOUNTRY'
+    lines = [
+        '{}{}: {}{}'.format('<strong>' if geoip == key else '', key, request.META[key], '</strong>' if geoip == key else '')
+        for key in request.META
+    ]
+    data = '\n'.join(lines)
     return HttpResponse('<pre>{}</pre>'.format(data))
 
