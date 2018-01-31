@@ -57,17 +57,14 @@ def login(request):
 
     return render(request, 'accounts/login.html', {'form': form})
 
+
 def login_token_expired(request):
     return render(request, 'accounts/login_expired.html')
+
 
 def home(request):
     return render(request, 'home.html')
 
-@login_required
-def status(request):
-    if not request.user.can_verify() or request.user.eth_address == '':
-        return HttpResponseRedirect(reverse('profile'))
-    return render(request, 'accounts/status.html')
 
 def registration(request):
     if request.user.is_authenticated:
@@ -86,6 +83,13 @@ def registration(request):
         return HttpResponseRedirect(reverse('login_sent'))
 
     return render(request, 'accounts/registration.html', {'form': form})
+
+
+@login_required
+def status(request):
+    if not request.user.can_verify() or request.user.eth_address == '':
+        return HttpResponseRedirect(reverse('profile'))
+    return render(request, 'accounts/status.html')
 
 
 @login_required
