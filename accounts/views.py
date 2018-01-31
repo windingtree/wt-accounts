@@ -63,8 +63,6 @@ def login_token_expired(request):
 def home(request):
     return render(request, 'home.html')
 
-def status(request):
-    return render(request, 'accounts/status.html')
 
 def registration(request):
     if request.user.is_authenticated:
@@ -83,6 +81,11 @@ def registration(request):
         return HttpResponseRedirect(reverse('login_sent'))
 
     return render(request, 'accounts/registration.html', {'form': form})
+
+
+@login_required
+def status(request):
+    return render(request, 'accounts/status.html')
 
 
 @login_required
