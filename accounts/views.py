@@ -123,7 +123,7 @@ def profile(request):
     if form.is_valid():
         messages.success(request, 'Your profile was updated')
         form.save()
-        return HttpResponseRedirect(reverse('status'))
+        return redirect('status')
     return render(request, 'accounts/profile.html', {'form': form})
 
 
