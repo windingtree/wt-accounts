@@ -46,6 +46,10 @@ def login_token(request, uidb64, token):
         return HttpResponseRedirect(reverse('login_token_expired'))
 
 
+def geofence(request):
+    return render(request, 'geofence.html')
+
+
 def login(request):
     form = LoginForm(request.POST or None)
 
