@@ -40,7 +40,7 @@ def login_token(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         logger.debug('Logging in user=%s', user)
         auth_login(request, user)
-        return HttpResponseRedirect(resolve_url('status'))
+        return HttpResponseRedirect(resolve_url(settings.LOGIN_REDIRECT_URL))
     else:
         logger.warning('Denied access for  uidb64=%s, token=%s, user=%s', uidb64, token, user)
         return HttpResponseRedirect(reverse('login_token_expired'))
