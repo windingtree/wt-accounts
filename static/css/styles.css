@@ -44,10 +44,19 @@
   font-weight: bold;
   text-shadow: none;
   padding: 2px 12px 1px 12px;
-  border-radius: 4px;
+  border-radius: 1px;
   letter-spacing: 2px;
 }
 #countdown-explainer span:after {
   content: '\A';
   white-space: pre;
+}
+
+.participate {
+  text-shadow: none;
+  margin: 40px 0;
+}
+
+.participate a {
+  color: #000 !important;
 }

@@ -27,6 +27,14 @@
         23:59 on February 14 (UTC)
       </div>
     </div>
+
+    <div class="participate">
+      {% if request.user.is_authenticated %}
+        <a href="{% url 'profile' %}" class="button special">My Profile</a>
+      {% else %}
+        <a href="{% url 'login_form' %}" class="button special">Participate</a>
+      {% endif %}
+    </div>
   </header>
 
 
