@@ -43,7 +43,7 @@ def login_token(request, uidb64, token):
         return HttpResponseRedirect(resolve_url(''))
     else:
         logger.warning('Denied access for  uidb64=%s, token=%s, user=%s', uidb64, token, user)
-        return HttpResponseRedirect(resolve_url('/ico/login/expired/'))
+        return HttpResponseRedirect(reverse('login_token_expired'))
 
 
 def login(request):
