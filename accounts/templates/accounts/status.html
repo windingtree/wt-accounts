@@ -8,11 +8,11 @@
 
 
 {% block content %}
-<div class="row justify-content-around">
+<div class="row justify-content-center">
   <div class="col-lg-10 col-sm-12">
 
     {% if request.user.eth_address %}
-    <div class="row justify-content-md-center">
+    <div class="row justify-content-center">
       <div class="jumbotron">
         <h4>ICO address: <strong id="icoAddress">0x9df3a24d738ae98dea766cd89c3aef16583a4daf</strong></h4>
         <h4>Your address: <span id="userAddress">{{ request.user.eth_address }}</span></h4>

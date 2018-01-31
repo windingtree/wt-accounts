@@ -8,11 +8,11 @@
 
 
 {% block content %}
-<div class="row justify-content-around">
+<div class="row justify-content-center">
   <div class="col-lg-10 col-sm-12">
 
     {% if request.user.eth_address %}
-    <div class="row justify-content-md-center">
+    <div class="row justify-content-center">
       <div class="jumbotron">
         <h4>ICO address: <strong id="icoAddress">0x9df3a24d738ae98dea766cd89c3aef16583a4daf</strong></h4>
         <h4>Your address: <span id="userAddress">{{ request.user.eth_address }}</span></h4>
@@ -26,20 +26,22 @@
       {% bootstrap_form verify_form %}
     {% endif %}
 
-    <form action="." method="post" enctype="multipart/form-data"
-          class="form jumbotron">
-      {% csrf_token %}
-      {% bootstrap_form form %}
-      <div class="row justify-content-around">
-        {% buttons %}
-          <button id="submit-profile" type="submit" class="btn btn-lg btn-primary">Save ICO Profile</button>
-          <button id="verify-profile" type="submit" name="verify"
-                  class="btn btn-lg btn-info hidden">
-                  Verify for +15 ETH contribution
-          </button>
-        {% endbuttons %}
-      </div>
-    </form>
+    <div class="row justify-content-center">
+      <form action="." method="post" enctype="multipart/form-data"
+            class="form jumbotron">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <div class="row justify-content-around">
+          {% buttons %}
+            <button id="submit-profile" type="submit" class="btn btn-lg btn-primary">Save ICO Profile</button>
+            <button id="verify-profile" type="submit" name="verify"
+                    class="btn btn-lg btn-info hidden">
+                    Verify for +15 ETH contribution
+            </button>
+          {% endbuttons %}
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 {% endblock %}

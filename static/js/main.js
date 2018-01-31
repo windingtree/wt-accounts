@@ -1,6 +1,6 @@
 
 // TGE Scripts
-var SOFT_CAP = 0.1;
+var SOFT_CAP = 4348;
 var icoAddress = "0x9df3a24d738ae98dea766cd89c3aef16583a4daf";
 var tokenAddress = "0xeb9951021698b42e4399f9cbb6267aa35f82d59d";
 var contributorAddress = userAddress;
@@ -13,6 +13,7 @@ $('#userAddress').text(contributorAddress.toString());
 // Countdown
 
 var startDate = 1517472000*1000;
+var changeRateDate = 1517990400*1000;
 var endDate = 1518652800*1000;
 
 function refreshCountdown() {
@@ -30,25 +31,19 @@ function refreshCountdown() {
     var minutes = ''+Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = ''+Math.floor((distance % (1000 * 60)) / 1000);
 
-    if (days.length < 2) {
-        days = "0" + days;
-    }
-    if (hours.length < 2) {
-        hours = "0" + hours;
-    }
-    if (minutes.length < 2) {
-        minutes = "0" + minutes;
-    }
-    if (seconds.length < 2) {
-        seconds = "0" + seconds;
-    }
+    if (days.length < 2)
+      days = "0" + days;
+    if (hours.length < 2)
+      hours = "0" + hours;
+    if (minutes.length < 2)
+      minutes = "0" + minutes;
+    if (seconds.length < 2)
+      seconds = "0" + seconds;
+
     $('#countdown').text(days + "d : " + hours + "h : " + minutes + "m : " + seconds + "s");
 
-    if (distance < 0) {
-      clearInterval(x);
-      $('#countdown').text('00d : 00h : 00m : 00s');
-    }
   } else {
+    clearInterval(x);
     $('#countdown').text("Registration Closed");
     $('#countdown-until').text("The token sale ended at February 15, 2018 (8AM UTC)");
     $('#submit-profile').hide();
@@ -57,6 +52,38 @@ function refreshCountdown() {
     $('#instructions').hide();
   }
 
+  if ((now > startDate) && (now < changeRateDate)) {
+    $('countdown-section').show();
+    distance = startDate - now;
+    if (distance < 0) {
+      distance = endDate - now;
+      $('#countdown-until').text("Until the sale ends at February 14, 2018 (12PM UTC)");
+    }
+
+    days = ''+Math.floor(distance / (1000 * 60 * 60 * 24));
+    hours = ''+Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    minutes = ''+Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    seconds = ''+Math.floor((distance % (1000 * 60)) / 1000);
+
+    if (days.length < 2)
+      days = "0" + days;
+    if (hours.length < 2)
+      hours = "0" + hours;
+    if (minutes.length < 2)
+      minutes = "0" + minutes;
+    if (seconds.length < 2)
+      seconds = "0" + seconds;
+
+    $('#countdown-rate').text(days + "d : " + hours + "h : " + minutes + "m : " + seconds + "s");
+
+  } else if ((now > changeRateDate) && (now < endDate)) {
+  $('#tokenRate').text('900 LIF/ETH');
+  $('#countdown-rate').hide();
+  $('#alert-rate').hide();
+  } else {
+    $('#countdown-rate').hide();
+    $('#alert-rate').hide();
+  }
 
 }
 var x = setInterval(refreshCountdown, 1000);
@@ -146,16 +173,49 @@ refreshUserContribution();
 
 function setEthRaised(eth) {
     var percentComplete = eth / SOFT_CAP * 100;
+    console.log('% complete', percentComplete);
     if (percentComplete > 100) {
         percentComplete = 100;
+    } else if (percentComplete > 50) {
+      $('#beforeCapBar').css({
+          width: '50%',
+          opacity: 1,
+      }).toggleClass('done', percentComplete >= 100);
+      $('#beforeCapBarRest').css({
+          width: '0%',
+          opacity: 1,
+      }).toggleClass('done', percentComplete >= 100);
+      $('#afterCapBar').css({
+          width: Math.floor(percentComplete)-50 +'%',
+          opacity: 1,
+      }).toggleClass('done', percentComplete >= 100);
+      $('#afterCapBarRest').css({
+          width: 100-Math.floor(percentComplete)+'%',
+          opacity: 1,
+      }).toggleClass('done', percentComplete >= 100);
+    } else {
+      console.log(percentComplete);
+      $('#beforeCapBar').css({
+          width: Math.floor(percentComplete) + '%',
+          opacity: 1,
+      }).toggleClass('done', percentComplete >= 100);
+      $('#beforeCapBarRest').css({
+          width: 50-Math.floor(percentComplete) + '%',
+          opacity: 1,
+      }).toggleClass('done', percentComplete >= 100);
+      $('#afterCapBar').css({
+          width: '0%',
+          opacity: 1,
+      }).toggleClass('done', percentComplete >= 100);
+      $('#afterCapBarRest').css({
+          width: '50%',
+          opacity: 1,
+      }).toggleClass('done', percentComplete >= 100);
     }
 
     $('#ethRaised').text(parseFloat(eth).toFixed(2)+' ETH Raised');
     $('#progressBar').text(parseFloat(eth).toFixed(2)+' ETH');
-    $('#progressBar').css({
-        width: Math.floor(percentComplete) + '%',
-        opacity: 1,
-    }).toggleClass('done', percentComplete >= 100);
+
 }
 
 // Refresh TGE values
