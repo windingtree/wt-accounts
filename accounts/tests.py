@@ -113,7 +113,7 @@ def test_send_login_email(rf, settings, test_user):
     assert m.subject == 'Winding Tree account login'
     assert m.from_email == settings.DEFAULT_FROM_EMAIL
     assert list(m.to) == [EMAIL]
-    assert 'https://localhost:8000/accounts/login/' in m.body
+    assert 'https://localhost:8000/ico/login/' in m.body
 
     mail.outbox = []
 
@@ -207,7 +207,7 @@ def test_profile_view(client, admin_client):
     response = client.get(url)
 
     assert response.status_code == 302
-    assert response['Location'] == '/accounts/login/?next=/accounts/profile/'
+    assert response['Location'] == '/ico/login/?next=/accounts/profile/'
 
     # logged in user
     response = admin_client.get(url)
@@ -232,13 +232,13 @@ def test_logout_view_get(client, admin_client):
 
     # not logged in can't visit
     assert response.status_code == 302
-    assert response['Location'] == '/accounts/login/?next=/accounts/logout/'
+    assert response['Location'] == '/ico/login/?next=/accounts/logout/'
 
     # logged in user
     response = admin_client.get(url)
 
     assert response.status_code == 302
-    assert response['Location'] == '/accounts/login/'
+    assert response['Location'] == '/ico/login/'
 
 
 @pytest.mark.django_db
@@ -247,7 +247,7 @@ def test_logout_view_post(admin_client):
     response = admin_client.post(url)
 
     assert response.status_code == 302
-    assert response['Location'] == '/accounts/login/'
+    assert response['Location'] == '/ico/login/'
 
 
 def test_onfido_create_applicant(onfido_test_user):
@@ -414,7 +414,7 @@ def test_onfido_webhook(client, test_user):
     assert m.subject == 'WT verification status'
     assert m.from_email == settings.DEFAULT_FROM_EMAIL
     assert list(m.to) == [EMAIL]
-    assert 'http://localhost:8000/accounts/login/' in m.body
+    assert 'http://localhost:8000/ico/login/' in m.body
 
     mail.outbox = []
 
