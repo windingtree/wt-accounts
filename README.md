@@ -17,11 +17,10 @@ echo 'from .dev import *' > wt_accounts/settings/local.py
 ./manage.py runserver
 ```
 
-Go to http://localhost:8000/accounts/login
+Go to http://localhost:8000/ico/login
 
 ## TODO
 
 https://github.com/onfido/api-python-client
 
 https://documentation.onfido.com
-
