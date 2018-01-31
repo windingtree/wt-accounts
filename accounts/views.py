@@ -167,10 +167,17 @@ def eth_sums(request):
     return render(request, 'accounts/eth_sums.html', {'total': total, 'users': users})
 
 def headers(request):
+    forbidden = ['US', 'CZ']
     geoip = 'HTTP_CF_IPCOUNTRY'
     lines = [
-        '{}{}: {}{}'.format('<strong>' if geoip == key else '', key, request.META[key], '</strong>' if geoip == key else '')
-        for key in request.META
+        '{}{}{}: {}{}{}'.format(
+            '<strong>' if geoip == key else '',
+            '<font color=red>' if request.META[key] in forbidden else '',
+            key,
+            request.META[key],
+            '</font>' if request.META[key] in forbidden else '',
+            '</strong>' if geoip == key else '',
+        ) for key in request.META
     ]
     data = '\n'.join(lines)
     return HttpResponse('<pre>{}</pre>'.format(data))
