@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='terms_accepted',
-            field=models.BooleanField(default=False, verbose_name='I accept the <a href="/static/Token Sale T&Cs.pdf">Terms and Conditions</a>'),
+            field=models.BooleanField(default=False, verbose_name='I accept the <a href="/static/token_sale_terms_conditions.pdf">Terms and Conditions</a>'),
         ),
         migrations.AlterField(
             model_name='user',
