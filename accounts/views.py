@@ -43,7 +43,7 @@ def login_token(request, uidb64, token):
         return HttpResponseRedirect(resolve_url(settings.LOGIN_REDIRECT_URL))
     else:
         logger.warning('Denied access for  uidb64=%s, token=%s, user=%s', uidb64, token, user)
-        return HttpResponseForbidden()
+        return HttpResponseRedirect(reverse('login_token_expired'))
 
 
 def login(request):
@@ -56,6 +56,10 @@ def login(request):
         return HttpResponseRedirect(reverse('login_sent'))
 
     return render(request, 'accounts/login.html', {'form': form})
+
+
+def login_token_expired(request):
+    return render(request, 'accounts/login_expired.html')
 
 
 def home(request):
@@ -79,6 +83,13 @@ def registration(request):
         return HttpResponseRedirect(reverse('login_sent'))
 
     return render(request, 'accounts/registration.html', {'form': form})
+
+
+@login_required
+def status(request):
+    if not request.user.can_verify() or request.user.eth_address == '':
+        return HttpResponseRedirect(reverse('profile'))
+    return render(request, 'accounts/status.html')
 
 
 @login_required
