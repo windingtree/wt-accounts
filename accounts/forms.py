@@ -23,8 +23,7 @@ class RegistrationForm(forms.ModelForm):
     )
 
     g_recaptcha_response = forms.CharField(required=False)
-    terms_accepted = forms.BooleanField(label=_('I accept the <a href="%sToken Sale T&Cs.pdf">'
-                                                'Terms and Conditions</a>') % settings.STATIC_URL,
+    terms_accepted = forms.BooleanField(label=_('I accept the Terms and Conditions'),
                                         error_messages={'required': validators.TOS_REQUIRED}
                                         )
     non_us_resident = forms.BooleanField(label=_('I hereby certify that I am not a U.S. citizen '
