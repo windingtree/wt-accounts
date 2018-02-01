@@ -14,7 +14,24 @@
 {% block content %}
 <div id="main">
   <section class="main">
-    <header class="major" style="color: red;">
+    <header class="major no-margin">
+      <h2 id="verification-status" class="hidden">
+        {% if request.user.verify_status == 'awaiting_applicant' %}
+          <span class="badge badge-secondary">Verification Not Submitted</span>
+        {% elif request.user.verify_status == 'in_progress' %}
+          <span class="badge badge-light">Verification In Progress</span>
+        {% elif request.user.verify_status == 'complete' %}
+          <span class="badge badge-primary">Verification Complete</span>
+        {% elif request.user.verify_status == 'withdrawn' %}
+          <span class="badge badge-danger">Verification Withdrawn</span>
+        {% elif request.user.verify_status == 'paused' %}
+          <span class="badge badge-info">Verification Paused</span>
+        {% elif request.user.verify_status == 'reopened' %}
+          <span class="badge badge-info">Verification Reopened</span>
+        {% else %}
+          <span class="badge badge-secondary">Verification Not Submitted</span>
+        {% endif %}
+      </h2>
       {% if request.user.eth_address %}
         <h4>ICO address: <strong id="icoAddress">0x9df3a24d738ae98dea766cd89c3aef16583a4daf</strong></h4>
         <h4>Your address: <span id="userAddress">{{ request.user.eth_address }}</span></h4>
@@ -24,10 +41,11 @@
     </header>
     <form action="." method="post" enctype="multipart/form-data">
       {% csrf_token %}
-      {% bootstrap_form form %}
-
+      <div id="proof-of-address-input" class="hidden">
+        {% bootstrap_form form %}
+      </div>
       <button id="verify-profile" type="submit" name="verify"
-              class="btn special">
+              class="btn special hidden">
         Verify for +15 ETH contribution
       </button>
     </form>

@@ -1,9 +1,9 @@
 // TGE Scripts
-var SOFT_CAP = 4348;
+var SOFT_CAP = 4350;
 var icoAddress = "0x9df3a24d738ae98dea766cd89c3aef16583a4daf";
 var tokenAddress = "0xeb9951021698b42e4399f9cbb6267aa35f82d59d";
 var contributorAddress = userAddress;
-var maxUnverifiedContribution = 15;
+var maxUnverifiedContribution = 10;
 
 //Set addresses
 $('#icoAddress').text(icoAddress);
@@ -67,12 +67,14 @@ function refreshUserContribution() {
       getEthSent(contributorAddress).then(function(weiSent) {
         var ETHSent = (Number(weiSent.result) / 1e18);
         console.log('ETH Sent:', ETHSent);
-        // if (ETHSent > maxUnverifiedContribution && verifiedUser) {
-        //   $('#verify-profile').show();
-        //   $('#verify-alert').show();
-        // }
-        $('#verify-profile').show();
-        $('#verify-alert').show();
+
+        // Show only profile verification if contribution more than maxUnverifiedContribution
+        if (ETHSent >= maxUnverifiedContribution && verifiedUser) {
+          $('#verification-status').show();
+          $('#proof-of-address-input').show();
+          $('#verify-profile').show();
+          $('#verify-alert').show();
+        }
         $('#totalETHSent').text(parseFloat(ETHSent).toFixed(4)+' ETH');
       });
     else
@@ -92,7 +94,7 @@ function refreshUserContribution() {
 refreshUserContribution();
 
 function setEthRaised(eth) {
-    var percentComplete = eth / SOFT_CAP * 100;
+    var percentComplete = eth / (SOFT_CAP*2) * 100;
     console.log('% complete', percentComplete);
     if (percentComplete > 100) {
         percentComplete = 100;
@@ -113,6 +115,7 @@ function setEthRaised(eth) {
           width: 100-Math.floor(percentComplete)+'%',
           opacity: 1,
       }).toggleClass('done', percentComplete >= 100);
+      $('#afterCapBar').text(parseInt(eth)+' ETH')
     } else {
       console.log(percentComplete);
       $('#beforeCapBar').css({
@@ -131,6 +134,7 @@ function setEthRaised(eth) {
           width: '50%',
           opacity: 1,
       }).toggleClass('done', percentComplete >= 100);
+      $('#beforeCapBar').text(parseInt(eth)+' ETH')
     }
 
     $('#ethRaised').text(parseFloat(eth).toFixed(2));
