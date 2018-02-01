@@ -69,10 +69,16 @@
   display: none;
 }
 
+.no-margin {
+  margin: 0 !important;
+}
+
 .progress {
   height: 40px;
   border-radius: 20px;
   margin-bottom: 30px;
+  font-size: 15px;
+  font-weight: bold;
 }
 
 .progress-bar {
