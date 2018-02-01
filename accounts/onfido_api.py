@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-import datetime
 import json
 
 import onfido
+from datetime import date
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.forms import model_to_dict
@@ -36,6 +36,7 @@ def create_applicant(user):
     address = onfido.Address(**model_to_dict(user, fields=(
         'street', 'building_number', 'town', 'postcode')))
     address.country = user.country.alpha3
+    address.start_date = date(2017, 1, 1) # they want month only a year back it seems
 
     applicant.addresses = [address]
 
