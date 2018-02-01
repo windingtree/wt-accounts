@@ -96,3 +96,14 @@
 .progress {
   margin-bottom: 40px;
 }
+
+#faq {
+  font-size: 1.2em;
+}
+
+#faq dt {
+  font-weight: bold;
+}
+#faq dd {
+  margin-bottom: 1em;
+}
