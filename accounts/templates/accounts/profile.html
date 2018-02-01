@@ -14,11 +14,14 @@
 {% block content %}
 <div id="main">
   <section class="main">
-    <header class="major" style="color: red;">
+    <header class="major" style="color: red; font-weight: bold;">
+      <h2>Read These Instructions First or You May Lose Your Money</h2>
       <p style="margin-bottom: 10px;">The contribution address will be displayed after you fill out this simple form. Please note that if you contribute more than 15ETH, you will have to provide additional identity verification.</p>
       <p style="margin-bottom: 10px;">You must enter the Ethereum wallet address that you will be using to send your contribution from, otherwise your contribution will be rejected.</p>
-      <p style="margin-bottom: 10px;">Your Ethereum wallet must be ERC20-compatible (MyEtherWallet, Jaxx), otherwise your tokens will be lost without a chance to recover.</p>
+      <p style="margin-bottom: 10px;">Your Ethereum wallet must be ERC20-compatible (MyEtherWallet, Jaxx), otherwise your tokens will be lost without a chance to recover. Do not send ETH from an exchange!</p>
+      <p style="margin-bottom: 10px;">All transactions that do not match our KYC standards will be refunded after the TGE. For example, if you share the ICO address with your friend and they don't register on our website, their transaction will be sent back (minus transaction and processing fees).</p>
     </header>
+    <h2>ICO Profile Form</h2>
     <form action="." method="post" class="form">
       {% csrf_token %}
       {% bootstrap_form form %}
