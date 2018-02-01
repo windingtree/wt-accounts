@@ -1,26 +1,37 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% load static %}
 
 {% block navbar %}
-  {% include 'navbar.html' with active_item='login' %}
+<header id="header">
+  <span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span>
+  <h1>Log In</h1>
+  <p>Don't have an account yet? <strong><a href="{% url 'register' %}">Register</a></strong></p>
+</header>
 {% endblock %}
 
 {% block content %}
-<div class="row justify-content-around">
-  <div class="col-lg-9 col-sm-12">
-    <form action="." method="post" class="form jumbotron">
-      {% csrf_token %}
-      {% bootstrap_form form %}
-      <div class="row justify-content-around">
-        {% buttons %}
-          <button type="submit" class="btn btn-lg btn-primary">Login</button>
-        {% endbuttons %}
+
+<div id="main">
+  <form action="." method="post" class="form jumbotron">
+    {% csrf_token %}
+    <div class="row uniform">
+      <div class="6u 12u$(xsmall)">
+      <input type="text" name="demo-name" id="demo-name" value="" placeholder="Name" />
       </div>
-      <hr>
-      <p>Don't have an account yet? <strong><a href="{% url 'register' %}">Register</a></strong></p>
-    </form>
-  </div>
+      <div class="6u$ 12u$(xsmall)">
+      <input type="email" name="demo-email" id="demo-email" value="" placeholder="Email" />
+      </div>
+    </div>
+
+    {% bootstrap_form form %}
+    <div class="row justify-content-around">
+      {% buttons %}
+        <button type="submit" class="btn btn-lg btn-primary">Login</button>
+      {% endbuttons %}
+    </div>
+    <hr>
+    <p>Don't have an account yet? <strong><a href="{% url 'register' %}">Register</a></strong></p>
+  </form>
 </div>
-
-
 {% endblock %}
