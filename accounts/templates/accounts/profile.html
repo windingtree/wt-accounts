@@ -6,7 +6,8 @@
 <header id="header">
   <a href="/" style="border: none;"><span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span></a>
   <h1>My ICO Profile</h1>
-  <p>{{ request.user.email }} <strong><a href="{% url 'logout' %}">Log Out</a></strong></p>
+  <div><strong>{{ request.user.email }}</strong></div>
+  <p>{% if request.user.eth_address %}<a href="{% url 'status' %}">My Contribution</a>{% endif %} <a href="{% url 'logout' %}">Log Out</a></p>
 </header>
 {% endblock %}
 
