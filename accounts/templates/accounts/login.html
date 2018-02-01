@@ -12,27 +12,30 @@
 
 {% block content %}
 <div id="main">
-  <section id="status" class="main">
+  <section class="main">
     <header class="major">
       <h2>Log In to your Winding Tree account</h2>
       <p>Contribute to Winding Tree ICO, check your transaction status and complete your KYC if contributing 15 or more ETH.</p>
     </header>
-  </section>
 
-  <form action="." method="post" class="form">
-    {% csrf_token %}
-    <div class="row uniform">
-      <div class="6u 12u$(xsmall)">
-         {% bootstrap_field form.email %}
+    <form action="." method="post" class="form">
+      {% csrf_token %}
+
+      {% bootstrap_field form.email %}
+
+
+      <div class="row uniform">
+        <div class="6u 12u$(xsmall)">
+
+        </div>
       </div>
-    </div>
 
-    <div>
-      {% buttons %}
-        <button type="submit" class="btn btn-lg btn-primary">Login</button>
-      {% endbuttons %}
-    </div>
-  </form>
-
+      <div>
+        {% buttons %}
+          <button type="submit" class="button special">Login</button>
+        {% endbuttons %}
+      </div>
+    </form>
+  </section>
 </div>
 {% endblock %}
