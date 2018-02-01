@@ -3,7 +3,7 @@ var SOFT_CAP = 4350;
 var icoAddress = "0x9df3a24d738ae98dea766cd89c3aef16583a4daf";
 var tokenAddress = "0xeb9951021698b42e4399f9cbb6267aa35f82d59d";
 var contributorAddress = userAddress;
-var maxUnverifiedContribution = 10;
+var maxUnverifiedContribution = 15;
 
 //Set addresses
 $('#icoAddress').text(icoAddress);
