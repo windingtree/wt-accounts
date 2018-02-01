@@ -13,6 +13,9 @@
 {% block content %}
 <div id="main">
   <section class="main">
+    <header class="major">
+      <p>The contribution address will be displayed after you fill out this simple form. Please note that if you contribute more than 15ETH, you will have to provide additional identity verification.</p>
+    </header>
     <form action="." method="post" class="form">
       {% csrf_token %}
       {% bootstrap_form form %}

@@ -60,3 +60,7 @@
 .participate a {
   color: #000 !important;
 }
+
+.alert button {
+  display: none !important;
+}
