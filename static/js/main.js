@@ -1,4 +1,3 @@
-
 // TGE Scripts
 var SOFT_CAP = 4348;
 var icoAddress = "0x9df3a24d738ae98dea766cd89c3aef16583a4daf";
@@ -134,7 +133,7 @@ function setEthRaised(eth) {
       }).toggleClass('done', percentComplete >= 100);
     }
 
-    $('#ethRaised').text(parseFloat(eth).toFixed(2)+' ETH Raised');
+    $('#ethRaised').text(parseFloat(eth).toFixed(2));
     $('#progressBar').text(parseFloat(eth).toFixed(2)+' ETH');
 
 }
@@ -152,10 +151,10 @@ function refreshTGEValues() {
       getTotalLif().then(function(totalSupply) {
         var lifTotalSupply = (Number(totalSupply.result) / 1e18);
         console.log('Lif total supply:', lifTotalSupply)
-        $('#totalLif').text(parseFloat(lifTotalSupply).toFixed(2)+' Total LIFs')
+        $('#totalLif').text(parseFloat(lifTotalSupply).toFixed(2))
       });
     else
-      $('#totalLif').text(parseFloat(lifTotalSupply).toFixed(2)+' Total LIFs')
+      $('#totalLif').text(parseFloat(lifTotalSupply).toFixed(2))
 }
 
 // Check everything every 10 seconds
