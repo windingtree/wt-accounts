@@ -18,10 +18,12 @@ from django.urls import path, include
 
 from accounts.views import home
 from accounts.views import geofence
+from accounts.views import faq
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('ico/', include('accounts.urls')),
     path('restricted/', geofence, name='geofence'),
+    path('faq/', faq, name='faq'),
     path('', home, name='home'),
 ]

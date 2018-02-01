@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block navbar %}
+<header id="header">
+  <a href="/" style="border: none;"><span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span></a>
+  <h1>Líf Token Sale FAQ</h1>
+</header>
+{% endblock %}
+
+{% block content %}
+<div id="main">
+  <section class="main">
+    <dl>
+      <dt>What is Winding Tree?</dt>
+      <dd>Nice to meet you as well! Please check out these links: <a href="https://windingtree.com">website</a>, <a href="https://blog.windingtree.com">blog</a>, <a href="https://windingtree.com/files/White_Paper_EN.pdf">white paper</a>.</dd>
+    </dl>
+  </section>
+</div>
+{% endblock %}
