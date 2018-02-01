@@ -6,7 +6,7 @@
 
   <ul>
     {% for u in users %}
-      <li>{{ u }}: {{ u.eth_sum|stringformat:"E" }}</li>
+      <li>{{ u.eth_address }}: {{ u.eth_sum|stringformat:"E" }}</li>
     {% endfor %}
   </ul>
 
