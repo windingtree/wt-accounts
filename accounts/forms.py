@@ -15,19 +15,23 @@ logger = logging.getLogger(__name__)
 
 class RegistrationForm(forms.ModelForm):
     email = forms.EmailField(
-        help_text=_(u'email address'),
         required=True,
         validators=[
             validators.validate_confusables_email,
         ]
     )
 
+    # rendered manually in the template because of the Terms and Conditions hyperlink
+    terms_accepted = forms.BooleanField(
+        label=_('I accept the Terms and Conditions'),
+        error_messages={'required': validators.TOS_REQUIRED},
+    )
+    non_us_resident = forms.BooleanField(
+        label=_('I hereby certify that I am not a U.S. citizen nor currently residing in the U.S.'),
+        help_text=_(u'Due to US regulations we wont be accepting contribution from US residents and this measure will be enforced by geofencing the sale details'),
+    )
+
     g_recaptcha_response = forms.CharField(required=False)
-    terms_accepted = forms.BooleanField(label=_('I accept the Terms and Conditions'),
-                                        error_messages={'required': validators.TOS_REQUIRED}
-                                        )
-    non_us_resident = forms.BooleanField(label=_('I hereby certify that I am not a U.S. citizen '
-                                                 'nor currently residing in the U.S.'))
 
     class Meta:
         model = User

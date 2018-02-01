@@ -20,7 +20,7 @@ DUPLICATE_EMAIL = _(u"This email address is already in use. "
 FREE_EMAIL = _(u"Registration using free email addresses is prohibited. "
                u"Please supply a different email address.")
 RESERVED_NAME = _(u"This name is reserved and cannot be registered.")
-TOS_REQUIRED = _(u"You must agree to the terms to register")
+TOS_REQUIRED = _(u"You must agree to the terms to register.")
 
 
 # Below we construct a large but non-exhaustive list of names which
