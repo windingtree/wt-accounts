@@ -32,12 +32,38 @@
       <dt>I've contrubited in the presale in November, I sent ETH from an ERC20-compatible wallet. How do i claim my tokens?</dt>
       <dd>There is nothing you need to do. The tokens will appear in your wallet automatically.</dd>
       <dt>Do i have to add custom token to MEW?</dt>
-      <dd>We're working with MEW to support Líf natively. In the meantime, you can add a custom token with these parameters. Contract address: <code>0xEB9951021698B42e4399f9cBb6267Aa35F82D59D</code> (also available via <code>token.windingtree.eth</code> or <code>lif.winidngtree.eth</code>), symbol: <code>LIF</code>, decimals: <code>18</code>.</dd>
+      <dd>We're working with MEW to support Líf natively. In the meantime, you can add a custom token with these parameters. Contract address: <code>0xEB9951021698B42e4399f9cBb6267Aa35F82D59D</code> (also available via <code>token.windingtree.eth</code> or <code>lif.windingtree.eth</code>), symbol: <code>LIF</code>, decimals: <code>18</code>.</dd>
       <dt>How can I check my token balance?</dt>
       <dd>We recommend using <a href="https://etherscan.io/">etherscan.io</a> or <a href="https://ethplorer.io/">ethplorer.io</a>.</dd>
       <dt>My token balance on the <a href="https://lif.windingtree.com/ico/profile/">contribution status</a> page is "0", while the transaction was definitely confirmed.</dt>
       <dd>Have you entered the wallet address you sent ETH from? It should match! If they do, check Etherscan and Ethplorer, if tokens are in your wallet, you have nothing to worry about, perhaps some of your browser mess with the site.</dd>
+      <dt>I've sent more than 15ETH and I already have tokens. And I didn't have to go through any KYC nonsense. You fools, muahahaha!</dt>
+      <dd>We will refund ETH and burn LIF for all transactions that we don't have the appropriate level of KYC check for.</dd>
     </dl>
   </section>
+
+  <script type="text/javascript">
+    var dts = document.querySelectorAll('#faq dt');
+    var link, icon;
+
+    for (var i = 0; i < dts.length; i++) {
+      var id = 'faq-' + i;
+
+      // ID
+      dts[i].setAttribute('id', id);
+
+      // Link
+      link = document.createElement('a');
+      icon = document.createElement('a');
+      icon.setAttribute('class', 'icon fa-link');
+      link.appendChild(icon);
+      link.setAttribute('href', '#' + id);
+      link.setAttribute('title', 'Link to this Question');
+
+      // Insert
+      dts[i].innerText = dts[0].innerText + ' ';
+      dts[i].appendChild(link);
+    }
+  </script>
 </div>
 {% endblock %}
