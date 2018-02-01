@@ -70,6 +70,10 @@ def home(request):
     return render(request, 'home.html')
 
 
+def faq(request):
+    return render(request, 'accounts/faq.html')
+
+
 def registration(request):
     if is_from_banned_country(request):
         return HttpResponseRedirect(reverse('geofence'))
@@ -192,4 +196,3 @@ def headers(request):
     ]
     data = '\n'.join(lines)
     return HttpResponse('<pre>{}</pre>'.format(data))
-
