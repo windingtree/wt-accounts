@@ -2018,7 +2018,7 @@
 		input[type="button"].special,
 		button.special,
 		.button.special {
-			background-color: #8cc9f0;
+			background-color: #25aaff;
 			color: #333 !important;
 			box-shadow: none;
       font-weight: bold;
@@ -2029,7 +2029,7 @@
 			input[type="button"].special:hover,
 			button.special:hover,
 			.button.special:hover {
-				background-color: #9acff2;
+				background-color: #009bff;
 			}
 
 			input[type="submit"].special:active,
@@ -3433,7 +3433,7 @@
 			#main input[type="button"].special,
 			#main button.special,
 			#main .button.special {
-				background-color: #8cc9f0;
+				background-color: #25aaff;
 				color: #ffffff !important;
 				box-shadow: none;
 			}
@@ -3443,7 +3443,7 @@
 				#main input[type="button"].special:hover,
 				#main button.special:hover,
 				#main .button.special:hover {
-					background-color: #9acff2;
+					background-color: #009bff;
 				}
 
 				#main input[type="submit"].special:active,
@@ -3451,7 +3451,7 @@
 				#main input[type="button"].special:active,
 				#main button.special:active,
 				#main .button.special:active {
-					background-color: #7ec3ee;
+					background-color: #25aaff;
 				}
 
 				#main input[type="submit"].special.icon:before,
