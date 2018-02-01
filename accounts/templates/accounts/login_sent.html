@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block navbar %}
-  {% include 'navbar.html' with active_item='login' %}
+<header id="header">
+  <a href="/" style="border: none;"><span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span></a>
+</header>
 {% endblock %}
 
-
 {% block content %}
-  <div class="height100">
-    <div class="row justify-content-center">
-      <div class="col-lg-9 col-sm-12 height100">
-        <div class="jumbotron text-center">
-          <h4>Email was sent to your address, please click on the provided link to login.</h4>
-        </div>
-      </div>
-    </div>
-  </div>
+<div id="main">
+  <section class="main">
+    <header class="major">
+      <h2>Click on the link in the email you have just received to log in.</h2>
+    </header>
+  </section>
+</div>
 {% endblock %}
