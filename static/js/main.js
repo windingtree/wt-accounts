@@ -115,6 +115,7 @@ function setEthRaised(eth) {
           width: 100-Math.floor(percentComplete)+'%',
           opacity: 1,
       }).toggleClass('done', percentComplete >= 100);
+      $('#afterCapBar').text(parseInt(eth)+' ETH')
     } else {
       console.log(percentComplete);
       $('#beforeCapBar').css({
@@ -133,6 +134,7 @@ function setEthRaised(eth) {
           width: '50%',
           opacity: 1,
       }).toggleClass('done', percentComplete >= 100);
+      $('#beforeCapBar').text(parseInt(eth)+' ETH')
     }
 
     $('#ethRaised').text(parseFloat(eth).toFixed(2));
