@@ -76,7 +76,6 @@ class RegistrationForm(forms.ModelForm):
 
 class LoginForm(forms.Form):
     email = forms.EmailField(
-        help_text=_(u'email address'),
         widget=forms.TextInput(attrs={'autofocus': True}),
     )
 
