@@ -21,29 +21,6 @@
 			border: none !important;
 		}
 
-/* Icon */
-
-	.icon.major {
-		-ms-behavior: url("assets/js/ie/PIE.htc");
-	}
-
-		.icon.major:before {
-			font-size: 4em;
-			border: 0;
-		}
-
-/* Spotlight */
-
-	.spotlight .image {
-		position: relative;
-		-ms-behavior: url("assets/js/ie/PIE.htc");
-	}
-
-		.spotlight .image img {
-			position: relative;
-			-ms-behavior: url("assets/js/ie/PIE.htc");
-		}
-
 /* Features */
 
 	.features li {
