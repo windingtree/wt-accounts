@@ -75,7 +75,7 @@ function refreshUserContribution() {
           $('#verify-profile').show();
           $('#verify-alert').show();
         }
-        $('#totalETHSent').text(parseFloat(ETHSent).toFixed(4)+' ETH');
+        $('#totalETHSent').text(parseFloat(ETHSent).toLocaleString('en') + ' ETH');
       });
     else
       $('#totalETHSent').text('0 ETH')
@@ -84,7 +84,7 @@ function refreshUserContribution() {
       getLifBalance(contributorAddress).then(function(balance) {
         var libBalance = (Number(balance.result) / 1e18);
         console.log('Lif Balance:', balance);
-        $('#totalLifBalance').text(parseFloat(libBalance).toFixed(4)+' LIFs');
+        $('#totalLifBalance').text(parseFloat(libBalance).toLocaleString('en') + ' LIFs');
       });
     else
       $$('#totalLifBalance').text('0 LIFs');
@@ -137,8 +137,8 @@ function setEthRaised(eth) {
       $('#beforeCapBar').text(parseInt(eth)+' ETH')
     }
 
-    $('#ethRaised').text(parseFloat(eth).toFixed(2));
-    $('#progressBar').text(parseFloat(eth).toFixed(2)+' ETH');
+    $('#ethRaised').text(parseFloat(eth).toLocaleString('en'));
+    $('#progressBar').text(parseFloat(eth).toLocaleString('en') +' ETH');
 
 }
 
@@ -155,10 +155,10 @@ function refreshTGEValues() {
       getTotalLif().then(function(totalSupply) {
         var lifTotalSupply = (Number(totalSupply.result) / 1e18);
         console.log('Lif total supply:', lifTotalSupply)
-        $('#totalLif').text(parseFloat(lifTotalSupply).toFixed(2))
+        $('#totalLif').text(parseFloat(lifTotalSupply).toLocaleString('en'))
       });
     else
-      $('#totalLif').text(parseFloat(lifTotalSupply).toFixed(2))
+      $('#totalLif').text(parseFloat(lifTotalSupply).toLocaleString('en'))
 }
 
 // Check everything every 10 seconds
