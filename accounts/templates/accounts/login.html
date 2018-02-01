@@ -22,7 +22,12 @@
 
       <form action="." method="post" class="form">
       {% csrf_token %}
-      {% bootstrap_form form %}
+      <div class="row uniform">
+        <div class="6u 12u$(xsmall)">
+           {% bootstrap_field form.email %}
+        </div>
+      </div>
+
       <div class="row justify-content-around">
         {% buttons %}
           <button type="submit" class="btn btn-lg btn-primary">Login</button>
