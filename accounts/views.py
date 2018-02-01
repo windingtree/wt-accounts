@@ -173,7 +173,7 @@ def eth_sums(request):
     return render(request, 'accounts/eth_sums.html', {'total': total, 'users': users})
 
 def is_from_banned_country(request):
-    banned_countries = ['US', 'china']
+    banned_countries = ['US', 'CHINA']
     geoip_header = request.META.get('HTTP_CF_IPCOUNTRY', '')
     return geoip_header.upper() in banned_countries
 
