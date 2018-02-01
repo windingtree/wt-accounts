@@ -4,8 +4,9 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
 
 class CustomUserAdmin(UserAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'eth_contrib',
-                    'proof_of_address_file')
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',
+                    'eth_address', 'eth_contrib',
+                    'proof_of_address_file', 'is_verified')
 
 
 class OnfidoCallAdmin(admin.ModelAdmin):
