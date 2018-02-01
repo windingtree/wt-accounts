@@ -9,6 +9,9 @@ ALLOWED_HOSTS = [
     'lif.windingtree.com',
 ]
 
+# security
+SESSION_COOKIE_SECURE = True
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
