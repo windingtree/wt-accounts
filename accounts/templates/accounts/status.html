@@ -19,9 +19,21 @@
         <h4>Total ETH Sent: <strong id="totalETHSent">0</strong></h4>
         <h4>Your Lif balance: <strong id="totalLifBalance">0</strong></h4>
       </div>
-    </div>
     {% endif %}
 
+    <div class="row justify-content-md-center jumbotron">
+      <form action="." method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+
+        <button id="verify-profile" type="submit" name="verify"
+                class="btn btn-lg btn-info hidden">
+          Verify for +15 ETH contribution
+        </button>
+      </form>
+    </div>
+
+    </div>
   </div>
 </div>
 {% endblock %}
