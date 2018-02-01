@@ -95,6 +95,8 @@ class LoginForm(forms.Form):
 
 
 class ProfileForm(forms.ModelForm):
+    first_name = forms.CharField(min_length=2, required=True)
+    last_name = forms.CharField(min_length=2, required=True)
 
     class Meta:
         model = User
@@ -102,7 +104,6 @@ class ProfileForm(forms.ModelForm):
             'first_name', 'last_name', 'birth_date', 'mobile', 'street', 'building_number',
             'town', 'postcode', 'country', 'eth_address')
         required_css_class = 'required'
-
 
 class VerifyForm(forms.ModelForm):
     class Meta:
