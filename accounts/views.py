@@ -112,7 +112,7 @@ def status(request):
                 'Verification request sent, please check your '
                 'inbox or visit <a target="_blank" href="{0}">{0}</a>'.format(
                     onfido_check.check_form_url)))
-        return redirect('status')
+            return redirect('status')
 
     return render(request, 'accounts/status.html', {'form': form})
 
