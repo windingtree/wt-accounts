@@ -41,5 +41,29 @@
       <dd>We will refund ETH and burn LIF for all transactions that we don't have the appropriate level of KYC check for.</dd>
     </dl>
   </section>
+
+  <script type="text/javascript">
+    var dts = document.querySelectorAll('#faq dt');
+    var link, icon;
+
+    for (var i = 0; i < dts.length; i++) {
+      var id = 'faq-' + i;
+
+      // ID
+      dts[i].setAttribute('id', id);
+
+      // Link
+      link = document.createElement('a');
+      icon = document.createElement('a');
+      icon.setAttribute('class', 'icon fa-link');
+      link.appendChild(icon);
+      link.setAttribute('href', '#' + id);
+      link.setAttribute('title', 'Link to this Question');
+
+      // Insert
+      dts[i].innerText = dts[0].innerText + ' ';
+      dts[i].appendChild(link);
+    }
+  </script>
 </div>
 {% endblock %}
