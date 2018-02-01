@@ -36,7 +36,7 @@ class User(AbstractUser):
     town = models.CharField(_('City'), max_length=100)
     postcode = models.CharField(max_length=100)
     eth_address = models.CharField(
-        _('Your ETH wallet address from which you’ll be sending your contribution'), max_length=100,
+        _('Your ERC20 Ethereum wallet address from which you’ll be sending your contribution. It can\'t be an exchange address!'), max_length=100,
         validators=[validate_eth_address])
     eth_contrib = models.CharField(blank=True, max_length=30)
     proof_of_address_file = models.FileField(_('Proof of address'), storage=S3Storage(),
@@ -131,4 +131,3 @@ def send_verification_status_email(request, user):
     html_message = render_to_string('accounts/email_verification_status.html', context=context, request=request)
     # sending from settings.DEFAULT_FROM_EMAIL
     user.email_user('WT verification status', email_content, html_message=html_message)
-
