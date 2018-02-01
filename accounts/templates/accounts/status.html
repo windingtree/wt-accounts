@@ -8,6 +8,7 @@
   <h1>My Contribution Status</h1>
   <div><strong>{{ request.user.email }}</strong></div>
   <p><a href="{% url 'profile' %}">Edit Profile</a> <a href="{% url 'logout' %}">Log Out</a></p>
+  <h1>ICO address: <strong id="icoAddress">0x9df3a24d738ae98dea766cd89c3aef16583a4daf</strong></h1>
 </header>
 {% endblock %}
 
@@ -33,7 +34,6 @@
         {% endif %}
       </h2>
       {% if request.user.eth_address %}
-        <h4>ICO address: <strong id="icoAddress">0x9df3a24d738ae98dea766cd89c3aef16583a4daf</strong></h4>
         <h4>Your address: <span id="userAddress">{{ request.user.eth_address }}</span></h4>
         <h4>Total ETH Sent: <strong id="totalETHSent">0</strong></h4>
         <h4>Your Lif balance: <strong id="totalLifBalance">0</strong></h4>
