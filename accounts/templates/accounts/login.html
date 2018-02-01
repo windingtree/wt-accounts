@@ -4,62 +4,35 @@
 
 {% block navbar %}
 <header id="header">
-  <span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span>
+  <a href="/" style="border: none;"><span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span></a>
   <h1>Log In</h1>
   <p>Don't have an account yet? <strong><a href="{% url 'register' %}">Register</a></strong></p>
 </header>
 {% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-lg-9 col-sm-12">
-    <div class="jumbotron">
-      <h2 class="text-center">Login to your Winding Tree account</h2>
-      <p class="text-center">
-        Contribute to Winding Tree ICO, check your transaction status and <br>
-        complete your KYC if contributing 15 or more ETH.
-      </p>
-
-      <form action="." method="post" class="form">
-      {% csrf_token %}
-      <div class="row uniform">
-        <div class="6u 12u$(xsmall)">
-           {% bootstrap_field form.email %}
-        </div>
-      </div>
-
-      <div class="row justify-content-around">
-        {% buttons %}
-          <button type="submit" class="btn btn-lg btn-primary">Login</button>
-        {% endbuttons %}
-      </div>
-      <hr>
-      <p>Don't have an account yet? <strong><a href="{% url 'register' %}">Register</a></strong></p>
-    </form>
-    </div>
-  </div>
-</div>
-
 <div id="main">
-  <form action="." method="post" class="form jumbotron">
+  <section id="status" class="main">
+    <header class="major">
+      <h2>Log In to your Winding Tree account</h2>
+      <p>Contribute to Winding Tree ICO, check your transaction status and complete your KYC if contributing 15 or more ETH.</p>
+    </header>
+  </section>
+
+  <form action="." method="post" class="form">
     {% csrf_token %}
     <div class="row uniform">
       <div class="6u 12u$(xsmall)">
-      <input type="text" name="demo-name" id="demo-name" value="" placeholder="Name" />
-      </div>
-      <div class="6u$ 12u$(xsmall)">
-      <input type="email" name="demo-email" id="demo-email" value="" placeholder="Email" />
+         {% bootstrap_field form.email %}
       </div>
     </div>
 
-    {% bootstrap_form form %}
-    <div class="row justify-content-around">
+    <div>
       {% buttons %}
         <button type="submit" class="btn btn-lg btn-primary">Login</button>
       {% endbuttons %}
     </div>
-    <hr>
-    <p>Don't have an account yet? <strong><a href="{% url 'register' %}">Register</a></strong></p>
   </form>
+
 </div>
 {% endblock %}

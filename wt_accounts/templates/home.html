@@ -7,7 +7,7 @@
 
 {% block content %}
   <header id="header" class="alt">
-    <span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span>
+    <a href="/" style="border: none;"><span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span></a>
     <h1>Líf</h1>
     <h2>Winding Tree Token Sale is Líve</h2>
 
@@ -31,7 +31,7 @@
       {% if request.user.is_authenticated %}
         <a href="{% url 'profile' %}" class="button special">My Profile</a>
       {% else %}
-        <a href="{% url 'login_form' %}" class="button special">Participate</a>
+        <a href="{% url 'register' %}" class="button special">Participate</a>
       {% endif %}
     </div>
   </header>
@@ -79,8 +79,12 @@
         <h2>How To Participate</h2>
       </header>
       <ol style="font-size: 1.2em;">
-        <li><a href="{% url 'register' %}">Register an account</a>.</li>
-        <li>Click the link you receive in your mailbox to log in.</li>
+        {% if not request.user.is_authenticated %}
+          <li><a href="{% url 'register' %}">Register an account</a>.</li>
+          <li>Click the link you receive in your mailbox to log in.</li>
+        {% else %}
+          <li>Go to <a href="{% url 'profile' %}" class="button special">your profile</a>.</li>
+        {% endif %}
         <li>Complete your profile &amp; provide the ETH wallet address from which you’ll be contributing.</li>
         <li>Send your contribution to the Winding Tree ICO address that will be displayed for you.</li>
         <li>On the same page you’ll be prompted to complete a quick ID verification if your contribution is 15ETH or more.</li>
