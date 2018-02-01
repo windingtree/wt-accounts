@@ -3,7 +3,9 @@
 {% load bootstrap4 %}
 
 {% block navbar %}
-  {% include 'navbar.html' with active_item='profile' %}
+<header id="header">
+  <a href="/" style="border: none;"><span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span></a>
+</header>
 {% endblock %}
 
 

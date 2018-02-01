@@ -3,36 +3,25 @@
 {% load bootstrap4 %}
 
 {% block navbar %}
-  {% include 'navbar.html' with active_item='profile' %}
+<header id="header">
+  <a href="/" style="border: none;"><span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span></a>
+  <h1>My ICO Profile</h1>
+  <p>{{ request.user.email }} <strong><a href="{% url 'logout' %}">Log Out</a></strong></p>
+</header>
 {% endblock %}
 
-
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-lg-10 col-sm-12">
-
-    {% if request.user.eth_address %}
-    <div class="row justify-content-center">
-      <div class="jumbotron">
-        <h4>ICO address: <strong id="icoAddress">0x9df3a24d738ae98dea766cd89c3aef16583a4daf</strong></h4>
-        <h4>Your address: <span id="userAddress">{{ request.user.eth_address }}</span></h4>
-        <h4>Total ETH Sent: <strong id="totalETHSent">0</strong></h4>
-        <h4>Your Lif balance: <strong id="totalLifBalance">0</strong></h4>
+<div id="main">
+  <section class="main">
+    <form action="." method="post" class="form">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      <div class="row justify-content-around">
+        {% buttons %}
+          <button id="submit-profile" type="submit" class="button special">Save ICO Profile</button>
+        {% endbuttons %}
       </div>
-    </div>
-    {% endif %}
-
-    <div class="row justify-content-center">
-      <form action="." method="post" class="form jumbotron">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        <div class="row justify-content-around">
-          {% buttons %}
-            <button id="submit-profile" type="submit" class="btn btn-lg btn-primary">Save ICO Profile</button>
-          {% endbuttons %}
-        </div>
-      </form>
-    </div>
-  </div>
+    </form>
+  </section>
 </div>
 {% endblock %}
