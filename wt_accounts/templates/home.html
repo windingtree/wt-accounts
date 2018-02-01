@@ -10,7 +10,7 @@
   <header id="header" class="alt">
     <span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span>
     <h1>Líf</h1>
-    <h2>Winding Tree Token Generation Event</h2>
+    <h2>Winding Tree Token Sale is Líve</h2>
 
     <h1 id="countdown">00d : 00h : 00m : 00s</h1>
     <div id="countdown-explainer">
@@ -53,32 +53,47 @@
       </header>
       <ul class="statistics">
         <li class="style1">
-          <span class="icon fa-code-fork"></span>
-          <strong>5,120</strong> Etiam
+          <span class="icon fa-arrow-up"></span>
+          <strong>4,348 ETH</strong> Soft Cap
         </li>
         <li class="style2">
-          <span class="icon fa-folder-open-o"></span>
-          <strong>8,192</strong> Magna
+          <span class="icon fa-usd"></span>
+          <strong>$1,150</strong> TGE USD/ETH Rate
         </li>
         <li class="style3">
-          <span class="icon fa-signal"></span>
-          <strong>2,048</strong> Tempus
-        </li>
-        <li class="style4">
-          <span class="icon fa-laptop"></span>
-          <strong>4,096</strong> Aliquam
-        </li>
-        <li class="style5">
-          <span class="icon fa-diamond"></span>
-          <strong>1,024</strong> Nullam
+          <span class="icon fa-balance-scale"></span>
+          <strong>1,000 </strong> Current LIF/ETH Rate
         </li>
       </ul>
-      <p class="content">Nam elementum nisl et mi a commodo porttitor. Morbi sit amet nisl eu arcu faucibus hendrerit vel a risus. Nam a orci mi, elementum ac arcu sit amet, fermentum pellentesque et purus. Integer maximus varius lorem, sed convallis diam accumsan sed. Etiam porttitor placerat sapien, sed eleifend a enim pulvinar faucibus semper quis ut arcu. Ut non nisl a mollis est efficitur vestibulum. Integer eget purus nec nulla mattis et accumsan ut magna libero. Morbi auctor iaculis porttitor. Sed ut magna ac risus et hendrerit scelerisque. Praesent eleifend lacus in lectus aliquam porta. Cras eu ornare dui curabitur lacinia.</p>
-      <footer class="major">
-        <ul class="actions">
-          <li><a href="generic.html" class="button">Learn More</a></li>
-        </ul>
-      </footer>
+      <ul class="statistics">
+        <li class="style4">
+          <span class="icon fa-signal"></span>
+          <strong id="ethRaised">0</strong> ETH Raised
+        </li>
+        <li class="style5">
+          <span class="icon fa-envira"></span>
+          <strong id="totalLif">0</strong> Lífs Generated
+        </li>
+      </ul>
+
+
+
+
+      <div>
+        <div class="">
+          <div class="col-6 text-center"><h4></h4></div>
+          <div class="col-6 text-center"><h4></h4></div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-12 text-center"><small>Soft Cap</small></div>
+        </div>
+        <div class="progress">
+          <div id="beforeCapBar"class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
+          <div id="beforeCapBarRest"class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="0" aria-valuemin="50" aria-valuemax="100"></div>
+          <div id="afterCapBar"class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+          <div id="afterCapBarRest"class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="0" aria-valuemin="50" aria-valuemax="100"></div>
+        </div>
+      </div>
     </section>
 
     <section id="first" class="main special">
@@ -162,57 +177,7 @@
   </div>
 
 
-  <div class="row justify-content-center">
-    <h1>Winding Tree Token Sale is LIVE Now</h1>
-    <br>
-    <div class="jumbotron home-box">
-      <div class="row justify-content-around">
-        <h3 id="countdown">00d : 00h : 00m : 00s</h3>
-      </div>
-      <div class="row justify-content-center">
-        <p id="countdown-until" class="nm">Until the sale start at February 1, 2018 (8AM UTC)</p>
-      </div>
-      <hr>
-      <div class="row justify-content-center countdown-section">
-        <h3 id="countdown-rate">00d : 00h : 00m : 00s</h3>
-      </div>
-      <div class="row justify-content-center countdown-section">
-        <small>Until rate changes to 900 at February 7, 2018 (8AM UTC)</small>
-        <p id="alert-countdown" class="nm"><small>* Please note that if you wait till the last hours to contribute your transaction may be counted at the lower rate or rejected. The token minting rate is counted when the smart contract receives the transaction not when it is sent.</small></p>
-        <br>
-      </div>
-      <div class="row justify-content-around">
-        <div class="col-4 text-center"><h4>Soft Cap</h4></div>
-        <div class="col-4 text-center"><h4>TGE Rate</h4></div>
-        <div class="col-4 text-center"><h4>Current ICO Rate</h4></div>
-      </div>
-    </div>
-  </div>
 
-
-  <div class="jumbotron">
-    <br>
-    <div class="row justify-content-around">
-      <div class="col-4 text-center"><h4>4348 ETH</h4></div>
-      <div class="col-4 text-center"><h4>1150 USD/ETH</h4></div>
-      <div class="col-4 text-center"><h4 id="tokenRate">1000 LIF/ETH</h4></div>
-    </div>
-    <hr>
-    <div class="row justify-content-around">
-      <div class="col-6 text-center"><h4><strong id="ethRaised">0 ETH Raised</strong></h4></div>
-      <div class="col-6 text-center"><h4><strong id="totalLif">0 Lif Tokens Supply</strong></h4></div>
-    </div>
-    <div class="row justify-content-center">
-      <div class="col-12 text-center"><small>Soft Cap</small></div>
-    </div>
-    <div class="progress">
-      <div id="beforeCapBar"class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
-      <div id="beforeCapBarRest"class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="0" aria-valuemin="50" aria-valuemax="100"></div>
-      <div id="afterCapBar"class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-      <div id="afterCapBarRest"class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="0" aria-valuemin="50" aria-valuemax="100"></div>
-
-    </div>
-  </div>
 
   <div class="jumbotron  home-box" id="instructions">
     <h3>Want to contribute? follow this steps:</h3>
