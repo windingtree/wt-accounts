@@ -30,7 +30,7 @@
     <div class="participate">
       {% if request.user.is_authenticated %}
         {% if request.user.eth_address %}
-          <a href="{% url 'profile' %}" class="button special">My Contribution Status</a>
+          <a href="{% url 'status' %}" class="button special">My Contribution Status</a>
         {% else %}
           <a href="{% url 'profile' %}" class="button special">My Profile</a>
         {% endif %}
