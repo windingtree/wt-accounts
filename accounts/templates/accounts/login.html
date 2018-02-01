@@ -1,34 +1,41 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% load static %}
 
 {% block navbar %}
-  {% include 'navbar.html' with active_item='login' %}
+<header id="header">
+  <a href="/" style="border: none;"><span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span></a>
+  <h1>Log In</h1>
+  <p>Don't have an account yet? <strong><a href="{% url 'register' %}">Register</a></strong></p>
+</header>
 {% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-lg-9 col-sm-12">
-    <div class="jumbotron">
-      <h2 class="text-center">Login to your Winding Tree account</h2>
-      <p class="text-center">
-        Contribute to Winding Tree ICO, check your transaction status and <br>
-        complete your KYC if contributing 15 or more ETH.
-      </p>
+<div id="main">
+  <section class="main">
+    <header class="major">
+      <h2>Log In to your Winding Tree account</h2>
+      <p>Contribute to Winding Tree ICO, check your transaction status and complete your KYC if contributing 15 or more ETH.</p>
+    </header>
 
-      <form action="." method="post" class="form">
+    <form action="." method="post" class="form">
       {% csrf_token %}
-      {% bootstrap_form form %}
-      <div class="row justify-content-around">
+
+      {% bootstrap_field form.email %}
+
+
+      <div class="row uniform">
+        <div class="6u 12u$(xsmall)">
+
+        </div>
+      </div>
+
+      <div>
         {% buttons %}
-          <button type="submit" class="btn btn-lg btn-primary">Login</button>
+          <button type="submit" class="button special">Login</button>
         {% endbuttons %}
       </div>
-      <hr>
-      <p>Don't have an account yet? <strong><a href="{% url 'register' %}">Register</a></strong></p>
     </form>
-    </div>
-  </div>
+  </section>
 </div>
-
-
 {% endblock %}

@@ -7,44 +7,47 @@
   <script src='https://www.google.com/recaptcha/api.js'></script>
 {% endblock %}
 
-
 {% block navbar %}
-  {% include 'navbar.html' with active_item='register' %}
+<header id="header">
+  <a href="/" style="border: none;"><span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span></a>
+  <h1>Register</h1>
+  <p>Already registered? <strong><a href="{% url 'login_form' %}">Log In</a></strong></p>
+</header>
 {% endblock %}
 
-
 {% block content %}
+<div id="main">
+  <section class="main">
+    <header class="major">
+      <h2>Register to Contribute to Winding Tree ICO</h2>
+      <p>To contribute you will need to register an account and create a profile.<br>Enter your email here and we'll email you next steps.</p>
+    </header>
 
-  <div class="row justify-content-center">
-    <div class="col-lg-9 col-sm-12">
-      <div class="jumbotron">
-        <h2 class="text-center">Register to Contribute to Winding Tree ICO</h2>
-        <p class="text-center">
-          To contribute you will need to register an account and create a profile. <br>
-          Enter your email here and we'll email you next steps.
-        </p>
+    <form action="." method="post" class="form">
+      {% csrf_token %}
 
-        <form action="." method="post" class="form">
-        {% csrf_token %}
+      {% bootstrap_field form.email %}
 
-        {% bootstrap_field form.email %}
-
-        <div class="form-group"><div class="checkbox"><label for="{{ form.terms_accepted.id_for_label }}"><input type="checkbox" name="{{ form.terms_accepted.name }}" class="" required id="{{ form.terms_accepted.id_for_label }}" /> I accept the <a href="{% static 'token_sale_terms_conditions.pdf' %}">Terms and Conditions</a></label></div></div>
-
-        {% bootstrap_field form.non_us_resident %}
-
-        <div class="row justify-content-around">
-          <div class="g-recaptcha" data-sitekey="{{ form.recaptcha_site_key }}"></div>
-        </div>
-
-        <div class="row justify-content-around">
-          {% buttons %}
-            <button type="submit" class="btn btn-lg btn-primary">Register</button>
-          {% endbuttons %}
-        </div>
-      </form>
+      <div class="6u 12u$(small)">
+        <input type="checkbox" name="{{ form.terms_accepted.name }}" class="" required id="{{ form.terms_accepted.id_for_label }}">
+        <label for="{{ form.terms_accepted.id_for_label }}">I accept the <a href="{% static 'token_sale_terms_conditions.pdf' %}">Terms and Conditions</a></label>
       </div>
-    </div>
-  </div>
 
+      {{ form.non_us_resident.errors }}
+      <div class="6u 12u$(small)">
+        <input type="checkbox" name="{{ form.non_us_resident.name }}" class="" required id="{{ form.non_us_resident.id_for_label }}">
+        <label for="{{ form.non_us_resident.id_for_label }}">{{ form.non_us_resident.label }}</label>
+      </div>
+      {{ form.non_us_resident.help_text }}
+
+      <div>
+        <div style="margin-bottom: 20px;" class="g-recaptcha" data-sitekey="{{ form.recaptcha_site_key }}"></div>
+
+        {% buttons %}
+          <button type="submit" class="button special">Register</button>
+        {% endbuttons %}
+      </div>
+    </form>
+  </section>
+</div>
 {% endblock %}

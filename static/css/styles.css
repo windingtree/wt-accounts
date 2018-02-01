@@ -1,0 +1,66 @@
+#header {
+  text-shadow: 1px 1px 2px #333;
+}
+
+#header h1 {
+  text-shadow: 2px 2px 5px #333;
+}
+
+#header .logo img {
+  height: 100px;
+  width: 100px;
+  padding: 10px;
+  border-radius: 10px;
+  -webkit-filter: drop-shadow(4px 4px 4px #444);
+  filter: drop-shadow(4px 4px 4px #444);
+}
+
+#countdown-explainer {
+  font-size: 1.4em;
+  color: #fff;
+}
+#countdown-explainer div {
+  display: none;
+}
+#countdown-explainer div:first-of-type {
+  display: block;
+  visibility: hidden;
+}
+#countdown-explainer.starts div,
+#countdown-explainer.changes div,
+#countdown-explainer.ends div {
+  display: none;
+  visibility: visible;
+}
+#countdown-explainer.starts .starts,
+#countdown-explainer.changes .changes,
+#countdown-explainer.ends .ends {
+  display: block;
+}
+
+#countdown-explainer span {
+  background: #61D8AE;
+  color: #222;
+  font-weight: bold;
+  text-shadow: none;
+  padding: 2px 12px 1px 12px;
+  border-radius: 1px;
+  letter-spacing: 2px;
+}
+#countdown-explainer span:after {
+  content: '\A';
+  white-space: pre;
+}
+
+.participate {
+  text-shadow: none;
+  margin: 40px 0 20px 0;
+}
+
+.participate a {
+  color: #000 !important;
+}
+
+.alert button {
+  display: none !important;
+}

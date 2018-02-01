@@ -1,4 +1,3 @@
-
 // TGE Scripts
 var SOFT_CAP = 4348;
 var icoAddress = "0x9df3a24d738ae98dea766cd89c3aef16583a4daf";
@@ -9,85 +8,6 @@ var maxUnverifiedContribution = 15;
 //Set addresses
 $('#icoAddress').text(icoAddress);
 $('#userAddress').text(contributorAddress.toString());
-
-// Countdown
-
-var startDate = 1517472000*1000;
-var changeRateDate = 1517990400*1000;
-var endDate = 1518652800*1000;
-
-function refreshCountdown() {
-  var now = new Date().getTime();
-
-  if (now < endDate) {
-    var distance = startDate - now;
-    if (distance < 0) {
-      distance = endDate - now;
-      $('#countdown-until').text("Until the sale ends at February 14, 2018 (12PM UTC)");
-    }
-
-    var days = ''+Math.floor(distance / (1000 * 60 * 60 * 24));
-    var hours = ''+Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = ''+Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = ''+Math.floor((distance % (1000 * 60)) / 1000);
-
-    if (days.length < 2)
-      days = "0" + days;
-    if (hours.length < 2)
-      hours = "0" + hours;
-    if (minutes.length < 2)
-      minutes = "0" + minutes;
-    if (seconds.length < 2)
-      seconds = "0" + seconds;
-
-    $('#countdown').text(days + "d : " + hours + "h : " + minutes + "m : " + seconds + "s");
-
-  } else {
-    clearInterval(x);
-    $('#countdown').text("Registration Closed");
-    $('#countdown-until').text("The token sale ended at February 15, 2018 (8AM UTC)");
-    $('#submit-profile').hide();
-    $('#verify-profile').hide();
-    $('.form-check').hide();
-    $('#instructions').hide();
-  }
-
-  if ((now > startDate) && (now < changeRateDate)) {
-    $('countdown-section').show();
-    distance = startDate - now;
-    if (distance < 0) {
-      distance = endDate - now;
-      $('#countdown-until').text("Until the sale ends at February 14, 2018 (12PM UTC)");
-    }
-
-    days = ''+Math.floor(distance / (1000 * 60 * 60 * 24));
-    hours = ''+Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    minutes = ''+Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    seconds = ''+Math.floor((distance % (1000 * 60)) / 1000);
-
-    if (days.length < 2)
-      days = "0" + days;
-    if (hours.length < 2)
-      hours = "0" + hours;
-    if (minutes.length < 2)
-      minutes = "0" + minutes;
-    if (seconds.length < 2)
-      seconds = "0" + seconds;
-
-    $('#countdown-rate').text(days + "d : " + hours + "h : " + minutes + "m : " + seconds + "s");
-
-  } else if ((now > changeRateDate) && (now < endDate)) {
-  $('#tokenRate').text('900 LIF/ETH');
-  $('#countdown-rate').hide();
-  $('#alert-rate').hide();
-  } else {
-    $('#countdown-rate').hide();
-    $('#alert-rate').hide();
-  }
-
-}
-var x = setInterval(refreshCountdown, 1000);
-refreshCountdown();
 
 // Get total ETH raised in wei unit, returns promise
 function getEthSent(contributor) {
@@ -213,7 +133,7 @@ function setEthRaised(eth) {
       }).toggleClass('done', percentComplete >= 100);
     }
 
-    $('#ethRaised').text(parseFloat(eth).toFixed(2)+' ETH Raised');
+    $('#ethRaised').text(parseFloat(eth).toFixed(2));
     $('#progressBar').text(parseFloat(eth).toFixed(2)+' ETH');
 
 }
@@ -231,10 +151,10 @@ function refreshTGEValues() {
       getTotalLif().then(function(totalSupply) {
         var lifTotalSupply = (Number(totalSupply.result) / 1e18);
         console.log('Lif total supply:', lifTotalSupply)
-        $('#totalLif').text(parseFloat(lifTotalSupply).toFixed(2)+' Total LIFs')
+        $('#totalLif').text(parseFloat(lifTotalSupply).toFixed(2))
       });
     else
-      $('#totalLif').text(parseFloat(lifTotalSupply).toFixed(2)+' Total LIFs')
+      $('#totalLif').text(parseFloat(lifTotalSupply).toFixed(2))
 }
 
 // Check everything every 10 seconds

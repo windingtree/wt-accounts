@@ -1,46 +1,84 @@
 {% load static %}
-{% load bootstrap4 %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>WT ICO</title>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="author" content="Maksim Izmaylov">
 
-  <link rel="icon" href="{% static 'img/favicon.png' %}">
-  <link rel="icon" type="image/png" href="{% static 'img/favicon-32x32.png' %}" sizes="32x32">
-  <link rel="icon" type="image/png" href="{% static 'img/favicon-16x16.png' %}" sizes="16x16">
+  <title>Winding Tree &mdash; Líf Token Generation Event</title>
+  <meta name="description" content="Winding Tree, Líf Token Generation Event">
+  <meta name=viewport content="user-scalable=no, width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, minimal-ui">
+  <meta http-equiv=x-ua-compatible content="ie=edge">
 
-  <link rel="stylesheet" href="{% static 'libs/bootstrap.min.css' %}">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/wt.css' %}">
+  <link rel="apple-touch-icon" sizes="57x57" href="//windingtree.com/images/icons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="//windingtree.com/images/icons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="//windingtree.com/images/icons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="//windingtree.com/images/icons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="//windingtree.com/images/icons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="//windingtree.com/images/icons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="//windingtree.com/images/icons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="//windingtree.com/images/icons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="//windingtree.com/images/icons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="//windingtree.com/images/icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="//windingtree.com/images/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="//windingtree.com/images/icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="//windingtree.com/images/icons/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="//windingtree.com/images/icons/favicon.png" />
+
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="//windingtree.com/images/icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!--[if lte IE 8]><script src="{% static 'js/ie/html5shiv.js' %}"></script><![endif]-->
+  <link rel="stylesheet" href="{% static 'css/stellar.css' %}">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <!--[if lte IE 9]><link rel="stylesheet" href="{% static 'css/ie9.css' %}" /><![endif]-->
+  <!--[if lte IE 8]><link rel="stylesheet" href="{% static 'css/ie8.css' %}" /><![endif]-->
+
   <script type="text/javascript">
-   var userAddress = "{{request.user.eth_address}}";
-   var verifiedUser = "{{request.user.is_verified}}";
+    var userAddress = "{{request.user.eth_address}}";
+    var verifiedUser = "{{request.user.is_verified}}";
   </script>
-  <script src="{% static 'libs/jquery.min.js' %}"></script>
-  <script src="{% static 'libs/popper.min.js' %}"></script>
-  <script src="{% static 'libs/bootstrap.min.js' %}"></script>
-  <script src="{% static 'js/main.js' %}"></script>
+
   {% block extra_head %}{% endblock %}
 </head>
 
 <body>
 
-  {% block navbar %}
-    {% include 'navbar.html' %}
-  {% endblock %}
+  {% block navbar %}{% endblock %}
 
-  <main role="main" class="container">
+  <div id="wrapper">
 
-    {% bootstrap_messages %}
+    {% block content %}{% endblock %}
 
-    {% block content %}
-    {% endblock %}
-  </main>
+    <footer id="footer">
+      <section>
+        <h2>About Winding Tree</h2>
+        <p>Winding Tree makes travel cheaper for individual travelers and more profitable for providers.
+Winding Tree is a blockchain-based decentralized open-source travel distribution platform. We make travel cheaper for the end user, while making it more profitable for suppliers.</p>
+        <ul class="actions">
+          <li><a href="https://windingtree.com" class="button">Learn More</a></li>
+        </ul>
+      </section>
+      <section>
+        <h2>Winding Tree Limited</h2>
+        <p>Suite 23 Portland House, Glacis Road<br>Gibraltar GX11 1AA</p>
+        <ul class="icons">
+          <li><a href="https://github.com/windingtree/" class="icon fa-github alt"><span class="label">GitHub</span></a></li>
+          <li><a href="https://twitter.com/windingtree" class="icon fa-twitter alt"><span class="label">Twitter</span></a></li>
+          <li><a href="http://demo.windingtree.com/" class="icon fa-link alt"><span class="label">Demo App</span></a></li>
+        </ul>
+      </section>
+      <p class="copyright">© Winding Tree</p>
+    </footer>
 
-  {% block javascript_inline_bottom %}
-  {% endblock %}
+  </div>
+
+  <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+
+  {% block javascript_inline_bottom %}{% endblock %}
   </body>
 </html>
