@@ -34,9 +34,9 @@
         {% endif %}
       </h2>
       {% if request.user.eth_address %}
-        <h4>Your address: <span id="userAddress">{{ request.user.eth_address }}</span></h4>
-        <h4>Total ETH Sent: <strong id="totalETHSent">0</strong></h4>
-        <h4>Your Lif balance: <strong id="totalLifBalance">0</strong></h4>
+        <h2><span id="userAddress">{{ request.user.eth_address }}</span></h2>
+        <h3>You have sent <strong id="totalETHSent">0</strong></h3>
+        <h3>Your will receive <strong id="totalLifBalance">0</strong> after the TGE</h3>
       {% endif %}
     </header>
     <form action="." method="post" enctype="multipart/form-data">
