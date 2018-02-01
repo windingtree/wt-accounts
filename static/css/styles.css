@@ -64,3 +64,29 @@
 .alert button {
   display: none !important;
 }
+
+.hidden {
+  display: none;
+}
+
+.progress {
+  height: 40px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+}
+
+.progress-bar {
+  background-color: #6d4f8b;
+}
+
+.bg-info {
+  background-color: #af6483 !important;
+}
+
+.statistics {
+  margin-bottom: 20px;
+}
+
+.progress {
+  margin-bottom: 40px;
+}
