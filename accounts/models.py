@@ -27,21 +27,20 @@ validate_eth_address = RegexValidator(
 
 class User(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
-    mobile = models.CharField(_('mobile'), blank=True, max_length=30)
-    birth_date = models.DateField(_('date of birth'), blank=True, null=True,
+    mobile = models.CharField(_('mobile'), max_length=30)
+    birth_date = models.DateField(_('date of birth'), null=True,
                                   help_text='Accepted format is YYYY-MM-DD')
-    country = CountryField(_('Country'), blank=True)
-    building_number = models.CharField(blank=True, max_length=100)
-    street = models.CharField(blank=True, max_length=100)
-    town = models.CharField(_('City'), blank=True, max_length=100)
-    postcode = models.CharField(blank=True, max_length=100)
+    country = CountryField(_('Country'))
+    building_number = models.CharField(max_length=100)
+    street = models.CharField(max_length=100)
+    town = models.CharField(_('City'), max_length=100)
+    postcode = models.CharField(max_length=100)
     eth_address = models.CharField(
         _('Your ETH wallet address from which you’ll be sending your contribution'), max_length=100,
-        blank=True,
         validators=[validate_eth_address])
     eth_contrib = models.CharField(blank=True, max_length=30)
     proof_of_address_file = models.FileField(_('Proof of address'), storage=S3Storage(),
-                                             blank=True, null=True, upload_to='proof_of_address')
+                                             null=True, upload_to='proof_of_address')
 
     def can_verify(self):
         must = ('first_name', 'last_name', 'birth_date', 'mobile', 'street',
@@ -121,12 +120,15 @@ def create_link_context(user, use_https=False):
 def send_login_email(request, user):
     context = create_link_context(user, use_https=request.is_secure())
     email_content = render_to_string('accounts/email_login.txt', context=context, request=request)
-    # sending to settings.DEFAULT_FROM_EMAIL
-    user.email_user('Winding Tree account login', email_content)
+    # sending from settings.DEFAULT_FROM_EMAIL
+    html_message = render_to_string('accounts/email_login.html', context=context, request=request)
+    user.email_user('Your Winding Tree Account', email_content, html_message=html_message)
 
 
 def send_verification_status_email(request, user):
     context = create_link_context(user, use_https=request.is_secure())
     email_content = render_to_string('accounts/email_verification_status.txt', context=context, request=request)
-    # sending to settings.DEFAULT_FROM_EMAIL
-    user.email_user('WT verification status', email_content)
+    html_message = render_to_string('accounts/email_verification_status.html', context=context, request=request)
+    # sending from settings.DEFAULT_FROM_EMAIL
+    user.email_user('WT verification status', email_content, html_message=html_message)
+

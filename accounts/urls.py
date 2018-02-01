@@ -16,6 +16,7 @@ urlpatterns = [
     path('login/expired/', views.login_token_expired, name='login_token_expired'),
     path('profile/', views.profile, name='profile'),
     path('eth_sums/', views.eth_sums, name='eth_sums'),
+    path('headers/', views.headers, name='headers'),
 
     path('webhook/onfido/', views.onfido_webhook, name='onfido_webhook'),
 

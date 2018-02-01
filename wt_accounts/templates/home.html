@@ -162,22 +162,59 @@
   </div>
 
 
-  <div class="jumbotron">
+  <div class="row justify-content-center">
+    <h1>Winding Tree Token Sale is LIVE Now</h1>
     <br>
-    <div class="row justify-content-around">
-      <strong id="softCap">0.1 ETH Soft Cap</strong> |
-      <strong id="ethRaised">0 ETH Raised</strong> |
-      <strong id="totalLif">0 Lif Tokens</strong>
-    </div>
-    <br>
-    <div class="progress">
-      <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%">
-        0 ETH Raised
+    <div class="jumbotron home-box">
+      <div class="row justify-content-around">
+        <h3 id="countdown">00d : 00h : 00m : 00s</h3>
+      </div>
+      <div class="row justify-content-center">
+        <p id="countdown-until" class="nm">Until the sale start at February 1, 2018 (8AM UTC)</p>
+      </div>
+      <hr>
+      <div class="row justify-content-center countdown-section">
+        <h3 id="countdown-rate">00d : 00h : 00m : 00s</h3>
+      </div>
+      <div class="row justify-content-center countdown-section">
+        <small>Until rate changes to 900 at February 7, 2018 (8AM UTC)</small>
+        <p id="alert-countdown" class="nm"><small>* Please note that if you wait till the last hours to contribute your transaction may be counted at the lower rate or rejected. The token minting rate is counted when the smart contract receives the transaction not when it is sent.</small></p>
+        <br>
+      </div>
+      <div class="row justify-content-around">
+        <div class="col-4 text-center"><h4>Soft Cap</h4></div>
+        <div class="col-4 text-center"><h4>TGE Rate</h4></div>
+        <div class="col-4 text-center"><h4>Current ICO Rate</h4></div>
       </div>
     </div>
   </div>
 
-  <div class="jumbotron" id="instructions">
+
+  <div class="jumbotron">
+    <br>
+    <div class="row justify-content-around">
+      <div class="col-4 text-center"><h4>4348 ETH</h4></div>
+      <div class="col-4 text-center"><h4>1150 USD/ETH</h4></div>
+      <div class="col-4 text-center"><h4 id="tokenRate">1000 LIF/ETH</h4></div>
+    </div>
+    <hr>
+    <div class="row justify-content-around">
+      <div class="col-6 text-center"><h4><strong id="ethRaised">0 ETH Raised</strong></h4></div>
+      <div class="col-6 text-center"><h4><strong id="totalLif">0 Lif Tokens Supply</strong></h4></div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-12 text-center"><small>Soft Cap</small></div>
+    </div>
+    <div class="progress">
+      <div id="beforeCapBar"class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
+      <div id="beforeCapBarRest"class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="0" aria-valuemin="50" aria-valuemax="100"></div>
+      <div id="afterCapBar"class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+      <div id="afterCapBarRest"class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="0" aria-valuemin="50" aria-valuemax="100"></div>
+
+    </div>
+  </div>
+
+  <div class="jumbotron  home-box" id="instructions">
     <h3>Want to contribute? follow this steps:</h3>
     <ol>
       <li>Register an account - <strong><a href="{% url 'register' %}">Register</a></strong></li>
@@ -189,8 +226,7 @@
     <h4><a href="https://blog.windingtree.com/how-to-participate-in-winding-tree-ico-l%C3%ADf-token-on-feb-1-2018-fa7299d5a673">How to participate guide</a></h4>
     <h4>For question we are in <a href="https://t.me/windingtree">Telegram</a></h4>
   </div>
-
-  <div class="jumbotron text-center">
+  <div class="jumbotron text-center  home-box" id="knowMore">
     <h3>Want to know more?</h3>
     <h4 class="row justify-content-around">
       <div><img src="{% static 'img/wt-social-website.svg' %}" height="20" alt="windingtree website"> <a href="https://windingtree.com/">Website</a></div>
@@ -199,4 +235,9 @@
       <div><img src="{% static 'img/wt-social-twitter.svg' %}" height="20" alt="windingtree twitter account"> <a href="https://twitter.com/windingtree">Twitter</a></div>
     </h4>
   </div>
+
+</div>
+
+
+
 {% endblock %}

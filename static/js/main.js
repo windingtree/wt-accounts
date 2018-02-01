@@ -1,10 +1,10 @@
 
 // TGE Scripts
-var SOFT_CAP = 0.1;
-var icoAddress = "0x175A349186f228e7758ccE1c1bA125e0D0514df4";
-var tokenAddress = "0xaDA83270510b6284e27c757096d660F0Fcf6A90b";
+var SOFT_CAP = 4348;
+var icoAddress = "0x9df3a24d738ae98dea766cd89c3aef16583a4daf";
+var tokenAddress = "0xeb9951021698b42e4399f9cbb6267aa35f82d59d";
 var contributorAddress = userAddress;
-var maxUnverifiedContribution = 10;
+var maxUnverifiedContribution = 15;
 
 //Set addresses
 $('#icoAddress').text(icoAddress);
@@ -68,10 +68,12 @@ function refreshUserContribution() {
       getEthSent(contributorAddress).then(function(weiSent) {
         var ETHSent = (Number(weiSent.result) / 1e18);
         console.log('ETH Sent:', ETHSent);
-        if (ETHSent > maxUnverifiedContribution && verifiedUser) {
-          $('#verify-profile').show();
-          $('#verify-alert').show();
-        }
+        // if (ETHSent > maxUnverifiedContribution && verifiedUser) {
+        //   $('#verify-profile').show();
+        //   $('#verify-alert').show();
+        // }
+        $('#verify-profile').show();
+        $('#verify-alert').show();
         $('#totalETHSent').text(parseFloat(ETHSent).toFixed(4)+' ETH');
       });
     else
@@ -92,16 +94,49 @@ refreshUserContribution();
 
 function setEthRaised(eth) {
     var percentComplete = eth / SOFT_CAP * 100;
+    console.log('% complete', percentComplete);
     if (percentComplete > 100) {
         percentComplete = 100;
+    } else if (percentComplete > 50) {
+      $('#beforeCapBar').css({
+          width: '50%',
+          opacity: 1,
+      }).toggleClass('done', percentComplete >= 100);
+      $('#beforeCapBarRest').css({
+          width: '0%',
+          opacity: 1,
+      }).toggleClass('done', percentComplete >= 100);
+      $('#afterCapBar').css({
+          width: Math.floor(percentComplete)-50 +'%',
+          opacity: 1,
+      }).toggleClass('done', percentComplete >= 100);
+      $('#afterCapBarRest').css({
+          width: 100-Math.floor(percentComplete)+'%',
+          opacity: 1,
+      }).toggleClass('done', percentComplete >= 100);
+    } else {
+      console.log(percentComplete);
+      $('#beforeCapBar').css({
+          width: Math.floor(percentComplete) + '%',
+          opacity: 1,
+      }).toggleClass('done', percentComplete >= 100);
+      $('#beforeCapBarRest').css({
+          width: 50-Math.floor(percentComplete) + '%',
+          opacity: 1,
+      }).toggleClass('done', percentComplete >= 100);
+      $('#afterCapBar').css({
+          width: '0%',
+          opacity: 1,
+      }).toggleClass('done', percentComplete >= 100);
+      $('#afterCapBarRest').css({
+          width: '50%',
+          opacity: 1,
+      }).toggleClass('done', percentComplete >= 100);
     }
 
     $('#ethRaised').text(parseFloat(eth).toFixed(2)+' ETH Raised');
     $('#progressBar').text(parseFloat(eth).toFixed(2)+' ETH');
-    $('#progressBar').css({
-        width: Math.floor(percentComplete) + '%',
-        opacity: 1,
-    }).toggleClass('done', percentComplete >= 100);
+
 }
 
 // Refresh TGE values

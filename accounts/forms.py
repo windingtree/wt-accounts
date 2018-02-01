@@ -15,20 +15,23 @@ logger = logging.getLogger(__name__)
 
 class RegistrationForm(forms.ModelForm):
     email = forms.EmailField(
-        help_text=_(u'email address'),
         required=True,
         validators=[
             validators.validate_confusables_email,
         ]
     )
 
+    # rendered manually in the template because of the Terms and Conditions hyperlink
+    terms_accepted = forms.BooleanField(
+        label=_('I accept the Terms and Conditions'),
+        error_messages={'required': validators.TOS_REQUIRED},
+    )
+    non_us_resident = forms.BooleanField(
+        label=_('I hereby certify that I am not a U.S. citizen nor currently residing in the U.S.'),
+        help_text=_(u'Due to US regulations we wont be accepting contribution from US residents and this measure will be enforced by geofencing the sale details'),
+    )
+
     g_recaptcha_response = forms.CharField(required=False)
-    terms_accepted = forms.BooleanField(label=_('I accept the <a href="%sToken Sale T&Cs.pdf">'
-                                                'Terms and Conditions</a>') % settings.STATIC_URL,
-                                        error_messages={'required': validators.TOS_REQUIRED}
-                                        )
-    non_us_resident = forms.BooleanField(label=_('I hereby certify that I am not a U.S. citizen '
-                                                 'nor currently residing in the U.S.'))
 
     class Meta:
         model = User
@@ -98,18 +101,24 @@ class ProfileForm(forms.ModelForm):
         model = User
         fields = (
             'first_name', 'last_name', 'birth_date', 'mobile', 'street', 'building_number',
-            'town', 'postcode', 'country', 'eth_address', 'proof_of_address_file')
+            'town', 'postcode', 'country', 'eth_address')
         required_css_class = 'required'
 
 
-class VerifyForm(forms.Form):
+class VerifyForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('proof_of_address_file',)
 
-    def __init__(self, *args, user, **kwargs):
-        self.user = user
+    def __init__(self, *args, **kwargs):
         self.onfido_check = None
         super().__init__(*args, **kwargs)
+        self.fields['proof_of_address_file'].required = True
 
     def clean(self):
         super(VerifyForm, self).clean()
-        self.onfido_check = self.user.onfido_check()
+        if not self.instance.can_verify():
+            raise forms.ValidationError('All the fields must be filled for verification')
+
+        self.onfido_check = self.instance.onfido_check()
         return self.cleaned_data

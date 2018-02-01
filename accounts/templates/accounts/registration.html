@@ -15,26 +15,35 @@
 
 {% block content %}
 
-  <div class="row justify-content-around">
+  <div class="row justify-content-center">
     <div class="col-lg-9 col-sm-12">
-      <form action="." method="post" class="form jumbotron">
+      <div class="jumbotron">
+        <h2 class="text-center">Register to Contribute to Winding Tree ICO</h2>
+        <p class="text-center">
+          To contribute you will need to register an account and create a profile. <br>
+          Enter your email here and we'll email you next steps.
+        </p>
+
+        <form action="." method="post" class="form">
         {% csrf_token %}
 
-        {% bootstrap_form form exclude='g_recaptcha_response' %}
+        {% bootstrap_field form.email %}
+
+        <div class="form-group"><div class="checkbox"><label for="{{ form.terms_accepted.id_for_label }}"><input type="checkbox" name="{{ form.terms_accepted.name }}" class="" required id="{{ form.terms_accepted.id_for_label }}" /> I accept the <a href="{% static 'token_sale_terms_conditions.pdf' %}">Terms and Conditions</a></label></div></div>
+
+        {% bootstrap_field form.non_us_resident %}
+
         <div class="row justify-content-around">
           <div class="g-recaptcha" data-sitekey="{{ form.recaptcha_site_key }}"></div>
         </div>
 
-        <br>
-        <p>* Due to US regulations we wont be accepting contribution from US residents and this measure will be enforced by geofencing the sale details</p>
-        <p>By registering to contribute I certify that I am not a US resident and I agree with
-          Winding Tree ICO <a href="{% static 'token_sale_terms_conditions.pdf' %}">terms and conditions</a></p>
         <div class="row justify-content-around">
           {% buttons %}
             <button type="submit" class="btn btn-lg btn-primary">Register</button>
           {% endbuttons %}
         </div>
       </form>
+      </div>
     </div>
   </div>
 

@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
 from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, \
     HttpResponseBadRequest
-from django.shortcuts import render, resolve_url
+from django.shortcuts import render, resolve_url, redirect
 from django.urls import reverse
 from django.utils.http import urlsafe_base64_decode
 from django.utils.safestring import mark_safe
@@ -46,6 +46,10 @@ def login_token(request, uidb64, token):
         return HttpResponseRedirect(reverse('login_token_expired'))
 
 
+def geofence(request):
+    return render(request, 'geofence.html')
+
+
 def login(request):
     form = LoginForm(request.POST or None)
 
@@ -67,6 +71,9 @@ def home(request):
 
 
 def registration(request):
+    if is_from_banned_country(request):
+        return HttpResponseRedirect(reverse('geofence'))
+
     if request.user.is_authenticated:
         return HttpResponseRedirect(resolve_url(settings.LOGIN_REDIRECT_URL))
 
@@ -88,37 +95,35 @@ def registration(request):
 @login_required
 def status(request):
     if not request.user.can_verify() or request.user.eth_address == '':
+        messages.warning(request, 'Please fill all the fields')
         return HttpResponseRedirect(reverse('profile'))
-    return render(request, 'accounts/status.html')
+
+    form = VerifyForm(request.POST or None, request.FILES or None, instance=request.user)
+    if request.method == 'POST':
+        if request.user.verify_status:
+            request.user.last_check.check_reload()
+            messages.error(request,
+                           'Current verification status: {}'.format(request.user.verify_status))
+            return redirect('status')
+        elif form.is_valid():
+            form.save()
+            onfido_check = form.onfido_check
+            messages.success(request, mark_safe(
+                'Verification request sent, please check your '
+                'inbox or visit <a target="_blank" href="{0}">{0}</a>'.format(
+                    onfido_check.check_form_url)))
+        return redirect('status')
+
+    return render(request, 'accounts/status.html', {'form': form})
 
 
 @login_required
 def profile(request):
-    verify = 'verify' in request.POST
-    if verify:
-        form = ProfileForm(instance=request.user)
-        if not request.user.can_verify():
-            messages.error(request, 'All the fields must be filled for verification')
-        elif request.user.verify_status:
-            request.user.last_check.check_reload()
-            messages.error(request,
-                           'Current verification status: {}'.format(request.user.verify_status))
-        else:
-            verify_form = VerifyForm(request.POST, user=request.user)
-            if verify_form.is_valid():
-                onfido_check = verify_form.onfido_check
-                messages.success(request, mark_safe(
-                    'Verification request sent, please check your '
-                    'inbox or visit <a target="_blank" href="{0}">{0}</a>'.format(
-                        onfido_check.check_form_url)))
-            return render(request, 'accounts/profile.html',
-                          {'form': form, 'verify_form': verify_form})
-        return HttpResponseRedirect(reverse('profile'))
     form = ProfileForm(request.POST or None, request.FILES or None, instance=request.user)
     if form.is_valid():
         messages.success(request, 'Your profile was updated')
         form.save()
-        return HttpResponseRedirect(reverse('profile'))
+        return redirect('status')
     return render(request, 'accounts/profile.html', {'form': form})
 
 
@@ -144,8 +149,9 @@ def onfido_webhook(request):
     body = json.loads(request.body.decode('utf-8'))
     if body['payload']['action'] in {'check.completed', }:
         check_id = body['payload']['object']['id']
-        oc = OnfidoCall.objects.get(type='check', onfido_id=check_id)
-        send_verification_status_email(request, oc.user)
+        if not test:
+            oc = OnfidoCall.objects.get(type='check', onfido_id=check_id)
+            send_verification_status_email(request, oc.user)
     return HttpResponse('OK')
 
 
@@ -165,3 +171,26 @@ def eth_sums(request):
             users_by_eth_address[account].eth_contrib = str(sum)
             users_by_eth_address[account].save(update_fields=['eth_contrib'])
     return render(request, 'accounts/eth_sums.html', {'total': total, 'users': users})
+
+def is_from_banned_country(request):
+    return False
+    banned_countries = ['US', 'china']
+    geoip_header = request.META.get('HTTP_CF_IPCOUNTRY', '')
+    return geoip_header in banned_countries
+
+def headers(request):
+    forbidden = ['US', 'CZ']
+    geoip = 'HTTP_CF_IPCOUNTRY'
+    lines = [
+        '{}{}{}: {}{}{}'.format(
+            '<strong>' if geoip == key else '',
+            '<font color=red>' if request.META[key] in forbidden else '',
+            key,
+            request.META[key],
+            '</font>' if request.META[key] in forbidden else '',
+            '</strong>' if geoip == key else '',
+        ) for key in request.META
+    ]
+    data = '\n'.join(lines)
+    return HttpResponse('<pre>{}</pre>'.format(data))
+

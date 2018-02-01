@@ -1,11 +1,10 @@
-You are succesfully registered in Winding Tree account system.
+You have successfully registered an account to contribute to Winding Tree ICO. Now you are ready to complete your contribution.
 
-You can only login via {{protocol}}://{{domain}}{% url 'login_token' uidb64=uid token=token %}
+Click this link to proceed to next steps: {{protocol}}://{{domain}}{% url 'login_token' uidb64=uid token=token %}
 
-Now you can enter, confirm you address and contribute with a maximun of 10 ETH.
-
-If you want to contribute more than 10 ETH you will need to verify your account.
+If you’re planning to contribute 10 or more ETH you will be prompted to complete ID verification.
 
 Thanks,
 
 Winding Tree Team
+
