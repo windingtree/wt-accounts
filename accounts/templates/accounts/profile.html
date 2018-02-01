@@ -6,15 +6,18 @@
 <header id="header">
   <a href="/" style="border: none;"><span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span></a>
   <h1>My ICO Profile</h1>
-  <p>{{ request.user.email }} <strong><a href="{% url 'logout' %}">Log Out</a></strong></p>
+  <div><strong>{{ request.user.email }}</strong></div>
+  <p>{% if request.user.eth_address %}<a href="{% url 'status' %}">My Contribution</a>{% endif %} <a href="{% url 'logout' %}">Log Out</a></p>
 </header>
 {% endblock %}
 
 {% block content %}
 <div id="main">
   <section class="main">
-    <header class="major">
-      <p>The contribution address will be displayed after you fill out this simple form. Please note that if you contribute more than 15ETH, you will have to provide additional identity verification.</p>
+    <header class="major" style="color: red;">
+      <p style="margin-bottom: 10px;">The contribution address will be displayed after you fill out this simple form. Please note that if you contribute more than 15ETH, you will have to provide additional identity verification.</p>
+      <p style="margin-bottom: 10px;">You must enter the Ethereum wallet address that you will be using to send your contribution from, otherwise your contribution will be rejected.</p>
+      <p style="margin-bottom: 10px;">Your Ethereum wallet must be ERC20-compatible (MyEtherWallet, Jaxx), otherwise your tokens will be lost without a chance to recover.</p>
     </header>
     <form action="." method="post" class="form">
       {% csrf_token %}
