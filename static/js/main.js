@@ -6,7 +6,6 @@ var contributorAddress = userAddress;
 var maxUnverifiedContribution = 15;
 
 //Set addresses
-$('#icoAddress').text(icoAddress);
 $('#userAddress').text(contributorAddress.toString());
 
 // Get total ETH raised in wei unit, returns promise
