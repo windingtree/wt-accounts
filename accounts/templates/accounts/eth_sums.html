@@ -19,14 +19,14 @@
 
   <h2>top contributors</h2>
   <ul>
-    {% for address, value_eth, value in unique_contributions_sorted|slice:':10' %}
+    {% for address, value_eth, value in unique_contributions_sorted|slice:':50' %}
       <li><a href="https://etherscan.io/address/{{ address }}">{{ address }}</a>: {{ value_eth }}ETH</li>
     {% endfor %}
   </ul>
 
   <h2>top confirmed contributors</h2>
   <ul>
-    {% for address, value_eth, value in sum_for_accounts_sorted|slice:':10' %}
+    {% for address, value_eth, value in sum_for_accounts_sorted|slice:':50' %}
       <li><a href="https://etherscan.io/address/{{ address }}">{{ address }}</a>: {{ value_eth }}ETH</li>
     {% endfor %}
   </ul>
