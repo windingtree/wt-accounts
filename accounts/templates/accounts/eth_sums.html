@@ -4,20 +4,38 @@
 
   <h1>Total: {{ total_eth }}ETH ({{ total|stringformat:"E" }})</h1>
 
-  <dl>
-    <dt>number of successful tx</dt><dd>{{ transactions|length }}</dd>
-    <dt>number of tx from unique contributors</dt><dd>{{ unique_contributions|length }}</dd>
-  </dl>
-
   {% if request.user.is_staff %}
     <form action="" method="post">{% csrf_token %}
       <button type="submit" class="btn btn-primary">Save values to Profiles</button>
     </form>
   {% endif %}
 
+  <dl>
+    <dt>number of successful tx</dt><dd>{{ transactions|length }}</dd>
+    <dt>number of tx from unique contributors</dt><dd>{{ unique_contributions|length }}</dd>
+    <dt>number of confirmed contributions</dt><dd>{{ confirmed_contributions|length }}
+    <dt>number of users</dt><dd>{{ users|length }}</dd>
+  </dl>
+
+  <h2>sorted contributions</h2>
+  <ul>
+    {% for address, value_eth, value in unique_contributions_sorted|slice:':10' %}
+      <li><a href="https://etherscan.io/address/{{ address }}">{{ address }}</a>: {{ value_eth }}ETH</li>
+    {% endfor %}
+  </ul>
+
+  <h2>sorted confirmed contributions</h2>
+  <ul>
+    {% for address, value_eth, value in sum_for_accounts_sorted|slice:':10' %}
+      <li><a href="https://etherscan.io/address/{{ address }}">{{ address }}</a>: {{ value_eth }}ETH</li>
+    {% endfor %}
+  </ul>
+
+  <h2>all users</h2>
+
   <ul>
     {% for u in users %}
-      <li>{{ u.eth_address }}: {{ u.eth_sum|stringformat:"E" }}</li>
+      <li><a href="https://etherscan.io/address/{{ u.eth_address }}">{{ eth_address }}</a>: {{ u.eth_sum|stringformat:"E" }} wei</li>
     {% endfor %}
   </ul>
 
