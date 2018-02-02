@@ -31,12 +31,4 @@
     {% endfor %}
   </ul>
 
-  <h2>all users</h2>
-
-  <ul>
-    {% for u in users %}
-      <li><a href="https://etherscan.io/address/{{ u.eth_address }}">{{ eth_address }}</a>: {{ u.eth_sum|stringformat:"E" }} wei</li>
-    {% endfor %}
-  </ul>
-
 {% endblock %}
