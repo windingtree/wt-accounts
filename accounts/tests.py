@@ -432,7 +432,7 @@ def test_eth_get_total():
     transactions = get_transactions()
     total = eth_get_total(transactions)
     # print(total / (10 ** 18))
-    assert total > 2576817159433516273420
+    assert total >= 2374175011016960014828
 
 
 def test_get_sum_for_accounts():
