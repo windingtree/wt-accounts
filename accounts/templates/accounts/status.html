@@ -8,7 +8,8 @@
   <h1>My Contribution Status</h1>
   <div><strong>{{ request.user.email }}</strong></div>
   <p><a href="{% url 'profile' %}">Edit Profile</a> <a href="{% url 'logout' %}">Log Out</a></p>
-  <h1>ICO address: <strong id="icoAddress">0x9df3a24d738ae98dea766cd89c3aef16583a4daf</strong></h1>
+  <h1>ICO address<br><strong id="icoAddress"><a href="https://etherscan.io/address/0x9df3a24d738ae98dea766cd89c3aef16583a4daf">0x9df3A24d738ae98dEa766cD89C3AEf16583a4daF</a></strong></h1>
+  <p><strong>or <a href="https://etherscan.io/address/ico.windingtree.eth">ico.windingtree.com</a></strong></p>
   <p><strong>Please consult <a href="https://ethgasstation.info/">ETH Gas Station</a> for recommended gas price values to make sure your transaction confirms.</strong></p>
 </header>
 {% endblock %}
@@ -17,25 +18,26 @@
 <div id="main">
   <section class="main">
     <header class="major no-margin">
-      <h2 id="verification-status" class="hidden">
-        {% if request.user.verify_status == 'awaiting_applicant' %}
-          <span class="badge badge-secondary">Verification Not Submitted</span>
-        {% elif request.user.verify_status == 'in_progress' %}
-          <span class="badge badge-light">Verification In Progress</span>
-        {% elif request.user.verify_status == 'complete' %}
-          <span class="badge badge-primary">Verification Complete</span>
-        {% elif request.user.verify_status == 'withdrawn' %}
-          <span class="badge badge-danger">Verification Withdrawn</span>
-        {% elif request.user.verify_status == 'paused' %}
-          <span class="badge badge-info">Verification Paused</span>
-        {% elif request.user.verify_status == 'reopened' %}
-          <span class="badge badge-info">Verification Reopened</span>
-        {% else %}
-          <span class="badge badge-secondary">Verification Not Submitted</span>
-        {% endif %}
-      </h2>
       {% if request.user.eth_address %}
-        <h2><span id="userAddress">{{ request.user.eth_address }}</span></h2>
+        <p id="verification-status" class="hidden">
+          {% if request.user.verify_status == 'awaiting_applicant' %}
+            <span class="badge badge-secondary">Verification Not Submitted</span>
+          {% elif request.user.verify_status == 'in_progress' %}
+            <span class="badge badge-light">Verification In Progress</span>
+          {% elif request.user.verify_status == 'complete' %}
+            <span class="badge badge-primary">Verification Complete</span>
+          {% elif request.user.verify_status == 'withdrawn' %}
+            <span class="badge badge-danger">Verification Withdrawn</span>
+          {% elif request.user.verify_status == 'paused' %}
+            <span class="badge badge-info">Verification Paused</span>
+          {% elif request.user.verify_status == 'reopened' %}
+            <span class="badge badge-info">Verification Reopened</span>
+          {% else %}
+            <span class="badge badge-secondary">Verification Not Submitted</span>
+          {% endif %}
+        </p>
+
+        <h2><span id="userAddress">{{ request.user.eth_address }}</span> &larr; Your Address</h2>
         <h3>You have sent <strong id="totalETHSent">0</strong></h3>
         <h3>Your will receive <strong id="totalLifBalance">0</strong> after the TGE (<a href="{% url 'faq' %}">where is my stuff?</a>)</h3>
       {% endif %}
