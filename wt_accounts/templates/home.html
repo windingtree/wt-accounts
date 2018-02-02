@@ -37,6 +37,7 @@
       {% else %}
         <a href="{% url 'register' %}" class="button special">Participate</a>
       {% endif %}
+      <div><strong><a href="{% url 'faq' %}" style="color: #fff !important;">FAQ</a></strong></div>
     </div>
   </header>
 
@@ -100,6 +101,7 @@
         <h2>How To Participate</h2>
       </header>
       <ol style="font-size: 1.2em;">
+        <li><a href="{% url 'faq' %}">Read the FAQ</a>. No, really, read it.</li>
         {% if not request.user.is_authenticated %}
           <li><a href="{% url 'register' %}">Register an account</a>.</li>
           <li>Click the link you receive in your mailbox to log in.</li>
