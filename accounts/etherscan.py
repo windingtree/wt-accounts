@@ -6,6 +6,9 @@ from django.conf import settings
 
 
 def get_transactions():
+    """
+    :return: only successfull transactions
+    """
     resp = requests.get('http://api.etherscan.io/api', params={
         'module': 'account', 'action': 'txlist',
         'address': settings.ETH_WALLET,
@@ -13,7 +16,8 @@ def get_transactions():
         'endblock': '99999999', 'sort': 'asc',
         'apikey': settings.ETHERSCAN_TOKEN
     })
-    return resp.json()['result']
+    # https://etherscan.io/apis#transactions
+    return [one for one in resp.json()['result'] if one.get('isError', '0') == '0']
 
 
 def get_sum_for_accounts(transactions, accounts):
