@@ -164,17 +164,28 @@ def eth_sums(request):
     store_to_profiles = request.method == 'POST' and request.user.is_staff
     if store_to_profiles:
         logger.debug('Storing contributions to users')
+
     users = User.objects.exclude(eth_address='')
     users_by_eth_address = {u.eth_address: u for u in users}
     transactions = etherscan.get_transactions()
     total = etherscan.eth_get_total(transactions)
     sum_for_accounts = etherscan.get_sum_for_accounts(transactions, users_by_eth_address.keys())
+    unique_contributions = etherscan.get_unique_contributions(transactions)
+
     for account, sum in sum_for_accounts.items():
         users_by_eth_address[account].eth_sum = sum
         if store_to_profiles:
             users_by_eth_address[account].eth_contrib = str(sum)
             users_by_eth_address[account].save(update_fields=['eth_contrib'])
-    return render(request, 'accounts/eth_sums.html', {'total': total, 'users': users})
+
+    context = {
+        'transactions': transactions,
+        'unique_contributions': unique_contributions,
+        'total': total,
+        'total_eth': int(total / 10**18),
+        'users': users,
+    }
+    return render(request, 'accounts/eth_sums.html', context)
 
 def is_from_banned_country(request):
     banned_countries = ['US', 'CHINA']
@@ -196,3 +207,4 @@ def headers(request):
     ]
     data = '\n'.join(lines)
     return HttpResponse('<pre>{}</pre>'.format(data))
+

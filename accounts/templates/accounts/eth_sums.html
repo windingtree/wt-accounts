@@ -2,7 +2,18 @@
 
 {% block content %}
 
-  <h1>Total: {{ total|stringformat:"E" }}</h1>
+  <h1>Total: {{ total_eth }}ETH ({{ total|stringformat:"E" }})</h1>
+
+  <dl>
+    <dt>number of successful tx</dt><dd>{{ transactions|length }}</dd>
+    <dt>number of tx from unique contributors</dt><dd>{{ unique_contributions|length }}</dd>
+  </dl>
+
+  {% if request.user.is_staff %}
+    <form action="" method="post">{% csrf_token %}
+      <button type="submit" class="btn btn-primary">Save values to Profiles</button>
+    </form>
+  {% endif %}
 
   <ul>
     {% for u in users %}
@@ -10,9 +21,4 @@
     {% endfor %}
   </ul>
 
-  {% if request.user.is_staff %}
-    <form action="" method="post">{% csrf_token %}
-      <button type="submit" class="btn btn-primary">Save values to Profiles</button>
-    </form>
-  {% endif %}
 {% endblock %}
