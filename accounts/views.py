@@ -171,6 +171,16 @@ def eth_sums(request):
     total = etherscan.eth_get_total(transactions)
     sum_for_accounts = etherscan.get_sum_for_accounts(transactions, users_by_eth_address.keys())
     unique_contributions = etherscan.get_unique_contributions(transactions)
+    confirmed_contributions = [ (a,v) for (a,v) in sum_for_accounts if v > 0 ]
+
+    unique_contributions_sorted = [
+        (x, int(y/10**18), y) for x,y in
+        sorted(unique_contributions.items(), key=lambda x: -x[1])
+    ]
+    sum_for_accounts_sorted = [
+        (x, int(y/10**18), y) for x,y in
+        sorted(sum_for_accounts.items(), key=lambda x: -x[1])
+    ]
 
     for account, sum in sum_for_accounts.items():
         users_by_eth_address[account].eth_sum = sum
@@ -181,6 +191,10 @@ def eth_sums(request):
     context = {
         'transactions': transactions,
         'unique_contributions': unique_contributions,
+        'unique_contributions_sorted': unique_contributions_sorted,
+        'sum_for_accounts': sum_for_accounts,
+        'sum_for_accounts_sorted': sum_for_accounts_sorted,
+        'confirmed_contributions': confirmed_contributions,
         'total': total,
         'total_eth': int(total / 10**18),
         'users': users,
