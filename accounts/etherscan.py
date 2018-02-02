@@ -19,7 +19,6 @@ def get_transactions():
     # https://etherscan.io/apis#transactions
     return [one for one in resp.json()['result'] if one.get('isError', '0') == '0']
 
-
 def get_sum_for_accounts(transactions, accounts):
     trans_by_account = defaultdict(list)
     for one in transactions:
@@ -28,6 +27,9 @@ def get_sum_for_accounts(transactions, accounts):
     return {account: sum(trans_by_account[account]) for account in accounts if
             account in trans_by_account}
 
+def get_unique_contributions(transactions):
+    froms = { one['from'] for one in transactions }
+    return get_sum_for_accounts(transactions, froms)
 
 def eth_get_total(transactions):
     return sum([int(one['value']) for one in transactions])
