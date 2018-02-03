@@ -171,7 +171,9 @@ def eth_sums(request):
     total = etherscan.eth_get_total(transactions)
     sum_for_accounts = etherscan.get_sum_for_accounts(transactions, users_by_eth_address.keys())
     unique_contributions = etherscan.get_unique_contributions(transactions)
-    confirmed_contributions = [ (a,v) for (a,v) in sum_for_accounts.items() if v > 0 ]
+    unique_contributions_sum = int(sum( v for (a,v) in unique_contributions.items() ) / 10**18)
+    registered_contributions = [ (a,v) for (a,v) in sum_for_accounts.items() if v > 0 ]
+    registered_contributions_sum = int(sum( v for (a,v) in sum_for_accounts.items() ) / 10**18)
 
     unique_contributions_sorted = [
         (x, int(y/10**18), y) for x,y in
@@ -182,19 +184,21 @@ def eth_sums(request):
         sorted(sum_for_accounts.items(), key=lambda x: -x[1])
     ]
 
-    for account, sum in sum_for_accounts.items():
-        users_by_eth_address[account].eth_sum = sum
+    for account, sum_ in sum_for_accounts.items():
+        users_by_eth_address[account].eth_sum = sum_
         if store_to_profiles:
-            users_by_eth_address[account].eth_contrib = str(sum)
+            users_by_eth_address[account].eth_contrib = str(sum_)
             users_by_eth_address[account].save(update_fields=['eth_contrib'])
 
     context = {
         'transactions': transactions,
         'unique_contributions': unique_contributions,
         'unique_contributions_sorted': unique_contributions_sorted,
+        'unique_contributions_sum': unique_contributions_sum,
         'sum_for_accounts': sum_for_accounts,
         'sum_for_accounts_sorted': sum_for_accounts_sorted,
-        'confirmed_contributions': confirmed_contributions,
+        'registered_contributions': registered_contributions,
+        'registered_contributions_sum': registered_contributions_sum,
         'total': total,
         'total_eth': int(total / 10**18),
         'users': users,

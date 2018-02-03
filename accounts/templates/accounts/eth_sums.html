@@ -13,22 +13,24 @@
   <dl>
     <dt>number of successful tx</dt><dd>{{ transactions|length }}</dd>
     <dt>number of tx from unique contributors</dt><dd>{{ unique_contributions|length }}</dd>
-    <dt>number of confirmed contributions</dt><dd>{{ confirmed_contributions|length }}
+    <dt>value of contributions</dt><dd>{{ unique_contributions_sum }}ETH</dd>
+    <dt>number of registered contributions</dt><dd>{{ registered_contributions|length }}</dd>
+    <dt>value of registered contributions</dt><dd>{{ registered_contributions_sum }}ETH</dd>
     <dt>number of users</dt><dd>{{ users|length }}</dd>
   </dl>
 
   <h2>top contributors</h2>
-  <ul>
+  <ol>
     {% for address, value_eth, value in unique_contributions_sorted|slice:':50' %}
       <li><a href="https://etherscan.io/address/{{ address }}">{{ address }}</a>: {{ value_eth }}ETH</li>
     {% endfor %}
-  </ul>
+  </ol>
 
   <h2>top confirmed contributors</h2>
-  <ul>
+  <ol>
     {% for address, value_eth, value in sum_for_accounts_sorted|slice:':50' %}
       <li><a href="https://etherscan.io/address/{{ address }}">{{ address }}</a>: {{ value_eth }}ETH</li>
     {% endfor %}
-  </ul>
+  </ol>
 
 {% endblock %}
