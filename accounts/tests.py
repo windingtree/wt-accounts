@@ -438,7 +438,7 @@ def test_eth_get_total():
 
 def test_get_sum_for_accounts():
     accounts = ['0x67ee267ff3c58d4248ff4ab2a0d44ee1b9289d69',
-                '0x1d64480c8ae05e25169274022987e7089921302a']
+                '0x1D64480C8AE05E25169274022987E7089921302a']
     transactions = get_transactions()
     sums = get_sum_for_accounts(transactions, accounts)
     assert sums == {'0x1d64480c8ae05e25169274022987e7089921302a': 2000000000000000000,

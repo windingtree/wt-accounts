@@ -20,9 +20,10 @@ def get_transactions():
     return [one for one in resp.json()['result'] if one.get('isError', '0') == '0']
 
 def get_sum_for_accounts(transactions, accounts):
+    accounts = [ a.lower() for a in accounts ]
     trans_by_account = defaultdict(list)
     for one in transactions:
-        trans_by_account[one['from']].append(int(one['value']))
+        trans_by_account[one['from'].lower()].append(int(one['value']))
 
     return {account: sum(trans_by_account[account]) for account in accounts if
             account in trans_by_account}
