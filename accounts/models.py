@@ -26,6 +26,11 @@ validate_eth_address = RegexValidator(
 
 
 class User(AbstractUser):
+    PROOF_CHOICES = (
+        ('unchecked', 'unchecked'),
+        ('valid', 'valid'),
+        ('failed', 'failed'),
+    )
     email = models.EmailField(_('email address'), unique=True)
     mobile = models.CharField(_('mobile'), max_length=30)
     birth_date = models.DateField(_('date of birth'), null=True,
@@ -35,12 +40,14 @@ class User(AbstractUser):
     street = models.CharField(max_length=100)
     town = models.CharField(_('City'), max_length=100)
     postcode = models.CharField(max_length=100)
-    eth_address = models.CharField(
-        _('Your ERC20 Ethereum wallet address from which you’ll be sending your contribution. It can\'t be an exchange address!'), max_length=100,
-        validators=[validate_eth_address])
+    eth_address = models.CharField(_('Your ERC20 Ethereum wallet address from which you’ll be '
+                                     'sending your contribution. It can\'t be an exchange address!'),
+                                   max_length=100, validators=[validate_eth_address])
     eth_contrib = models.CharField(blank=True, max_length=30)
     proof_of_address_file = models.FileField(_('Proof of address'), storage=S3Storage(),
                                              null=True, upload_to='proof_of_address')
+    proof_of_address_status = models.CharField(max_length=20, choices=PROOF_CHOICES,
+                                               default=PROOF_CHOICES[0][0])
 
     def can_verify(self):
         must = ('first_name', 'last_name', 'birth_date', 'mobile', 'street',
@@ -60,6 +67,8 @@ class User(AbstractUser):
         check = self.last_check
         return check.result == 'clear' if check else False
 
+    is_verified.boolean = True  # django admin
+
     def onfido_check(self):
         applicant = onfido_api.create_applicant(self)
         OnfidoCall.objects.create(user=self, type='applicant', applicant_id=applicant.id,
@@ -72,6 +81,7 @@ class User(AbstractUser):
     @property
     def eth_contrib_int(self):
         return int(self.eth_contrib)
+
 
 class OnfidoCall(TimeStampedModel):
     TYPES = (
