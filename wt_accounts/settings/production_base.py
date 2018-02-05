@@ -36,10 +36,17 @@ RAVEN_CONFIG = {
 }
 
 # mailing
-EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
+#EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
 MAILGUN_ACCESS_KEY = ''
 MAILGUN_SERVER_NAME = 'mg.windingtree.com'
 
 # static files
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.CachedStaticFilesStorage"
+
+# smtp settings - because mailgun failed us
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_PORT = '587'
+EMAIL_HOST_USER = 'walksource'
+EMAIL_HOST_PASSWORD = 't)RnnQUY?e3i^Gon3zG7iY7cfy)eYR'
+EMAIL_USE_TLS = True
 
