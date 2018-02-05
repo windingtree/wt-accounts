@@ -167,7 +167,7 @@ def eth_sums(request):
 
     users = User.objects.exclude(eth_address='')
     users_by_eth_address = {u.eth_address.lower(): u for u in users}
-    transactions = etherscan.get_transactions()
+    transactions = etherscan.get_transactions() + etherscan.get_transactions(internal=True)
     total = etherscan.eth_get_total(transactions)
     sum_for_accounts = etherscan.get_sum_for_accounts(transactions, users_by_eth_address.keys())
     unique_contributions = etherscan.get_unique_contributions(transactions)

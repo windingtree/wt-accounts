@@ -436,6 +436,14 @@ def test_eth_get_total():
     assert total >= 2374175011016960014828
 
 
+def test_eth_get_total_internal():
+    transactions = get_transactions(internal=True)
+    total = eth_get_total(transactions)
+    # print(total / (10 ** 18))
+    assert 814 == len(transactions)
+    assert total >= 2462485387636960014828
+
+
 def test_get_sum_for_accounts():
     accounts = ['0x67ee267ff3c58d4248ff4ab2a0d44ee1b9289d69',
                 '0x1D64480C8AE05E25169274022987E7089921302a']
