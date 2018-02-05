@@ -92,53 +92,31 @@ function refreshUserContribution() {
 // Check everything every 10 seconds
 refreshUserContribution();
 
-function setEthRaised(eth) {
-    var percentComplete = eth / (SOFT_CAP*2) * 100;
-    console.log('% complete', percentComplete);
-    if (percentComplete > 100) {
-        percentComplete = 100;
-    } else if (percentComplete > 50) {
-      $('#beforeCapBar').css({
-          width: '50%',
-          opacity: 1,
-      }).toggleClass('done', percentComplete >= 100);
-      $('#beforeCapBarRest').css({
-          width: '0%',
-          opacity: 1,
-      }).toggleClass('done', percentComplete >= 100);
-      $('#afterCapBar').css({
-          width: Math.floor(percentComplete)-50 +'%',
-          opacity: 1,
-      }).toggleClass('done', percentComplete >= 100);
-      $('#afterCapBarRest').css({
-          width: 100-Math.floor(percentComplete)+'%',
-          opacity: 1,
-      }).toggleClass('done', percentComplete >= 100);
-      $('#afterCapBar').text(parseInt(eth)+' ETH')
-    } else {
-      console.log(percentComplete);
-      $('#beforeCapBar').css({
-          width: Math.floor(percentComplete) + '%',
-          opacity: 1,
-      }).toggleClass('done', percentComplete >= 100);
-      $('#beforeCapBarRest').css({
-          width: 50-Math.floor(percentComplete) + '%',
-          opacity: 1,
-      }).toggleClass('done', percentComplete >= 100);
-      $('#afterCapBar').css({
-          width: '0%',
-          opacity: 1,
-      }).toggleClass('done', percentComplete >= 100);
-      $('#afterCapBarRest').css({
-          width: '50%',
-          opacity: 1,
-      }).toggleClass('done', percentComplete >= 100);
-      $('#beforeCapBar').text(parseInt(eth)+' ETH')
-    }
+function setEthRaised(eth_raised) {
+  var bar_end = eth_raised * 1.2;
+  var soft_cap_percent = Math.round(SOFT_CAP / bar_end * 100);
+  var above_soft_percent = Math.round((eth_raised - SOFT_CAP) / bar_end * 100);
 
-    $('#ethRaised').text(parseFloat(eth).toLocaleString('en'));
-    $('#progressBar').text(parseFloat(eth).toLocaleString('en') +' ETH');
+  $('#beforeCapBar').css({
+      width: soft_cap_percent + '%',
+      opacity: 1,
+  });
+  $('#beforeCapBarRest').css({
+      width: '0',
+      opacity: 1,
+  });
+  $('#afterCapBar').css({
+      width: above_soft_percent + '%',
+      opacity: 1,
+  });
+  $('#afterCapBarRest').css({
+      width: 100-above_soft_percent-soft_cap_percent + '%',
+      opacity: 1,
+  });
+  $('#afterCapBar').text(eth_raised.toLocaleString('en') + ' ETH');
 
+  $('#ethRaised').text(parseFloat(eth_raised).toLocaleString('en'));
+  $('#progressBar').text(parseFloat(eth_raised).toLocaleString('en') +' ETH');
 }
 
 // Refresh TGE values
