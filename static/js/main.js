@@ -150,14 +150,14 @@ function refreshTGEValues() {
         setEthRaised(icoETHRaised);
       });
 
-    if (tokenAddress != "0x0000000000000000000000000000000000000000")
+    if (tokenAddress != "0x0000000000000000000000000000000000000000") {
       getTotalLif().then(function(totalSupply) {
-        var lifTotalSupply = (Number(totalSupply.result) / 1e18);
-        console.log('Lif total supply:', lifTotalSupply)
+        var lifTotalSupply = (Number(totalSupply.result) / 1e18) * 4/3;
         $('#totalLif').text(parseFloat(lifTotalSupply).toLocaleString('en'))
       });
-    else
+    } else {
       $('#totalLif').text(parseFloat(lifTotalSupply).toLocaleString('en'))
+    }
 }
 
 // Check everything every 10 seconds
