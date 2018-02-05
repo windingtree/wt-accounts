@@ -5,9 +5,6 @@ var tokenAddress = "0xeb9951021698b42e4399f9cbb6267aa35f82d59d";
 var contributorAddress = userAddress;
 var maxUnverifiedContribution = 15;
 
-//Set addresses
-$('#userAddress').text(contributorAddress.toString());
-
 // Get total ETH raised in wei unit, returns promise
 function getEthSent(contributor) {
   var params = $.param({
