@@ -5,15 +5,17 @@ import requests
 from django.conf import settings
 
 
-def get_transactions():
+def get_transactions(internal=False):
     """
     :return: only successfull transactions
     """
     resp = requests.get('http://api.etherscan.io/api', params={
-        'module': 'account', 'action': 'txlist',
+        'module': 'account',
+        'action': 'txlistinternal' if internal else 'txlist',
         'address': settings.ETH_WALLET,
         'startblock': '4000000',
-        'endblock': '99999999', 'sort': 'asc',
+        'endblock': '99999999',
+        'sort': 'asc',
         'apikey': settings.ETHERSCAN_TOKEN
     })
     # https://etherscan.io/apis#transactions
