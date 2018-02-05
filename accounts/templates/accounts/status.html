@@ -37,7 +37,7 @@
           {% endif %}
         </p>
 
-        <h2><span id="userAddress">{{ request.user.eth_address }}</span> &larr; Your Address</h2>
+        <h2><span id="userAddress"><a href="https://etherscan.io/address/{{ request.user.eth_address }}">{{ request.user.eth_address }}</a></span> &larr; Your Address</h2>
         <h3>You have sent <strong id="totalETHSent">0</strong></h3>
         <h3>Your will receive <strong id="totalLifBalance">0</strong> after the TGE (<a href="{% url 'faq' %}">where is my stuff?</a>)</h3>
       {% endif %}
