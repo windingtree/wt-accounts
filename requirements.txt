@@ -1,10 +1,10 @@
-django==2.0.1
+django==2.0.2
 django-bootstrap4==0.0.5
 django-extensions==1.9.9
 django-mailgun==0.9.1
-django-countries==5.0
+django-countries==5.1.1
 pytz==2017.3
-pytest==3.3.2
+pytest==3.4.0
 pytest-django==3.1.2
 confusable_homoglyphs==3.0.0
 raven==6.5.0
