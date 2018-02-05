@@ -68,7 +68,12 @@ class KYCVerified(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == 'started':
-            return queryset.filter(onfidos__type='check')
+            return queryset.filter(onfidos__type='check').distinct()
+
+
+class OnfidoCallInline(admin.TabularInline):
+    model = OnfidoCall
+    extra = 0
 
 
 class CustomUserAdmin(UserAdmin):
@@ -88,6 +93,8 @@ class CustomUserAdmin(UserAdmin):
                     'eth_contrib', 'proof_of_address_file', 'is_verified', 'eth_address')
     list_filter = (
     'is_staff', 'is_superuser', 'proof_of_address_status', EthContribFilter, KYCVerified)
+
+    inlines = [OnfidoCallInline]
 
 class OnfidoCallAdmin(admin.ModelAdmin):
     list_display = ('created', 'user', 'type', 'status', 'result')
