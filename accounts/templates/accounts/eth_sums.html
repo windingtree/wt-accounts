@@ -2,7 +2,7 @@
 
 {% block content %}
 
-  <h1>Total: {{ total_eth }}ETH ({{ total|stringformat:"E" }})</h1>
+  <h1>Total: {{ total_eth|floatformat:"-3" }}ETH ({{ total|stringformat:"E" }})</h1>
 
   {% if request.user.is_staff %}
     <form action="" method="post">{% csrf_token %}
@@ -13,23 +13,23 @@
   <dl>
     <dt>number of successful tx</dt><dd>{{ transactions|length }}</dd>
     <dt>number of tx from unique contributors</dt><dd>{{ unique_contributions|length }}</dd>
-    <dt>value of contributions</dt><dd>{{ unique_contributions_sum }}ETH</dd>
+    <dt>value of contributions</dt><dd>{{ unique_contributions_sum|floatformat:"-3" }}ETH</dd>
     <dt>number of registered contributions</dt><dd>{{ registered_contributions|length }}</dd>
-    <dt>value of registered contributions</dt><dd>{{ registered_contributions_sum }}ETH</dd>
+    <dt>value of registered contributions</dt><dd>{{ registered_contributions_sum|floatformat:"-3" }}ETH</dd>
     <dt>number of users</dt><dd>{{ users|length }}</dd>
   </dl>
 
   <h2>top contributors</h2>
   <ol>
     {% for address, value_eth, value in unique_contributions_sorted|slice:':50' %}
-      <li><a href="https://etherscan.io/address/{{ address }}">{{ address }}</a>: {{ value_eth }}ETH</li>
+      <li><a href="https://etherscan.io/address/{{ address }}">{{ address }}</a>: {{ value_eth|floatformat:"-3" }}ETH</li>
     {% endfor %}
   </ol>
 
   <h2>top confirmed contributors</h2>
   <ol>
     {% for address, value_eth, value in sum_for_accounts_sorted|slice:':50' %}
-      <li><a href="https://etherscan.io/address/{{ address }}">{{ address }}</a>: {{ value_eth }}ETH</li>
+      <li><a href="https://etherscan.io/address/{{ address }}">{{ address }}</a>: {{ value_eth|floatformat:"-3" }}ETH</li>
     {% endfor %}
   </ol>
 

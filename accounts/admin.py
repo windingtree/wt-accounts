@@ -77,22 +77,29 @@ class OnfidoCallInline(admin.TabularInline):
 
 
 class CustomUserAdmin(UserAdmin):
+    def eth_contrib_eth(self, obj):
+        value = obj.eth_contrib or 0
+        return int(value) / 10**18
+    eth_contrib_eth.short_description = 'eth contrib [eth]'
+
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'mobile')}),
-        (_('ICO'), {'fields': ('eth_address', 'eth_contrib', 'proof_of_address_file',
-                               'proof_of_address_status')}),
-
+        (_('Address'), {'fields': ('country', ('postcode', 'town'), ('street', 'building_number'))}),
+        (_('Proof of address'), {'fields': ('proof_of_address_file', 'proof_of_address_status')}),
+        (_('ICO'), {'fields': ('eth_address', 'eth_contrib')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
                                        'groups', 'user_permissions')}),
         (_('Important dates'), {'fields': ('birth_date', 'last_login', 'date_joined')}),
     )
 
-
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',
-                    'eth_contrib', 'proof_of_address_file', 'is_verified', 'eth_address')
-    list_filter = (
-    'is_staff', 'is_superuser', 'proof_of_address_status', EthContribFilter, KYCVerified)
+    list_display = ('username', 'first_name', 'last_name', 'is_staff',
+                    'eth_contrib_eth',
+                    'is_verified', 'onfido_status', 'onfido_result',
+                    'proof_of_address_status', 'proof_of_address_file',
+                    'eth_address')
+    list_filter = ('is_staff', 'is_superuser', 'proof_of_address_status',
+                   EthContribFilter, KYCVerified)
 
     inlines = [OnfidoCallInline]
 

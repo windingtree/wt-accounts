@@ -66,8 +66,15 @@ class User(AbstractUser):
     def is_verified(self):
         check = self.last_check
         return check.result == 'clear' if check else False
-
     is_verified.boolean = True  # django admin
+
+    def onfido_status(self):
+        check = self.last_check
+        return check.status if check else '<none>'
+
+    def onfido_result(self):
+        check = self.last_check
+        return check.result if check else '<none>'
 
     def onfido_check(self):
         applicant = onfido_api.create_applicant(self)
@@ -80,8 +87,11 @@ class User(AbstractUser):
 
     @property
     def eth_contrib_int(self):
-        return int(self.eth_contrib)
+        return int(self.eth_contrib or 0)
 
+    def eth_contrib_eth(self):
+        return self.eth_contrib_int / 10**18
+    eth_contrib_eth.short_description = 'eth contrib [eth]'
 
 class OnfidoCall(TimeStampedModel):
     TYPES = (

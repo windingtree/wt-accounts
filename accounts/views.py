@@ -171,16 +171,16 @@ def eth_sums(request):
     total = etherscan.eth_get_total(transactions)
     sum_for_accounts = etherscan.get_sum_for_accounts(transactions, users_by_eth_address.keys())
     unique_contributions = etherscan.get_unique_contributions(transactions)
-    unique_contributions_sum = int(sum( v for (a,v) in unique_contributions.items() ) / 10**18)
+    unique_contributions_sum = int(sum( v for (a,v) in unique_contributions.items() )) / 10**18
     registered_contributions = [ (a,v) for (a,v) in sum_for_accounts.items() if v > 0 ]
-    registered_contributions_sum = int(sum( v for (a,v) in sum_for_accounts.items() ) / 10**18)
+    registered_contributions_sum = int(sum( v for (a,v) in sum_for_accounts.items() )) / 10**18
 
     unique_contributions_sorted = [
-        (x, int(y/10**18), y) for x,y in
+        (x, int(y)/10**18, y) for x,y in
         sorted(unique_contributions.items(), key=lambda x: -x[1])
     ]
     sum_for_accounts_sorted = [
-        (x, int(y/10**18), y) for x,y in
+        (x, int(y)/10**18, y) for x,y in
         sorted(sum_for_accounts.items(), key=lambda x: -x[1])
     ]
 
@@ -200,7 +200,7 @@ def eth_sums(request):
         'registered_contributions': registered_contributions,
         'registered_contributions_sum': registered_contributions_sum,
         'total': total,
-        'total_eth': int(total / 10**18),
+        'total_eth': int(total)/10**18,
         'users': users,
     }
     return render(request, 'accounts/eth_sums.html', context)
