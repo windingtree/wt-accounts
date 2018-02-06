@@ -150,3 +150,4 @@ def reload_users_onfido_checks():
             user.last_check.check_reload()
             logger.debug('Reloaded onfido for user: %s initial status: %s, new status: %s', user,
                          current_status, user.verify_status)
+
