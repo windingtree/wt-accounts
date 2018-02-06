@@ -141,3 +141,12 @@ def send_verification_status_email(request, user):
     html_message = render_to_string('accounts/email_verification_status.html', context=context, request=request)
     # sending from settings.DEFAULT_FROM_EMAIL
     user.email_user('WT verification status', email_content, html_message=html_message)
+
+
+def reload_users_onfido_checks():
+    for user in User.objects.all().iterator():
+        current_status = user.verify_status
+        if user.verify_status:
+            user.last_check.check_reload()
+            logger.debug('Reloaded onfido for user: %s initial status: %s, new status: %s', user,
+                         current_status, user.verify_status)
