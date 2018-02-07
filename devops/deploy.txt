@@ -21,6 +21,10 @@ from the boxes (only place they are stored), change and upload back again
 $ ssh wt-web-1 'cat /home/web/src/wt_accounts/settings/production.py' > wt_accounts/settings/production-web1.py
 $ ssh wt-web-2 'cat /home/web/src/wt_accounts/settings/production.py' > wt_accounts/settings/production-web2.py
 
+$ for i in 1 2; do ssh wt-web-$i  'cat /home/web/src/wt_accounts/settings/production.py' > wt_accounts/settings/production-web$i.py; done
+
 $ ssh wt-web-1 'sudo -u web tee /home/web/src/wt_accounts/settings/production.py' < wt_accounts/settings/production-web1.py
 $ ssh wt-web-2 'sudo -u web tee /home/web/src/wt_accounts/settings/production.py' < wt_accounts/settings/production-web2.py
+
+$ for i in 1 2; do ssh wt-web-$i 'sudo -u web tee /home/web/src/wt_accounts/settings/production.py' < wt_accounts/settings/production-web$i.py; done
 
