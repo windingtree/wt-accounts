@@ -77,10 +77,7 @@ class OnfidoCallInline(admin.TabularInline):
 
 
 class CustomUserAdmin(UserAdmin):
-    def eth_contrib_eth(self, obj):
-        value = obj.eth_contrib or 0
-        return int(value) / 10**18
-    eth_contrib_eth.short_description = 'eth contrib [eth]'
+    search_fields = ['username', 'email', 'first_name', 'last_name', 'eth_address']
 
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
