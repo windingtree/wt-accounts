@@ -39,6 +39,8 @@ def login_token(request, uidb64, token):
 
     if user is not None and default_token_generator.check_token(user, token):
         logger.debug('Logging in user=%s', user)
+        if request.user.is_authenticated and request.user != user:
+            logger.warning('User %s just logged in as another user %s', request.user, user)
         auth_login(request, user)
         return redirect(settings.LOGIN_REDIRECT_URL)
     else:
