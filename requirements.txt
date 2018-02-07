@@ -2,6 +2,7 @@ django==2.0.2
 django-bootstrap4==0.0.5
 django-extensions==1.9.9
 django-mailgun==0.9.1
+django-sendgrid-v5==0.6.86
 django-countries==5.1.1
 pytz==2017.3
 pytest==3.4.0
