@@ -53,45 +53,55 @@
       <header class="major">
         <h2>TGE Status</h2>
       </header>
-      <div class="row">
-        <div class="col-4 text-left">
-          <span>0 ETH</span>
-        </div>
-        <div class="col-4 justify-content-center">
-          <span>4350 ETH Soft Cap (Reached in 3 Hours)</span>
-        </div>
-        <div class="col-4 text-right">
-          <span>+&infin;</span>
-        </div>
-      </div>
-      <div class="progress">
-        <div id="beforeCapBar"class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width: 0%" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
-        <div id="beforeCapBarRest"class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-        <div id="afterCapBar"class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-        <div id="afterCapBarRest"class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-      </div>
-      <ul class="statistics">
-        <li class="style1">
-          <span class="icon fa-check"></span>
-          <strong>4,350 ETH</strong> Soft Cap (Reached in 3 hours)
-        </li>
-        <li class="style2">
-          <span class="icon fa-usd"></span>
-          <strong>$1,150</strong> TGE USD/ETH Rate
-        </li>
-        <li class="style3">
-          <span class="icon fa-balance-scale"></span>
-          <strong>900 </strong> Current LIF/ETH Rate
-        </li>
-      </ul>
       <ul class="statistics">
         <li class="style4">
           <span class="icon fa-signal"></span>
           <strong id="ethRaised">0</strong> ETH Raised
         </li>
+        <li class="style6">
+          <span class="icon fa-balance-scale"></span>
+          <strong>900 </strong> Current LIF/ETH Rate
+        </li>
         <li class="style5">
-          <span class="icon fa-envira"></span>
+          <span class="icon fa-leaf"></span>
           <strong id="totalLif">0</strong> Lífs Generated (<a href="{% url 'faq' %}#faq-13">why?</a>)
+        </li>
+      </ul>
+      <div class="row">
+        <div class="col-3 text-left">
+          <span>0</span>
+        </div>
+        <div class="col-1 text-left">
+          <span>4,350</span>
+        </div>
+        <div class="col-2 text-right">
+          <span>7,391</span>
+        </div>
+        <div class="col-4 text-right" id="barRaised">
+          <span>0</span>
+        </div>
+        <div class="col-2 text-right">
+          <span>+&infin;</span>
+        </div>
+      </div>
+      <div class="progress">
+        <div id="softCapBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
+        <div id="maxCapBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        <div id="mvmBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        <div id="barRest" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+      <ul class="statistics">
+        <li class="style1">
+          <span class="icon fa-check"></span>
+          <strong>4,350 ETH</strong> Soft Cap<br>(reached)
+        </li>
+        <li class="style2">
+          <span class="icon fa-check"></span>
+          <strong>7,391 ETH</strong> Max Team Funding<br>(reached)
+        </li>
+        <li class="style3">
+          <span class="icon fa-archive"></span>
+          <strong id="mvmEth">7,391 ETH</strong> In the MVM<br>(<a href="https://blog.windingtree.com/market-validation-mechanism-in-a-nutshell-ddba1d92be89">where?</a>)
         </li>
       </ul>
     </section>
