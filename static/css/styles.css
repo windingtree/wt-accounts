@@ -85,8 +85,14 @@
   background-color: #6d4f8b;
 }
 
-.bg-info {
-  background-color: #af6483 !important;
+#softCapBar {
+  background-color: #af6483;
+}
+#maxCapBar {
+  background-color: #7f5489;
+}
+#mvmBar {
+  background-color: #6d4f8b;
 }
 
 .statistics {

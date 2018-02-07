@@ -1,5 +1,6 @@
 // TGE Scripts
 var SOFT_CAP = 4350;
+var MAX_CAP = (10 - 1.5) * 1000000 / 1150; // Our max cap is $10M, we've already had $1.5 from the presale; $1150 is the hardcoded ETH rate
 var icoAddress = "0x9df3a24d738ae98dea766cd89c3aef16583a4daf";
 var tokenAddress = "0xeb9951021698b42e4399f9cbb6267aa35f82d59d";
 var contributorAddress = userAddress;
@@ -90,27 +91,21 @@ function refreshUserContribution() {
 refreshUserContribution();
 
 function setEthRaised(eth_raised) {
-  var bar_end = eth_raised * 1.2;
+  var bar_end = eth_raised * 1.25;
   var soft_cap_percent = Math.round(SOFT_CAP / bar_end * 100);
-  var above_soft_percent = Math.round((eth_raised - SOFT_CAP) / bar_end * 100);
+  var max_cap_percent = Math.round((MAX_CAP - SOFT_CAP) / bar_end * 100);
+  var mvmEth = eth_raised - MAX_CAP;
+  var mvm_percent = Math.round(mvmEth / bar_end * 100);
 
-  $('#beforeCapBar').css({
-      width: soft_cap_percent + '%',
-      opacity: 1,
-  });
-  $('#beforeCapBarRest').css({
-      width: '0',
-      opacity: 1,
-  });
-  $('#afterCapBar').css({
-      width: above_soft_percent + '%',
-      opacity: 1,
-  });
-  $('#afterCapBarRest').css({
-      width: 100-above_soft_percent-soft_cap_percent + '%',
-      opacity: 1,
-  });
-  $('#afterCapBar').text(eth_raised.toLocaleString('en') + ' ETH');
+  $('#softCapBar').css({ width: soft_cap_percent + '%', opacity: 1 });
+  $('#maxCapBar').css({ width: max_cap_percent + '%', opacity: 1 });
+  $('#mvmBar').css({ width: mvm_percent + '%', opacity: 1 });
+  $('#barRest').css({ width: 100 - max_cap_percent - soft_cap_percent - mvm_percent + '%', opacity: 1 });
+
+  $('#barRaised').text(eth_raised.toLocaleString('en'));
+  $('#softCapBar').text(SOFT_CAP.toLocaleString('en') + ' ETH');
+  $('#maxCapBar').text((MAX_CAP - SOFT_CAP).toLocaleString('en') + ' ETH');
+  $('#mvmBar, #mvmEth').text(mvmEth.toLocaleString('en') + ' ETH');
 
   $('#ethRaised').text(parseFloat(eth_raised).toLocaleString('en'));
   $('#progressBar').text(parseFloat(eth_raised).toLocaleString('en') +' ETH');
