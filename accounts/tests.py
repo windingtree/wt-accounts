@@ -88,6 +88,7 @@ def test_RegistrationForm(monkeypatch):
         'eth_address': '',
         'eth_contrib': '',
         'proof_of_address_file': everything_equals,
+        'proof_of_address_status': 'unchecked',
     }
 
 
