@@ -119,7 +119,7 @@ def test_send_login_email(rf, settings, test_user):
     mail.outbox = []
 
 
-def test_login_token_view(test_user, client):
+def test_login_token_view(test_user, client, caplog):
     context = create_link_context(test_user)
     url = reverse('login_token', kwargs={
         'uidb64': context['uid'], 'token': context['token']})
@@ -130,6 +130,17 @@ def test_login_token_view(test_user, client):
     test_user.refresh_from_db()
     assert response.status_code == 302
     assert test_user.last_login
+
+    # test logging in over someone else
+    attacker = User.objects.create_user(username='attacker@at.cz', email='attacker@at.cz')
+    context = create_link_context(attacker)
+    url = reverse('login_token', kwargs={
+        'uidb64': context['uid'], 'token': context['token']})
+    response = client.get(url)
+    assert caplog.record_tuples[-1] == (
+        'accounts.views', 30, 'User tester@test.cz just logged in as another user attacker@at.cz'
+    )
+    caplog.clear()
 
 
 def test_login_token_view_fail(test_user, client):
