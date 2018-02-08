@@ -26,7 +26,7 @@
     {% endfor %}
   </ol>
 
-  <h2>top confirmed contributors</h2>
+  <h2>top registered contributors</h2>
   <ol>
     {% for address, value_eth, value in sum_for_accounts_sorted|slice:':50' %}
       <li><a href="https://etherscan.io/address/{{ address }}">{{ address }}</a>: {{ value_eth|floatformat:"-3" }}ETH</li>
