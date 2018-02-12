@@ -11,7 +11,7 @@
   {% endif %}
 
   <dl>
-    <dt>number of successful tx</dt><dd>{{ transactions|length }}</dd>
+    <dt>number of successful tx (all tx)</dt><dd>{{ transactions|length }} ({{ all_transactions|length }})</dd>
     <dt>number of tx from unique contributors</dt><dd>{{ unique_contributions|length }}</dd>
     <dt>value of contributions</dt><dd>{{ unique_contributions_sum|floatformat:"-3" }}ETH</dd>
     <dt>number of registered contributions</dt><dd>{{ registered_contributions|length }}</dd>

@@ -12,7 +12,7 @@ from django.forms import model_to_dict
 from django.urls import reverse
 
 from accounts import onfido_api
-from accounts.etherscan import eth_get_total, get_transactions, get_sum_for_accounts, get_unique_contributions
+from accounts.etherscan import eth_get_total, get_transactions, get_sum_for_accounts, get_unique_contributions, filter_failed
 from accounts.forms import RegistrationForm
 from accounts.models import create_link_context, send_login_email, User, OnfidoCall
 
@@ -442,9 +442,10 @@ def test_onfido_webhook(client, test_user):
 
 def test_eth_get_total():
     transactions = get_transactions()
+    successful_transactions = filter_failed(transactions)
     total = eth_get_total(transactions)
-    # print(total / (10 ** 18))
-    assert 814 == len(transactions)
+    assert 960 == len(transactions)
+    assert 814 == len(successful_transactions)
     assert total >= 2374175011016960014828
 
 
@@ -468,7 +469,7 @@ def test_unique_contributions():
     transactions = get_transactions()
     unique_contributions = get_unique_contributions(transactions)
     assert len(unique_contributions) <= len(transactions)
-    assert 735 == len(unique_contributions)
+    assert 760 == len(unique_contributions)
     assert 2000000000000000000 == unique_contributions['0x1d64480c8ae05e25169274022987e7089921302a']
     assert 1000000000000000000 == unique_contributions['0x67ee267ff3c58d4248ff4ab2a0d44ee1b9289d69']
 

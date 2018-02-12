@@ -19,7 +19,10 @@ def get_transactions(internal=False):
         'apikey': settings.ETHERSCAN_TOKEN
     })
     # https://etherscan.io/apis#transactions
-    return [one for one in resp.json()['result'] if one.get('isError', '0') == '0']
+    return resp.json()['result']
+
+def filter_failed(transactions):
+    return [one for one in transactions if one.get('isError', '0') == '0']
 
 def get_sum_for_accounts(transactions, accounts):
     accounts = [ a.lower() for a in accounts ]
