@@ -12,7 +12,7 @@ from django.forms import model_to_dict
 from django.urls import reverse
 
 from accounts import onfido_api
-from accounts.etherscan import eth_get_total, get_transactions, get_sum_for_accounts, get_unique_contributions, filter_failed
+from accounts.etherscan import eth_get_total, get_transactions, get_sum_for_accounts, get_unique_contributions, filter_failed, range_blocks
 from accounts.forms import RegistrationForm
 from accounts.models import create_link_context, send_login_email, User, OnfidoCall
 
@@ -439,6 +439,11 @@ def test_onfido_webhook(client, test_user):
 
     mail.outbox = []
 
+
+def test_range_blocks():
+    assert [(0, 9), (10, 19)] == list(range_blocks(0, 20, 10))
+    assert [(4000000, 4049999), (4050000, 4099999)] == list(range_blocks(4000000, 4100000, 50000))
+    assert [(4000000, 7999999)] == list(range_blocks(4000000, 8000000, 4000000))
 
 def test_eth_get_total():
     transactions = get_transactions()
