@@ -55,3 +55,10 @@ EMAIL_USE_TLS = True
 SENDGRID_API_KEY = ''
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'wt_cache_table',
+    }
+}
+
