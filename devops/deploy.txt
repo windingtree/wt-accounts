@@ -28,3 +28,16 @@ $ ssh wt-web-2 'sudo -u web tee /home/web/src/wt_accounts/settings/production.py
 
 $ for i in 1 2; do ssh wt-web-$i 'sudo -u web tee /home/web/src/wt_accounts/settings/production.py' < wt_accounts/settings/production-web$i.py; done
 
+~~~~~
+
+management calls on the host>
+
+# onfido
+sudo -u web ~web/venv/bin/python ~web/src/manage.py reload_users_onfido_checks --settings=wt_accounts.settings.production 2>&1 | tee reload_users_onfido_checks.$( date '+%y%m%d-%H%M%S' ).log
+
+# etherscan
+sudo -u web ~web/venv/bin/python ~web/src/manage.py fill_user_eth_contrib --settings=wt_accounts.settings.production 2>&1 | tee fill_user_eth_contrib.$( date '+%y%m%d-%H%M%S' ).log
+
+# shell
+sudo -u web ~web/venv/bin/python ~web/src/manage.py shell --settings=wt_accounts.settings.production
+
