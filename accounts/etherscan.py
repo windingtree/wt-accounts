@@ -10,6 +10,9 @@ from django.conf import settings
 logger = logging.getLogger(__name__)
 
 
+CACHE_KEY = 'etherscan:all_transactions'
+
+
 def get_transactions_response(startblock, endblock, internal=False):
     """
     :return: only successfull transactions

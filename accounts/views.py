@@ -18,6 +18,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.http import require_POST
+from django.core.cache import cache
 
 from accounts import etherscan
 from accounts.forms import LoginForm, RegistrationForm, ProfileForm, VerifyForm
@@ -169,7 +170,8 @@ def eth_sums(request):
 
     users = User.objects.exclude(eth_address='')
     users_by_eth_address = {u.eth_address.lower(): u for u in users}
-    all_transactions = etherscan.get_transactions() + etherscan.get_transactions(internal=True)
+    #all_transactions = etherscan.get_transactions() + etherscan.get_transactions(internal=True)
+    all_transactions = cache.get(etherscan.CACHE_KEY) or []
     transactions = etherscan.filter_failed(all_transactions)
     total = etherscan.eth_get_total(transactions)
     sum_for_accounts = etherscan.get_sum_for_accounts(transactions, users_by_eth_address.keys())
