@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 from django.db.models import Q
 from django.db.models.functions import Length
 
@@ -105,13 +106,26 @@ class CustomUserAdmin(UserAdmin):
 
     list_display = ('username', 'first_name', 'last_name', 'is_staff',
                     'eth_contrib_eth',
-                    'is_verified', 'onfido_status', 'onfido_result',
+                    'is_verified', 'onfido_link',
                     'proof_of_address_status', 'proof_of_address_file',
                     'eth_address')
     list_filter = ('is_staff', 'is_superuser', 'proof_of_address_status',
                    EthContribFilter, KYCVerified)
 
     inlines = [OnfidoCallInline]
+
+    def onfido_link(self, obj):
+        check = obj.last_check
+        if not check:
+            return '[none]'
+        return format_html(
+                '<a href="{results_uri}">{status} {result}</a>',
+                results_uri = check.response['results_uri'],
+                status=check.status,
+                result=check.result,
+            )
+    onfido_link.short_description = 'onfido link'
+
 
 class OnfidoCallAdmin(admin.ModelAdmin):
     list_display = ('created', 'user', 'type', 'status', 'result')

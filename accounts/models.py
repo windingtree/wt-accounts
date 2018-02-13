@@ -68,14 +68,6 @@ class User(AbstractUser):
         return check.result == 'clear' if check else False
     is_verified.boolean = True  # django admin
 
-    def onfido_status(self):
-        check = self.last_check
-        return check.status if check else '<none>'
-
-    def onfido_result(self):
-        check = self.last_check
-        return check.result if check else '<none>'
-
     def onfido_check(self):
         applicant = onfido_api.create_applicant(self)
         OnfidoCall.objects.create(user=self, type='applicant', applicant_id=applicant.id,
