@@ -49,11 +49,11 @@ class EthContribFilter(admin.SimpleListFilter):
                     eth_contrib__startswith=12) | Q(eth_contrib__startswith=13) | Q(
                     eth_contrib__startswith=14), eth_contrib_length=ten_eth)
         elif self.value() == '15-20':
-            return queryset.filter(Q(
+            return queryset.filter(
                 Q(eth_contrib__startswith=15) | Q(eth_contrib__startswith=16) | Q(
                     eth_contrib__startswith=17) | Q(eth_contrib__startswith=18) | Q(
                     eth_contrib__startswith=19) | Q(eth_contrib__startswith=2),
-                eth_contrib_length=ten_eth) | Q(eth_contrib_length__gt=ten_eth))
+                eth_contrib_length=ten_eth)
         elif self.value() == '20+':
             return queryset.filter(Q(
                 Q(eth_contrib_length__gt=ten_eth) |
