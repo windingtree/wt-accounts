@@ -123,7 +123,7 @@ class OnfidoCall(TimeStampedModel):
         check = onfido_api.check_reload(self.applicant_id, self.response['id'])
         return OnfidoCall.objects.create(user=self.user, type='check', response=check.to_dict(),
                                          applicant_id=self.applicant_id, status=check.status or '',
-                                         result=check.result or '')
+                                         onfido_id=check.id, result=check.result or '')
 
 
 def create_link_context(user, use_https=False):
