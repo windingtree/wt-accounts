@@ -1,3 +1,4 @@
+import pickle, zlib
 import hashlib
 import hmac
 import json
@@ -170,8 +171,12 @@ def eth_sums(request):
 
     users = User.objects.exclude(eth_address='')
     users_by_eth_address = {u.eth_address.lower(): u for u in users}
-    #all_transactions = etherscan.get_transactions() + etherscan.get_transactions(internal=True)
-    all_transactions = cache.get(etherscan.CACHE_KEY) or []
+    # because it is about 50 http calls to the api and the object is around 6mb
+    # the cache is set in management command `fill_user_eth_contrib`
+    all_transactions = []
+    all_transactions_cache = cache.get(etherscan.CACHE_KEY)
+    if all_transactions_cache:
+        all_transactions = pickle.loads(zlib.decompress(all_transactions_cache))
     transactions = etherscan.filter_failed(all_transactions)
     total = etherscan.eth_get_total(transactions)
     sum_for_accounts = etherscan.get_sum_for_accounts(transactions, users_by_eth_address.keys())

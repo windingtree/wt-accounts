@@ -1,3 +1,5 @@
+import pickle, zlib
+
 from django.core.management.base import BaseCommand
 
 from django.core.cache import cache
@@ -14,7 +16,8 @@ class Command(BaseCommand):
         all_transactions = etherscan.get_transactions() + etherscan.get_transactions(internal=True)
         transactions = etherscan.filter_failed(all_transactions)
 
-        cache.set(etherscan.CACHE_KEY, all_transactions)
+        # cache forever
+        cache.set(etherscan.CACHE_KEY, zlib.compress(pickle.dumps(all_transactions)), timeout=None)
 
         total = etherscan.eth_get_total(transactions)
         sum_for_accounts = etherscan.get_sum_for_accounts(transactions, users_by_eth_address.keys())
