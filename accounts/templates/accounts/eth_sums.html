@@ -5,9 +5,11 @@
   <h1>Total: {{ total_eth|floatformat:"-3" }}ETH ({{ total|stringformat:"E" }})</h1>
 
   {% if request.user.is_staff %}
+  <!--
     <form action="" method="post">{% csrf_token %}
       <button type="submit" class="btn btn-primary">Save values to Profiles</button>
     </form>
+  -->
   {% endif %}
 
   <dl>
