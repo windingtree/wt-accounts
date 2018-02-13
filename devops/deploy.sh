@@ -18,6 +18,7 @@ deploy() {
         $SUDO_WEB $VENV_DIR/bin/pip install -r $SRC_DIR/requirements.txt
 
         $SUDO_WEB $VENV_DIR/bin/python $SRC_DIR/manage.py migrate --no-input --settings=$SETTINGS
+        $SUDO_WEB $VENV_DIR/bin/python $SRC_DIR/manage.py createcachetable --settings=$SETTINGS
         $SUDO_WEB $VENV_DIR/bin/python $SRC_DIR/manage.py collectstatic --clear --no-input --settings=$SETTINGS
         # $SUDO_WEB $VENV_DIR/bin/python $SRC_DIR/manage.py compilemessages --settings=$SETTINGS
         date '+%s' | $SUDO_WEB tee $SRC_DIR/deploy_timestamp
