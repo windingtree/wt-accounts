@@ -52,7 +52,7 @@ class EthContribFilter(admin.SimpleListFilter):
             return queryset.filter(
                 Q(eth_contrib__startswith=15) | Q(eth_contrib__startswith=16) | Q(
                     eth_contrib__startswith=17) | Q(eth_contrib__startswith=18) | Q(
-                    eth_contrib__startswith=19) | Q(eth_contrib__startswith=2),
+                    eth_contrib__startswith=19),
                 eth_contrib_length=ten_eth)
         elif self.value() == '20+':
             return queryset.filter(Q(
