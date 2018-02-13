@@ -21,11 +21,13 @@ class EthContribFilter(admin.SimpleListFilter):
             ('2-5', _('ETH contrib 2-5')),
             ('5-9', _('ETH contrib 5-9')),
             ('10-15', _('ETH contrib 10-15')),
-            ('15+', _('ETH contrib 15+')),
+            ('15-20', _('ETH contrib 15-20')),
+            ('20+', _('ETH contrib 20+')),
         )
 
     def queryset(self, request, queryset):
         one_eth = len(str(10 ** 18))
+        ten_eth = one_eth + 1
         queryset = queryset.annotate(eth_contrib_length=Length('eth_contrib'))
 
         if self.value() == '0':
@@ -45,13 +47,24 @@ class EthContribFilter(admin.SimpleListFilter):
             return queryset.filter(
                 Q(eth_contrib__startswith=10) | Q(eth_contrib__startswith=11) | Q(
                     eth_contrib__startswith=12) | Q(eth_contrib__startswith=13) | Q(
-                    eth_contrib__startswith=14), eth_contrib_length=one_eth + 1)
-        elif self.value() == '15+':
+                    eth_contrib__startswith=14), eth_contrib_length=ten_eth)
+        elif self.value() == '15-20':
             return queryset.filter(Q(
                 Q(eth_contrib__startswith=15) | Q(eth_contrib__startswith=16) | Q(
                     eth_contrib__startswith=17) | Q(eth_contrib__startswith=18) | Q(
                     eth_contrib__startswith=19) | Q(eth_contrib__startswith=2),
-                eth_contrib_length=one_eth + 1) | Q(eth_contrib_length__gt=one_eth + 1))
+                eth_contrib_length=ten_eth) | Q(eth_contrib_length__gt=ten_eth))
+        elif self.value() == '20+':
+            return queryset.filter(Q(
+                Q(eth_contrib_length__gt=ten_eth) |
+                Q(
+                    Q(eth_contrib__startswith=2) | Q(eth_contrib__startswith=3) | \
+                    Q(eth_contrib__startswith=4) | Q(eth_contrib__startswith=5) | \
+                    Q(eth_contrib__startswith=6) | Q(eth_contrib__startswith=7) | \
+                    Q(eth_contrib__startswith=8) | Q(eth_contrib__startswith=9),
+                    eth_contrib_length=ten_eth,
+                )
+            ))
 
 
 class KYCVerified(admin.SimpleListFilter):
