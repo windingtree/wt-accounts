@@ -9,8 +9,7 @@ from django.contrib import messages
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
-from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, \
-    HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, resolve_url, redirect
 from django.urls import reverse
 from django.utils.http import urlsafe_base64_decode
@@ -61,7 +60,7 @@ def login(request):
         user = form.user
         logger.debug('Sending email to %s', user.email)
         send_login_email(request, user)
-        return HttpResponseRedirect(reverse('login_sent'))
+        return redirect('login_sent')
 
     return render(request, 'accounts/login.html', {'form': form})
 
@@ -80,10 +79,10 @@ def faq(request):
 
 def registration(request):
     if is_from_banned_country(request):
-        return HttpResponseRedirect(reverse('geofence'))
+        return redirect('geofence')
 
     if request.user.is_authenticated:
-        return HttpResponseRedirect(resolve_url(settings.LOGIN_REDIRECT_URL))
+        return redirect(settings.LOGIN_REDIRECT_URL)
 
     form = RegistrationForm(request.POST or None)
     # data-sitekey
@@ -95,7 +94,7 @@ def registration(request):
         logger.debug('Sending email to %s', user.email)
         send_login_email(request, user)
 
-        return HttpResponseRedirect(reverse('login_sent'))
+        return redirect('login_sent')
 
     return render(request, 'accounts/registration.html', {'form': form})
 
@@ -104,7 +103,7 @@ def registration(request):
 def status(request):
     if not request.user.can_verify() or request.user.eth_address == '':
         messages.warning(request, 'Please fill all the fields')
-        return HttpResponseRedirect(reverse('profile'))
+        return redirect('profile')
 
     form = VerifyForm(request.POST or None, request.FILES or None, instance=request.user)
     if request.method == 'POST':
@@ -139,7 +138,7 @@ def profile(request):
 def logout(request):
     auth_logout(request)
     messages.success(request, 'You were logged out')
-    return HttpResponseRedirect(reverse(settings.LOGOUT_REDIRECT_URL))
+    return redirect(settings.LOGOUT_REDIRECT_URL)
 
 
 @require_POST
@@ -217,7 +216,7 @@ def eth_sums(request):
     return render(request, 'accounts/eth_sums.html', context)
 
 def is_from_banned_country(request):
-    banned_countries = ['US', 'CHINA']
+    banned_countries = ['US',]
     geoip_header = request.META.get('HTTP_CF_IPCOUNTRY', '')
     return geoip_header.upper() in banned_countries
 
