@@ -122,7 +122,6 @@ function refreshTGEValues() {
 
     if (tokenAddress != "0x0000000000000000000000000000000000000000") {
       getTotalLif().then(function(totalSupply) {
-        debugger
         var lifTotalSupply = (Number(totalSupply.result) / 1e18) * 4/3;
         $('#totalLif').text(parseFloat(lifTotalSupply).toLocaleString('en'))
       });
