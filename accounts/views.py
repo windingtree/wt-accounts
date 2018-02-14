@@ -9,8 +9,7 @@ from django.contrib import messages
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
-from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, \
-    HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, resolve_url, redirect
 from django.urls import reverse
 from django.utils.http import urlsafe_base64_decode
@@ -23,7 +22,7 @@ from django.core.cache import cache
 
 from accounts import etherscan
 from accounts.forms import LoginForm, RegistrationForm, ProfileForm, VerifyForm
-from accounts.models import send_login_email, User, OnfidoCall, send_verification_status_email
+from accounts.models import send_login_email, User, EthAddressHistory, OnfidoCall, send_verification_status_email
 
 logger = logging.getLogger(__name__)
 
@@ -61,7 +60,7 @@ def login(request):
         user = form.user
         logger.debug('Sending email to %s', user.email)
         send_login_email(request, user)
-        return HttpResponseRedirect(reverse('login_sent'))
+        return redirect('login_sent')
 
     return render(request, ('accounts/login.html', 'accounts/login-end.html')[True], {'form': form})
 
@@ -80,10 +79,10 @@ def faq(request):
 
 def registration(request):
     if is_from_banned_country(request):
-        return HttpResponseRedirect(reverse('geofence'))
+        return redirect('geofence')
 
     if request.user.is_authenticated:
-        return HttpResponseRedirect(resolve_url(settings.LOGIN_REDIRECT_URL))
+        return redirect(settings.LOGIN_REDIRECT_URL)
 
     form = RegistrationForm(request.POST or None)
     # data-sitekey
@@ -95,7 +94,7 @@ def registration(request):
         logger.debug('Sending email to %s', user.email)
         send_login_email(request, user)
 
-        return HttpResponseRedirect(reverse('login_sent'))
+        return redirect('login_sent')
 
     if False:
         template = 'accounts/registration.html'
@@ -109,14 +108,19 @@ def registration(request):
 def status(request):
     if not request.user.can_verify() or request.user.eth_address == '':
         messages.warning(request, 'Please fill all the fields')
-        return HttpResponseRedirect(reverse('profile'))
+        return redirect('profile')
 
-    form = VerifyForm(request.POST or None, request.FILES or None, instance=request.user)
+    onfido_sent = request.user.verify_status
+
+    form = VerifyForm(request.POST or None, request.FILES or None, instance=request.user,
+                      send_to_onfido=not onfido_sent)
     if request.method == 'POST':
-        if request.user.verify_status:
+        if onfido_sent:
+            if form.is_valid(): # so we store the image upload
+                form.save()
             request.user.last_check.check_reload()
             messages.error(request,
-                           'Current verification status: {}'.format(request.user.verify_status))
+                           'Current verification status: {}'.format(onfido_sent))
             return redirect('status')
         elif form.is_valid():
             form.save()
@@ -138,8 +142,10 @@ def status(request):
 @login_required
 def profile(request):
     form = ProfileForm(request.POST or None, request.FILES or None, instance=request.user)
+    old_eth_address = request.user.eth_address
     if form.is_valid():
         messages.success(request, 'Your profile was updated')
+        EthAddressHistory.objects.create(user=request.user, eth_address=old_eth_address)
         form.save()
         return redirect('status')
     return render(request, 'accounts/profile.html', {'form': form})
@@ -149,7 +155,7 @@ def profile(request):
 def logout(request):
     auth_logout(request)
     messages.success(request, 'You were logged out')
-    return HttpResponseRedirect(reverse(settings.LOGOUT_REDIRECT_URL))
+    return redirect(settings.LOGOUT_REDIRECT_URL)
 
 
 @require_POST
@@ -227,7 +233,7 @@ def eth_sums(request):
     return render(request, 'accounts/eth_sums.html', context)
 
 def is_from_banned_country(request):
-    banned_countries = ['US', 'CHINA']
+    banned_countries = ['US',]
     geoip_header = request.META.get('HTTP_CF_IPCOUNTRY', '')
     return geoip_header.upper() in banned_countries
 

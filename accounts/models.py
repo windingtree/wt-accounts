@@ -85,6 +85,10 @@ class User(AbstractUser):
         return self.eth_contrib_int / 10**18
     eth_contrib_eth.short_description = 'eth contrib [eth]'
 
+class EthAddressHistory(TimeStampedModel):
+    user = models.ForeignKey(User, related_name='ethaddresses', on_delete=models.DO_NOTHING)
+    eth_address = models.CharField(max_length=100)
+
 class OnfidoCall(TimeStampedModel):
     TYPES = (
         ('applicant', 'applicant'),
@@ -132,8 +136,8 @@ def create_link_context(user, use_https=False):
 def send_login_email(request, user):
     context = create_link_context(user, use_https=request.is_secure())
     email_content = render_to_string('accounts/email_login.txt', context=context, request=request)
-    # sending from settings.DEFAULT_FROM_EMAIL
     html_message = render_to_string('accounts/email_login.html', context=context, request=request)
+    # sending from settings.DEFAULT_FROM_EMAIL
     user.email_user('Your Winding Tree Account', email_content, html_message=html_message)
 
 

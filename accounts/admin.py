@@ -85,6 +85,10 @@ class KYCVerified(admin.SimpleListFilter):
             return queryset.filter(onfidos__type='check').distinct()
 
 
+class EthAddressHistoryInline(admin.TabularInline):
+    model = EthAddressHistory
+    extra = 0
+
 class OnfidoCallInline(admin.TabularInline):
     model = OnfidoCall
     extra = 0
@@ -112,7 +116,7 @@ class CustomUserAdmin(UserAdmin):
     list_filter = ('is_staff', 'is_superuser', 'proof_of_address_status',
                    EthContribFilter, KYCVerified)
 
-    inlines = [OnfidoCallInline]
+    inlines = [OnfidoCallInline, EthAddressHistoryInline]
 
     def onfido_link(self, obj):
         check = obj.last_check
