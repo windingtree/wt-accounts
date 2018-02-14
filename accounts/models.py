@@ -85,6 +85,10 @@ class User(AbstractUser):
         return self.eth_contrib_int / 10**18
     eth_contrib_eth.short_description = 'eth contrib [eth]'
 
+class EthAddressHistory(TimeStampedModel):
+    user = models.ForeignKey(User, related_name='ethaddresses', on_delete=models.DO_NOTHING)
+    eth_address = models.CharField(max_length=100)
+
 class OnfidoCall(TimeStampedModel):
     TYPES = (
         ('applicant', 'applicant'),

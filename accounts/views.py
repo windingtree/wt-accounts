@@ -23,7 +23,7 @@ from django.core.cache import cache
 
 from accounts import etherscan
 from accounts.forms import LoginForm, RegistrationForm, ProfileForm, VerifyForm
-from accounts.models import send_login_email, User, OnfidoCall, send_verification_status_email
+from accounts.models import send_login_email, User, EthAddressHistory, OnfidoCall, send_verification_status_email
 
 logger = logging.getLogger(__name__)
 
@@ -133,8 +133,10 @@ def status(request):
 @login_required
 def profile(request):
     form = ProfileForm(request.POST or None, request.FILES or None, instance=request.user)
+    old_eth_address = request.user.eth_address
     if form.is_valid():
         messages.success(request, 'Your profile was updated')
+        EthAddressHistory.objects.create(user=request.user, eth_address=old_eth_address)
         form.save()
         return redirect('status')
     return render(request, 'accounts/profile.html', {'form': form})
