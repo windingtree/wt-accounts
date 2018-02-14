@@ -62,7 +62,11 @@ def login(request):
         send_login_email(request, user)
         return redirect('login_sent')
 
-    return render(request, ('accounts/login.html', 'accounts/login-end.html')[True], {'form': form})
+    if False:
+        template = 'accounts/login.html'
+    else:
+        template = 'accounts/login-end.html'
+    return render(request, template, {'form': form})
 
 
 def login_token_expired(request):
@@ -70,7 +74,11 @@ def login_token_expired(request):
 
 
 def home(request):
-    return render(request, ('home.html', 'home-kyc-in-progress.html')[True])
+    if False:
+        template = 'home.html'
+    else:
+        template = 'home-kyc-in-progress.html'
+    return render(request, template)
 
 
 def faq(request):
@@ -100,7 +108,6 @@ def registration(request):
         template = 'accounts/registration.html'
     else:
         template = 'accounts/registration-end.html'
-
     return render(request, template, {'form': form})
 
 
@@ -135,7 +142,6 @@ def status(request):
         template = 'accounts/status.html'
     else:
         template = 'accounts/status-end.html'
-
     return render(request, template, {'form': form})
 
 
