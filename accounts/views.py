@@ -158,7 +158,7 @@ def onfido_webhook(request):
     if body['payload']['action'] in {'check.completed', }:
         check_id = body['payload']['object']['id']
         if not test:
-            oc = OnfidoCall.objects.get(type='check', onfido_id=check_id)
+            oc = OnfidoCall.objects.filter(type='check', onfido_id=check_id).first()
             send_verification_status_email(request, oc.user)
     return HttpResponse('OK')
 
