@@ -17,7 +17,7 @@
       countDownTo = endTime;
       explainerClass = 'ends';
     }
-    if (now > 10) {
+    if (now > endTime) {
       countDownTo = tokenUnfreezeTime;
       explainerClass = 'unfreeze';
     }
