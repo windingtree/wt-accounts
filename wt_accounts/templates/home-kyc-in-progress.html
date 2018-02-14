@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block javascript_inline_bottom %}
+<script src="{% static 'js/countdown.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+  <header id="header" class="alt">
+    <a href="/" style="border: none;"><span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span></a>
+    <h1>Líf Token Sale Was Successful</h1>
+    <h2>Thank You For Making This Happen!</h2>
+
+    <h1 id="countdown">00d : 00h : 00m : 00s</h1>
+    <div id="countdown-explainer">
+      <div class="starts">
+        <span>Until TGE Start</span>
+        08:00 on February 1 (UTC)
+      </div>
+      <div class="changes">
+        <span>Until price increase. Current price 1ETH = 900LIF.</span>
+        08:00 on February 7 (UTC)
+      </div>
+      <div class="ends">
+        <span>Until TGE End</span>
+        23:59 on February 14 (UTC)
+      </div>
+      <div class="unfreeze">
+        <span>Until Token Unfreeze</span>
+        23:59 on February 21 (UTC)
+      </div>
+    </div>
+
+    <div><strong><a href="{% url 'faq' %}" style="color: #fff !important;">FAQ</a></strong></div>
+
+    <div class="participate">
+      {% if request.user.is_authenticated %}
+        {% if request.user.eth_address %}
+          <a href="{% url 'status' %}" class="button special">My Contribution Status</a>
+        {% else %}
+          <a href="{% url 'profile' %}" class="button special">My Profile</a>
+        {% endif %}
+      {% else %}
+        <a href="{% url 'login_form' %}" class="button special">Log In</a>
+      {% endif %}
+    </div>
+  </header>
+
+  <nav id="nav">
+    <ul>
+      <li><a href="#stats" class="active">Stats</a></li>
+      <li><a href="#what-next">What's Next?</a></li>
+    </ul>
+  </nav>
+
+  <div id="main">
+    <section id="stats" class="main special">
+      <header class="major">
+        <h2>Token Generation Event Stats</h2>
+      </header>
+      <ul class="statistics">
+        <li class="style4">
+          <span class="icon fa-leaf"></span>
+          <strong id="totalLif">0</strong> Lífs Generated (<a href="{% url 'faq' %}#faq-13">why?</a>)
+        </li>
+        <li class="style6">
+          <span class="icon fa-dollar"></span>
+          <strong id="ethRaised">0</strong> ETH Raised
+        </li>
+        <li class="style5">
+          <span class="icon fa-signal"></span>
+          <strong id="mvmEth">7,391</strong> ETH <a href="https://blog.windingtree.com/market-validation-mechanism-in-a-nutshell-ddba1d92be89">In the MVM</a>
+        </li>
+      </ul>
+      <ul class="statistics">
+        <li class="style1">
+          <span class="icon fa-users"></span>
+          <strong>7,000</strong> Backers
+        </li>
+        <li class="style2">
+          <span class="icon fa-building"></span>
+          <strong>10</strong> Corporate Partners
+        </li>
+        <li class="style3">
+          <span class="icon fa-wrench"></span>
+          <strong>1</strong> Industries Being Fixed
+        </li>
+      </ul>
+    </section>
+
+    <section id="what-next" class="main">
+      <header class="major">
+        <h2>What Is Next?</h2>
+      </header>
+      <p>Now we are checking all the contributions for the completness of the data. <strong>If you contributed more than 15 ETH, <a href="{% url 'login_form' %}">please log in to your account</a> and fill out the KYC form.</strong></p>
+      <p>When we finish this process, we will refund all the transactions that we don't have any information about and burn the tokens generated for them. After that, we will unfreeze the Líf token smart contract and allow token transfers.</p>
+    </section>
+  </div>
+{% endblock %}

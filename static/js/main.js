@@ -105,7 +105,7 @@ function setEthRaised(eth_raised) {
   $('#barRaised').text(eth_raised.toLocaleString('en'));
   $('#softCapBar').text(SOFT_CAP.toLocaleString('en') + ' ETH');
   $('#maxCapBar').text((MAX_CAP - SOFT_CAP).toLocaleString('en') + ' ETH');
-  $('#mvmBar, #mvmEth').text(mvmEth.toLocaleString('en') + ' ETH');
+  $('#mvmBar, #mvmEth').text(mvmEth.toLocaleString('en'));
 
   $('#ethRaised').text(parseFloat(eth_raised).toLocaleString('en'));
   $('#progressBar').text(parseFloat(eth_raised).toLocaleString('en') +' ETH');
@@ -122,6 +122,7 @@ function refreshTGEValues() {
 
     if (tokenAddress != "0x0000000000000000000000000000000000000000") {
       getTotalLif().then(function(totalSupply) {
+        debugger
         var lifTotalSupply = (Number(totalSupply.result) / 1e18) * 4/3;
         $('#totalLif').text(parseFloat(lifTotalSupply).toLocaleString('en'))
       });

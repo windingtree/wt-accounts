@@ -63,7 +63,7 @@ def login(request):
         send_login_email(request, user)
         return HttpResponseRedirect(reverse('login_sent'))
 
-    return render(request, 'accounts/login.html', {'form': form})
+    return render(request, ('accounts/login.html', 'accounts/login-end.html')[True], {'form': form})
 
 
 def login_token_expired(request):
@@ -100,7 +100,7 @@ def registration(request):
     if False:
         template = 'accounts/registration.html'
     else:
-        template = 'accounts/registration-kyc-in-progress.html'
+        template = 'accounts/registration-end.html'
 
     return render(request, template, {'form': form})
 
