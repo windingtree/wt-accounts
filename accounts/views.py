@@ -106,12 +106,17 @@ def status(request):
         messages.warning(request, 'Please fill all the fields')
         return HttpResponseRedirect(reverse('profile'))
 
-    form = VerifyForm(request.POST or None, request.FILES or None, instance=request.user)
+    onfido_sent = request.user.verify_status
+
+    form = VerifyForm(request.POST or None, request.FILES or None, instance=request.user,
+                      send_to_onfido=not onfido_sent)
     if request.method == 'POST':
-        if request.user.verify_status:
+        if onfido_sent:
+            if form.is_valid(): # so we store the image upload
+                form.save()
             request.user.last_check.check_reload()
             messages.error(request,
-                           'Current verification status: {}'.format(request.user.verify_status))
+                           'Current verification status: {}'.format(onfido_sent))
             return redirect('status')
         elif form.is_valid():
             form.save()

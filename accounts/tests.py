@@ -8,6 +8,7 @@ from datetime import date
 from django.conf import settings
 from django.core import mail
 from django.core.exceptions import ValidationError
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.forms import model_to_dict
 from django.urls import reverse
 
@@ -245,6 +246,33 @@ def test_profile_view(client, admin_client):
 
 
 @pytest.mark.django_db
+def test_status_view(client, onfido_test_user):
+    # TODO will work only if S3 config or mock
+    url = reverse('status')
+    response = client.get(url)
+
+    assert response.status_code == 302
+    assert response['Location'] == '/ico/login/?next=/ico/'
+
+    # logged in user
+    onfido_test_user.set_password('fap')
+    onfido_test_user.eth_address = '0x1d64480c8ae05e25169274022987e7089921302a'
+    onfido_test_user.save()
+    client.login(**{'username': onfido_test_user.username, 'password': 'fap'})
+    response = client.get(url)
+
+    assert response.status_code == 200
+    assert 'form' in response.context
+
+    response = client.post(url, {
+        'proof_of_address_file': SimpleUploadedFile(
+            "file.mp4", b"file_content", content_type="video/mp4")})
+
+    assert response.status_code == 302
+    assert response['Location'] == '/ico/'
+
+
+@pytest.mark.django_db
 def test_logout_view_get(client, admin_client):
     url = reverse('logout')
     response = client.get(url)
@@ -271,7 +299,7 @@ def test_logout_view_post(admin_client):
 
 def test_onfido_create_applicant(onfido_test_user):
     result = onfido_api.create_applicant(onfido_test_user)
-    pprint(result.to_dict() )
+    # pprint(result.to_dict() )
 
     assert result.to_dict() == {
         'addresses': [{'building_name': None, 'id': None, 'town': 'London', 'flat_number': None,

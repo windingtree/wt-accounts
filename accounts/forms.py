@@ -112,6 +112,7 @@ class VerifyForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.onfido_check = None
+        self.send_to_onfido = kwargs.pop('send_to_onfido', True)
         super().__init__(*args, **kwargs)
         self.fields['proof_of_address_file'].required = True
 
@@ -120,5 +121,6 @@ class VerifyForm(forms.ModelForm):
         if not self.instance.can_verify():
             raise forms.ValidationError('All the fields must be filled for verification')
 
-        self.onfido_check = self.instance.onfido_check()
+        if self.send_to_onfido:
+            self.onfido_check = self.instance.onfido_check()
         return self.cleaned_data
