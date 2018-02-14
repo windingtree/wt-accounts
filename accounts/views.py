@@ -71,7 +71,7 @@ def login_token_expired(request):
 
 
 def home(request):
-    return render(request, 'home.html')
+    return render(request, ('home.html', 'home-kyc-in-progress.html')[True])
 
 
 def faq(request):
@@ -97,7 +97,12 @@ def registration(request):
 
         return HttpResponseRedirect(reverse('login_sent'))
 
-    return render(request, 'accounts/registration.html', {'form': form})
+    if False:
+        template = 'accounts/registration.html'
+    else:
+        template = 'accounts/registration-kyc-in-progress.html'
+
+    return render(request, template, {'form': form})
 
 
 @login_required
@@ -236,4 +241,3 @@ def headers(request):
     ]
     data = '\n'.join(lines)
     return HttpResponse('<pre>{}</pre>'.format(data))
-
