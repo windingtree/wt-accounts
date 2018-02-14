@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+{% block navbar %}
+<header id="header">
+  <a href="/" style="border: none;"><span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span></a>
+  <h1 style="margin-bottom: 40px">Log In</h1>
+</header>
+{% endblock %}
+
+{% block content %}
+<div id="main">
+  <section class="main">
+    <header class="major">
+      <h2>Log In to your Winding Tree account</h2>
+      <p>Check your transaction status and complete your KYC if contributing 15 or more ETH</p>
+    </header>
+
+    <form action="." method="post" class="form">
+      {% csrf_token %}
+
+      {% bootstrap_field form.email %}
+
+      <div>
+        {% buttons %}
+          <button type="submit" class="button special">Login</button>
+        {% endbuttons %}
+      </div>
+    </form>
+  </section>
+</div>
+{% endblock %}

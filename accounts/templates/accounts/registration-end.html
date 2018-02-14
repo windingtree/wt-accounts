@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+{% block extra_head %}
+{#  https://developers.google.com/recaptcha/docs/display#}
+  <script src='https://www.google.com/recaptcha/api.js'></script>
+{% endblock %}
+
+{% block navbar %}
+<header id="header">
+  <a href="/" style="border: none;"><span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span></a>
+  <h1>Registration is Closed</h1>
+  <p>Already registered? <strong><a href="{% url 'login_form' %}">Log In</a></strong></p>
+</header>
+{% endblock %}
+
+{% block content %}
+<div id="main">
+  <section class="main">
+    <header class="major">
+      <h2>Winding Tree ICO Registration is now Closed</h2>
+      <p>Thank you for your support!</p>
+    </header>
+  </section>
+</div>
+{% endblock %}

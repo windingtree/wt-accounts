@@ -28,13 +28,15 @@
 }
 #countdown-explainer.starts div,
 #countdown-explainer.changes div,
-#countdown-explainer.ends div {
+#countdown-explainer.ends div,
+#countdown-explainer.unfreeze div {
   display: none;
   visibility: visible;
 }
 #countdown-explainer.starts .starts,
 #countdown-explainer.changes .changes,
-#countdown-explainer.ends .ends {
+#countdown-explainer.ends .ends,
+#countdown-explainer.unfreeze .unfreeze {
   display: block;
 }
 

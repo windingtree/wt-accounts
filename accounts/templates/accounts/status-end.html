@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block navbar %}
+<header id="header">
+  <a href="/" style="border: none;"><span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span></a>
+  <h1>My Contribution Status</h1>
+  <div><strong>{{ request.user.email }}</strong></div>
+  <p><a href="{% url 'profile' %}">Edit Profile</a> <a href="{% url 'logout' %}">Log Out</a></p>
+</header>
+{% endblock %}
+
+{% block content %}
+<div id="main">
+  <section class="main">
+    <header class="major no-margin">
+      {% if request.user.eth_address %}
+        <p id="verification-status" class="hidden">
+          {% if request.user.verify_status == 'awaiting_applicant' %}
+            <span class="badge badge-secondary">Verification Not Submitted</span>
+          {% elif request.user.verify_status == 'in_progress' %}
+            <span class="badge badge-light">Verification In Progress</span>
+          {% elif request.user.verify_status == 'complete' %}
+            <span class="badge badge-primary">Verification Complete</span>
+          {% elif request.user.verify_status == 'withdrawn' %}
+            <span class="badge badge-danger">Verification Withdrawn</span>
+          {% elif request.user.verify_status == 'paused' %}
+            <span class="badge badge-info">Verification Paused</span>
+          {% elif request.user.verify_status == 'reopened' %}
+            <span class="badge badge-info">Verification Reopened</span>
+          {% else %}
+            <span class="badge badge-secondary">Verification Not Submitted</span>
+          {% endif %}
+        </p>
+
+        <h2><span id="userAddress"><a href="https://etherscan.io/address/{{ request.user.eth_address }}">{{ request.user.eth_address }}</a></span> &larr; Your Address</h2>
+        <h3>You have sent <strong id="totalETHSent">0</strong></h3>
+        <h3>Your will receive <strong id="totalLifBalance">0</strong> after the TGE (<a href="{% url 'faq' %}">where is my stuff?</a>)</h3>
+      {% endif %}
+    </header>
+    <form action="." method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div id="proof-of-address-input" class="hidden">
+        {% bootstrap_form form %}
+      </div>
+      <button id="verify-profile" type="submit" name="verify"
+              class="btn special hidden">
+        Verify for +15 ETH contribution
+      </button>
+    </form>
+  </section>
+</div>
+{% endblock %}

@@ -1,8 +1,10 @@
+import pytz
 import pickle, zlib
 import hashlib
 import hmac
 import json
 import logging
+from datetime import datetime
 
 from django.conf import settings
 from django.contrib import messages
@@ -19,6 +21,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.http import require_POST
 from django.core.cache import cache
+from django.utils import timezone
 
 from accounts import etherscan
 from accounts.forms import LoginForm, RegistrationForm, ProfileForm, VerifyForm
@@ -26,6 +29,9 @@ from accounts.models import send_login_email, User, EthAddressHistory, OnfidoCal
 
 logger = logging.getLogger(__name__)
 
+def is_ico_running():
+    ico_end = pytz.timezone("UTC").localize(datetime(2018, 2, 15, 0, 0))
+    return timezone.now() < ico_end
 
 @sensitive_post_parameters()
 @never_cache
@@ -62,7 +68,11 @@ def login(request):
         send_login_email(request, user)
         return redirect('login_sent')
 
-    return render(request, 'accounts/login.html', {'form': form})
+    if is_ico_running():
+        template = 'accounts/login.html'
+    else:
+        template = 'accounts/login-end.html'
+    return render(request, template, {'form': form})
 
 
 def login_token_expired(request):
@@ -70,7 +80,11 @@ def login_token_expired(request):
 
 
 def home(request):
-    return render(request, 'home.html')
+    if is_ico_running():
+        template = 'home.html'
+    else:
+        template = 'home-kyc-in-progress.html'
+    return render(request, template)
 
 
 def faq(request):
@@ -96,7 +110,11 @@ def registration(request):
 
         return redirect('login_sent')
 
-    return render(request, 'accounts/registration.html', {'form': form})
+    if is_ico_running():
+        template = 'accounts/registration.html'
+    else:
+        template = 'accounts/registration-end.html'
+    return render(request, template, {'form': form})
 
 
 @login_required
@@ -126,7 +144,11 @@ def status(request):
                     onfido_check.check_form_url)))
             return redirect('status')
 
-    return render(request, 'accounts/status.html', {'form': form})
+    if is_ico_running():
+        template = 'accounts/status.html'
+    else:
+        template = 'accounts/status-end.html'
+    return render(request, template, {'form': form})
 
 
 @login_required
@@ -242,4 +264,3 @@ def headers(request):
     ]
     data = '\n'.join(lines)
     return HttpResponse('<pre>{}</pre>'.format(data))
-

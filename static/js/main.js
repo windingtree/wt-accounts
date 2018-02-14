@@ -105,7 +105,7 @@ function setEthRaised(eth_raised) {
   $('#barRaised').text(eth_raised.toLocaleString('en'));
   $('#softCapBar').text(SOFT_CAP.toLocaleString('en') + ' ETH');
   $('#maxCapBar').text((MAX_CAP - SOFT_CAP).toLocaleString('en') + ' ETH');
-  $('#mvmBar, #mvmEth').text(mvmEth.toLocaleString('en') + ' ETH');
+  $('#mvmBar, #mvmEth').text(mvmEth.toLocaleString('en'));
 
   $('#ethRaised').text(parseFloat(eth_raised).toLocaleString('en'));
   $('#progressBar').text(parseFloat(eth_raised).toLocaleString('en') +' ETH');
