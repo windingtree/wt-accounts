@@ -127,7 +127,12 @@ def status(request):
                     onfido_check.check_form_url)))
             return redirect('status')
 
-    return render(request, 'accounts/status.html', {'form': form})
+    if False:
+        template = 'accounts/status.html'
+    else:
+        template = 'accounts/status-end.html'
+
+    return render(request, template, {'form': form})
 
 
 @login_required
