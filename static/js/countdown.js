@@ -7,34 +7,12 @@
   function refreshCountdown() {
     var now = new Date().getTime();
 
-    var countDownTo = startTime,
-      explainerClass = 'starts';
-    if (now > startTime) {
-      countDownTo = priceChangeTime;
-      explainerClass = 'changes';
-    }
-    if (now > priceChangeTime) {
-      countDownTo = endTime;
-      explainerClass = 'ends';
-    }
-    if (now > endTime) {
-      countDownTo = tokenUnfreezeTime;
-      explainerClass = 'unfreeze';
-    }
-
-    // Explainer
-    var currentClass = $('#countdown-explainer').attr('class');
-    if (currentClass !== explainerClass) {
-      //$('#countdown-explainer > div').css('display', 'none');
-      $('#countdown-explainer').attr('class','').addClass(explainerClass);
-    }
-
     // Countdown
     if (now >= tokenUnfreezeTime) {
       $('#countdown').text('Thank You!');
       clearInterval(interval);
     } else {
-      var delta = countDownTo - now;
+      var delta = tokenUnfreezeTime - now;
       var days = ''+Math.floor(delta / (1000 * 60 * 60 * 24)),
         hours = ''+Math.floor((delta % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
         minutes = ''+Math.floor((delta % (1000 * 60 * 60)) / (1000 * 60)),

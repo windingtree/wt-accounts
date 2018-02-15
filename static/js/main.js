@@ -32,19 +32,6 @@ function getLifBalance(contributor) {
   return $.get('https://api.etherscan.io/api?' + params);
 }
 
-// Get total ETH raised in wei unit, returns promise
-function getWeiRaised() {
-  var params = $.param({
-      module: 'proxy',
-      action: 'eth_call',
-      tag: 'latest',
-      to: icoAddress,
-      data: '0x4042b66f',
-      apikey: '5FUHMWGH51JT3G9EARU4K4QH3SVWYIMFIB',
-  });
-  return $.get('https://api.etherscan.io/api?' + params);
-}
-
 // Get total supply of Lif, returns promise
 function getTotalLif() {
   var params = $.param({
@@ -89,47 +76,3 @@ function refreshUserContribution() {
 
 // Check everything every 10 seconds
 refreshUserContribution();
-
-function setEthRaised(eth_raised) {
-  var bar_end = eth_raised * 1.25;
-  var soft_cap_percent = Math.round(SOFT_CAP / bar_end * 100);
-  var max_cap_percent = Math.round((MAX_CAP - SOFT_CAP) / bar_end * 100);
-  var mvmEth = eth_raised - MAX_CAP;
-  var mvm_percent = Math.round(mvmEth / bar_end * 100);
-
-  $('#softCapBar').css({ width: soft_cap_percent + '%', opacity: 1 });
-  $('#maxCapBar').css({ width: max_cap_percent + '%', opacity: 1 });
-  $('#mvmBar').css({ width: mvm_percent + '%', opacity: 1 });
-  $('#barRest').css({ width: 100 - max_cap_percent - soft_cap_percent - mvm_percent + '%', opacity: 1 });
-
-  $('#barRaised').text(eth_raised.toLocaleString('en'));
-  $('#softCapBar').text(SOFT_CAP.toLocaleString('en') + ' ETH');
-  $('#maxCapBar').text((MAX_CAP - SOFT_CAP).toLocaleString('en') + ' ETH');
-  $('#mvmBar, #mvmEth').text(mvmEth.toLocaleString('en'));
-
-  $('#ethRaised').text(parseFloat(eth_raised).toLocaleString('en'));
-  $('#progressBar').text(parseFloat(eth_raised).toLocaleString('en') +' ETH');
-}
-
-// Refresh TGE values
-function refreshTGEValues() {
-    if (icoAddress != "0x0000000000000000000000000000000000000000")
-      getWeiRaised().then(function(weiRaised) {
-        var icoETHRaised = (Number(weiRaised.result) / 1e18);
-        console.log('ETH TGE raised:', icoETHRaised)
-        setEthRaised(icoETHRaised);
-      });
-
-    if (tokenAddress != "0x0000000000000000000000000000000000000000") {
-      getTotalLif().then(function(totalSupply) {
-        var lifTotalSupply = (Number(totalSupply.result) / 1e18) * 4/3;
-        $('#totalLif').text(parseFloat(lifTotalSupply).toLocaleString('en'))
-      });
-    } else {
-      $('#totalLif').text(parseFloat(lifTotalSupply).toLocaleString('en'))
-    }
-}
-
-// Check everything every 10 seconds
-refreshTGEValues();
-setInterval(refreshTGEValues, 1000*10);
