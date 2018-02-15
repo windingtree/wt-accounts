@@ -32,19 +32,6 @@ function getLifBalance(contributor) {
   return $.get('https://api.etherscan.io/api?' + params);
 }
 
-// Get total supply of Lif, returns promise
-function getTotalLif() {
-  var params = $.param({
-      module: 'proxy',
-      action: 'eth_call',
-      tag: 'latest',
-      to: tokenAddress,
-      data: '0x18160ddd',
-      apikey: '5FUHMWGH51JT3G9EARU4K4QH3SVWYIMFIB',
-  });
-  return $.get('https://api.etherscan.io/api?' + params);
-}
-
 // Refresh TGE values
 function refreshUserContribution() {
     if (icoAddress != "0x0000000000000000000000000000000000000000")
