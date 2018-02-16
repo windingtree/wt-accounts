@@ -205,7 +205,6 @@ def eth_sums(request):
     all_transactions_cache = cache.get(etherscan.CACHE_KEY)
     if all_transactions_cache:
         all_transactions = pickle.loads(zlib.decompress(all_transactions_cache))
-    all_transactions = etherscan.get_transactions() + etherscan.get_transactions(internal=True)
     transactions = etherscan.filter_failed(all_transactions)
     total = etherscan.eth_get_total(transactions)
     sum_for_accounts = etherscan.get_sum_for_accounts(transactions, users_by_eth_address.keys())
