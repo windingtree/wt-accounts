@@ -23,21 +23,21 @@
     <dt>number of users</dt><dd>{{ users|length }}</dd>
   </dl>
 
-  <h2>top contributors</h2>
+  <h2 id="top-contributors">top contributors</h2>
   <ol>
     {% for address, value_eth, value in unique_contributions_sorted|slice:':100' %}
       <li><a href="https://etherscan.io/address/{{ address }}">{{ address }}</a>: {{ value_eth|floatformat:"-3" }}ETH</li>
     {% endfor %}
   </ol>
 
-  <h2>top registered contributors</h2>
+  <h2 id="top-registered-contributors">top registered contributors</h2>
   <ol>
     {% for address, value_eth, value in sum_for_accounts_sorted|slice:':100' %}
       <li><a href="https://etherscan.io/address/{{ address }}">{{ address }}</a>: {{ value_eth|floatformat:"-3" }}ETH</li>
     {% endfor %}
   </ol>
 
-  <h2>all non registered contributors</h2>
+  <h2 id="non-registered-contributors">all non registered contributors</h2>
   <ol>
     {% for address, value_eth, value in non_registered_contributions_sorted %}
       <li><a href="https://etherscan.io/address/{{ address }}">{{ address }}</a>: {{ value_eth|floatformat:"-3" }}ETH</li>
