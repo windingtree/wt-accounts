@@ -197,21 +197,29 @@ def eth_sums(request):
     if store_to_profiles:
         logger.debug('Storing contributions to users')
 
-    users = User.objects.exclude(eth_address='')
-    users_by_eth_address = {u.eth_address.lower(): u for u in users}
     # because it is about 50 http calls to the api and the object is around 6mb
     # the cache is set in management command `fill_user_eth_contrib`
     all_transactions = []
     all_transactions_cache = cache.get(etherscan.CACHE_KEY)
     if all_transactions_cache:
         all_transactions = pickle.loads(zlib.decompress(all_transactions_cache))
+
+    users = User.objects.exclude(eth_address='')
+    users_by_eth_address = {u.eth_address.lower(): u for u in users}
+
     transactions = etherscan.filter_failed(all_transactions)
     total = etherscan.eth_get_total(transactions)
+
     sum_for_accounts = etherscan.get_sum_for_accounts(transactions, users_by_eth_address.keys())
+
     unique_contributions = etherscan.get_unique_contributions(transactions)
     unique_contributions_sum = int(sum( v for (a,v) in unique_contributions.items() )) / 10**18
-    registered_contributions = [ (a,v) for (a,v) in sum_for_accounts.items() if v > 0 ]
-    registered_contributions_sum = int(sum( v for (a,v) in sum_for_accounts.items() )) / 10**18
+
+    registered_contributions = dict( (a,v) for (a,v) in sum_for_accounts.items() if v > 0 )
+    registered_contributions_sum = int(sum( v for (a,v) in registered_contributions.items() )) / 10**18
+
+    non_registered_contributions = dict( (a,v) for (a,v) in unique_contributions.items() if a not in sum_for_accounts )
+    non_registered_contributions_sum = int(sum( v for (a,v) in non_registered_contributions.items() )) / 10**18
 
     unique_contributions_sorted = [
         (x, int(y)/10**18, y) for x,y in
@@ -220,6 +228,10 @@ def eth_sums(request):
     sum_for_accounts_sorted = [
         (x, int(y)/10**18, y) for x,y in
         sorted(sum_for_accounts.items(), key=lambda x: -x[1])
+    ]
+    non_registered_contributions_sorted = [
+        (x, int(y)/10**18, y) for x,y in
+        sorted(non_registered_contributions.items(), key=lambda x: -x[1])
     ]
 
     for account, sum_ in sum_for_accounts.items():
@@ -238,6 +250,9 @@ def eth_sums(request):
         'sum_for_accounts_sorted': sum_for_accounts_sorted,
         'registered_contributions': registered_contributions,
         'registered_contributions_sum': registered_contributions_sum,
+        'non_registered_contributions': non_registered_contributions,
+        'non_registered_contributions_sum': non_registered_contributions_sum,
+        'non_registered_contributions_sorted': non_registered_contributions_sorted,
         'total': total,
         'total_eth': int(total)/10**18,
         'users': users,

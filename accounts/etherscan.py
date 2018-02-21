@@ -53,12 +53,14 @@ def get_sum_for_accounts(transactions, accounts):
     for one in transactions:
         trans_by_account[one['from'].lower()].append(int(one['value']))
 
-    return {account: sum(trans_by_account[account]) for account in accounts if
-            account in trans_by_account}
+    return {
+        account: sum(trans_by_account[account]) for account in accounts
+        if account in trans_by_account
+    }
 
 def get_unique_contributions(transactions):
-    froms = { one['from'] for one in transactions }
-    return get_sum_for_accounts(transactions, froms)
+    unique_contributors = { one['from'] for one in transactions }
+    return get_sum_for_accounts(transactions, unique_contributors)
 
 def eth_get_total(transactions):
     return sum([int(one['value']) for one in transactions])
