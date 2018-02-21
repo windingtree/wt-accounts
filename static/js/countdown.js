@@ -2,7 +2,7 @@
   var startTime = 1517472000 * 1000,
     priceChangeTime = 1517990400 * 1000,
     endTime = 1518652800 * 1000,
-    tokenUnfreezeTime = endTime + 86400 * 7 * 1000;
+    tokenUnfreezeTime = endTime + 86400 * 9 * 1000;
 
   function refreshCountdown() {
     var now = new Date().getTime();
