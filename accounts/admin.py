@@ -112,7 +112,9 @@ class CustomUserAdmin(UserAdmin):
                     'eth_contrib_eth',
                     'is_verified', 'onfido_link',
                     'proof_of_address_status', 'proof_of_address_file',
-                    'eth_address')
+                    'eth_address',
+                    'last_login', 'date_joined',
+                    )
     list_filter = ('is_staff', 'is_superuser', 'proof_of_address_status',
                    EthContribFilter, KYCVerified)
 
