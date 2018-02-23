@@ -191,12 +191,7 @@ def onfido_webhook(request):
     return HttpResponse('OK')
 
 
-@login_required
-def eth_sums(request):
-    store_to_profiles = request.method == 'POST' and request.user.is_staff
-    if store_to_profiles:
-        logger.debug('Storing contributions to users')
-
+def get_all_transactions_context():
     # because it is about 50 http calls to the api and the object is around 6mb
     # the cache is set in management command `fill_user_eth_contrib`
     all_transactions = []
@@ -234,12 +229,6 @@ def eth_sums(request):
         sorted(non_registered_contributions.items(), key=lambda x: -x[1])
     ]
 
-    for account, sum_ in sum_for_accounts.items():
-        users_by_eth_address[account].eth_sum = sum_
-        if store_to_profiles:
-            users_by_eth_address[account].eth_contrib = str(sum_)
-            users_by_eth_address[account].save(update_fields=['eth_contrib'])
-
     context = {
         'all_transactions': all_transactions,
         'transactions': transactions,
@@ -257,7 +246,51 @@ def eth_sums(request):
         'total_eth': int(total)/10**18,
         'users': users,
     }
+    return context
+
+@login_required
+def eth_sums(request):
+    context = get_all_transactions_context()
     return render(request, 'accounts/eth_sums.html', context)
+
+def unregistered_accounts(request):
+    not_to_refund = [
+        '0xfbb1b73c4f0bda4f67dca266ce6ef42f520fbb98',
+        '0x5f6f3c6178ab90c8121d2a27fd7df9c18f3f9006',
+        '0x0681d8db095565fe8a346fa0277bffde9c0edbbf',
+        '0x0271753b5e8482d2e3b9bfb40b40b1d5038f0fee',
+        '0xd12db5c2f965e75451c7e0414c9dd6a5993efe52',
+        '0x2b5634c42055806a59e9107ed44d43c426e58258',
+        '0x7edc93e8ba7a68267baee46359c4976060216269',
+        '0xbcf02404ac2163507a7913aba42cf770d1acb71b',
+        '0x9af008948e28c08f15a10a033e67378a215ebbf7',
+        '0xda54ff10706a5ed10976910e77c064c185dda8cf',
+        '0xea4775e5bdf85efbe31a8c5815f0cb136c82982d',
+        '0xbc3fc679aa38b3dd0502a04008addb6dd8ae2121',
+        '0x2a7616c5cb2a883235ff67070e54c2024936642f',
+        '0x2e0e074c5102287ea57e06137d97935d139a0125',
+        '0x32a8b132bbe70ed1edfae2a8ada567f171776d16',
+        '0xb1b090276696eb40c956f520691672d0949a3563',
+        '0x7040285f8dc8a13939a3266622d883ec59a21576',
+        '0x390de26d772d2e2005c6d1d24afc902bae37a4bb',
+    ]
+    context = get_all_transactions_context()
+    to_refund = dict(
+        (k,v) for (k,v) in context['non_registered_contributions'].items()
+        if k not in not_to_refund
+    )
+    to_refund_sum = int(sum( v for (a,v) in to_refund.items() )) / 10**18
+    to_refund_sorted = [
+        (x, int(y)/10**18, y) for x,y in
+        sorted(to_refund.items(), key=lambda x: x[1])
+    ]
+
+    context.update({
+        'to_refund': to_refund,
+        'to_refund_sum': to_refund_sum,
+        'to_refund_sorted': to_refund_sorted,
+    })
+    return render(request, 'accounts/unregistered_accounts.html', context)
 
 def is_from_banned_country(request):
     banned_countries = ['US',]

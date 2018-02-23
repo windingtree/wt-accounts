@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>people to refund ({{ to_refund|length }}, eth: {{ to_refund_sum|floatformat:"-3" }})<h1>
+
+<h2 id="non-registered-contributors">to refund accounts</h2>
+
+<table>
+    {% for address, value_eth, value in to_refund_sorted %}
+        <tr>
+            <td>
+                {{ forloop.counter }}
+            </td>
+            <td>
+                <a href="https://etherscan.io/address/{{ address }}">{{ address }}</a>
+            </td>
+            <td>
+                {{ value_eth|floatformat:"-3" }}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
+
