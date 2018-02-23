@@ -112,13 +112,31 @@ class CustomUserAdmin(UserAdmin):
                     'eth_contrib_eth',
                     'is_verified', 'onfido_link',
                     'proof_of_address_status', 'proof_of_address_file',
-                    'eth_address',
+                    'eth_address_link',
+                    'previous_eth_address_link',
                     'last_login', 'date_joined',
                     )
     list_filter = ('is_staff', 'is_superuser', 'proof_of_address_status',
                    EthContribFilter, KYCVerified)
 
     inlines = [OnfidoCallInline, EthAddressHistoryInline]
+
+    def eth_address_link(self, obj):
+        if obj.eth_address:
+            return format_html(
+                    '<a href="https://etherscan.io/address/{eth_address}">{eth_address}</a>',
+                    eth_address=obj.eth_address,
+                )
+        return '-'
+            
+    def previous_eth_address_link(self, obj):
+        ethaddresses = obj.ethaddresses.exclude(eth_address='').exclude(eth_address=obj.eth_address)
+        if ethaddresses.count():
+            return format_html(
+                    '<a href="https://etherscan.io/address/{eth_address}">{eth_address}</a>',
+                    eth_address=ethaddresses.first().eth_address
+                )
+        return '-'
 
     def onfido_link(self, obj):
         check = obj.last_check
