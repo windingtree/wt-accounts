@@ -83,7 +83,7 @@ def home(request):
     if is_ico_running():
         template = 'home.html'
     else:
-        template = 'home-kyc-in-progress.html'
+        template = 'ico-stats.html'
     return render(request, template)
 
 
