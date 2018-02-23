@@ -124,8 +124,9 @@ class CustomUserAdmin(UserAdmin):
     def eth_address_link(self, obj):
         if obj.eth_address:
             return format_html(
-                    '<a href="https://etherscan.io/address/{eth_address}">{eth_address}</a>',
+                    '<a href="https://etherscan.io/address/{eth_address_l}">{eth_address}</a>',
                     eth_address=obj.eth_address,
+                    eth_address_l=obj.eth_address.lower(),
                 )
         return '-'
             
@@ -133,8 +134,9 @@ class CustomUserAdmin(UserAdmin):
         ethaddresses = obj.ethaddresses.exclude(eth_address='').exclude(eth_address=obj.eth_address)
         if ethaddresses.count():
             return format_html(
-                    '<a href="https://etherscan.io/address/{eth_address}">{eth_address}</a>',
-                    eth_address=ethaddresses.first().eth_address
+                    '<a href="https://etherscan.io/address/{eth_address_l}">{eth_address}</a>',
+                    eth_address_l=ethaddresses.first().eth_address.lower(),
+                    eth_address=ethaddresses.first().eth_address,
                 )
         return '-'
 
