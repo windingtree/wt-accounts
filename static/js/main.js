@@ -40,7 +40,7 @@ $(document).ready(function() {
 
     /*Chart.plugins.register({
     beforeDraw: function(chart) {
-          
+
 
           var data = chart.data.datasets[0].data;
           var sum = data.reduce(function(a, b) {
@@ -67,66 +67,66 @@ $(document).ready(function() {
 */
 
 
-    var ctx = document.getElementById('statschart').getContext('2d');
-    var myDoughnutChart = new Chart(ctx, {
-        type: 'doughnut',
-        pieceLabel: {
-            render: 'percentage'
-        },
-        data: {
-            labels: ['pre-ICO', 'ICO'],
-            datasets: [{
-                backgroundColor: ['#FAF3DD', '#BCFFDB'],
-                borderColor: 'transparent',
-                data: [9, 91],
-                datalabels: {
-                    color: ['#FAF3DD', '#BCFFDB'],
-                    align: 'end',
-                    font: {
-                        size: '16',
-                        family: 'Source Sans Pro'
-                    },
-                    formatter: function(value, context) {
-                        return value + '%';
-                    }
-                }
-            }]
-        },
-        options: {
-            rotation: -3,
-            legend: {
-                display: false,
-            },
-            cutoutPercentage: 95,
-
-
-            tooltips: {
-                callbacks: {
-                    title: function(tooltipItem, data) {
-                        return data['labels'][tooltipItem[0]['index']];
-                    },
-                    label: function(tooltipItem, data) {
-                        return data['datasets'][0]['data'][tooltipItem['index']] + ' % of all contributed ETH';
-                    },
-/*                    afterLabel: function(tooltipItem, data) {
-                        var dataset = data['datasets'][0];
-                        var percent = Math.round((dataset['data'][tooltipItem['index']] / dataset["_meta"][0]['total']) * 100)
-                        return '(' + percent + '%)';
-                    }*/
-                },
-                backgroundColor: '#FFF',
-                titleFontSize: 16,
-                titleFontColor: '#0066ff',
-                bodyFontColor: '#000',
-                bodyFontSize: 14,
-                displayColors: false
-            }
-
-
-        },
-        circumference: 1
-
-    });
+//     var ctx = document.getElementById('statschart').getContext('2d');
+//     var myDoughnutChart = new Chart(ctx, {
+//         type: 'doughnut',
+//         pieceLabel: {
+//             render: 'percentage'
+//         },
+//         data: {
+//             labels: ['pre-ICO', 'ICO'],
+//             datasets: [{
+//                 backgroundColor: ['#FAF3DD', '#BCFFDB'],
+//                 borderColor: 'transparent',
+//                 data: [28, 78],
+//                 datalabels: {
+//                     color: ['#FAF3DD', '#BCFFDB'],
+//                     align: 'end',
+//                     font: {
+//                         size: '16',
+//                         family: 'Source Sans Pro'
+//                     },
+//                     formatter: function(value, context) {
+//                         return value + '%';
+//                     }
+//                 }
+//             }]
+//         },
+//         options: {
+//             rotation: -3,
+//             legend: {
+//                 display: false,
+//             },
+//             cutoutPercentage: 95,
+//
+//
+//             tooltips: {
+//                 callbacks: {
+//                     title: function(tooltipItem, data) {
+//                         return data['labels'][tooltipItem[0]['index']];
+//                     },
+//                     label: function(tooltipItem, data) {
+//                         return data['datasets'][0]['data'][tooltipItem['index']] + ' % of all contributed ETH';
+//                     },
+// /*                    afterLabel: function(tooltipItem, data) {
+//                         var dataset = data['datasets'][0];
+//                         var percent = Math.round((dataset['data'][tooltipItem['index']] / dataset["_meta"][0]['total']) * 100)
+//                         return '(' + percent + '%)';
+//                     }*/
+//                 },
+//                 backgroundColor: '#FFF',
+//                 titleFontSize: 16,
+//                 titleFontColor: '#0066ff',
+//                 bodyFontColor: '#000',
+//                 bodyFontSize: 14,
+//                 displayColors: false
+//             }
+//
+//
+//         },
+//         circumference: 1
+//
+//     });
 
     var ctx2 = document.getElementById('lifschart').getContext('2d');
     var LifChart = new Chart(ctx2, {
