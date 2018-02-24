@@ -1636,7 +1636,7 @@
 /* Type */
 
 	body {
-		background-color: #3d7068;
+		background-color: #254441;
 		color: rgba(255, 255, 255, 0.65);
 	}
 
@@ -2922,12 +2922,28 @@
 			}
 
 			.statistics li.style5 {
-				background-color: #54c689;
+				background-color: #5FAD56;
 			}
 
-      .statistics li.style6 {
+      		.statistics li.style6 {
 				background-color: #49a35b;
 			}
+
+            .statistics li.style7 {
+                background-color: #2A4D14;
+            }
+
+            .statistics li.style8 {
+                background-color: #157F1F;
+            }
+
+            .statistics li.style9 {
+                background-color: #B07156;
+            }
+
+            .statistics li.style10 {
+                background-color: #F2B880;
+            }
 
 			.statistics li strong, .statistics li b {
 				display: block;
@@ -2969,28 +2985,34 @@
 
 			.statistics {
 				display: block;
-				width: 20em;
+		
 				max-width: 100%;
 				margin: 0 auto 2em auto;
 			}
 
-				.statistics li:first-child {
-					border-bottom-left-radius: 0;
-					border-top-right-radius: 8px;
-				}
+			.statistics li:first-child {
+				border-bottom-left-radius: 0;
+				border-top-right-radius: 8px;
+			}
 
-				.statistics li:last-child {
-					border-top-right-radius: 0;
-					border-bottom-left-radius: 8px;
-				}
+			.statistics li:last-child {
+				border-top-right-radius: 0;
+				border-bottom-left-radius: 8px;
+			}
 
-				.statistics li .icon:before {
-					font-size: 3.75rem;
-				}
+			.statistics li .icon:before {
+				font-size: 3.75rem;
+			}
 
-				.statistics li strong, .statistics li b {
-					font-size: 2.5em;
-				}
+			.statistics li strong, .statistics li b {
+				font-size: 2.5em;
+				
+			}
+
+			.statistics li div strong  {
+				font-size: 2em;
+				
+			}
 
 		}
 

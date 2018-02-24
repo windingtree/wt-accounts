@@ -39,9 +39,6 @@
   margin: 40px 0 20px 0;
 }
 
-.participate a {
-  color: #000 !important;
-}
 
 .alert button {
   display: none !important;
@@ -94,4 +91,79 @@
 }
 #faq dd {
   margin-bottom: 1em;
+}
+
+.checkstats-link {
+
+  color: #fff;
+  margin-top: 40px;
+}
+
+.checkstats {
+  background-color: #F2AF29 !important;
+  box-shadow: none !important;
+  text-shadow: none;
+  color: #fff !important;
+ }
+
+.checkstats:hover {
+  background-color: #DD7230 !important;
+}
+
+.topstat {
+  margin-bottom: 0px;
+}
+
+.ethstat {
+    background-color: #5FAD56;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.ethdetails, .lifdetails, .mvmdetails {
+    display: none;
+
+}
+
+.rounded-bottom-left {
+    border-bottom-left-radius: 8px !important;
+}
+
+.rounded-top-right {
+    border-top-right-radius: 8px !important;
+}
+
+.lifstat {
+    background-color: #7f5489;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.liftotal, .mvmtotal {
+  margin-bottom: 0;
+}
+
+.lifstatitem, .mvmstatitem {
+  padding-top: 40px;
+
+}
+
+.mvmstat {
+  background-color: #F2B880;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+@media screen and (max-width: 736px) {
+    .lifstatitem, .mvmstatitem {
+        padding-top: 20px;
+    }
+    .lifstatbottom,.mvmstatbottom {
+        padding-top: 0px !important;
+        padding-bottom: 20px;
+    }
+}
+
+.smallicon:before {
+  font-size: 18px !important;
 }

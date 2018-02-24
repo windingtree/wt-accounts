@@ -1,0 +1,105 @@
+{% extends 'base.html' %} {% load static %} {% block javascript_inline_bottom %}
+<script src="{% static 'js/countdown.js' %}"></script>
+{% endblock %} {% block content %}
+<header id="header" class="alt">
+    <a href="/" style="border: none;"><span class="logo"><img src="{% static 'img/lif.svg' %}" alt=""></span></a>
+    <h1>Líf Token Sale Was Successful</h1>
+    <h2>Thank You For Making This Happen!</h2>
+    <h1 id="total-eth">15,238.562 ETH</h1>
+    <div id="countdown-explainer">
+        <div class="unfreeze">
+            Raised During Winding Tree ICO
+        </div>
+    </div>
+</header>
+<div id="main">
+    <section id="stats" class="main special">
+        <header class="major">
+            <h2 id="statsheader">Token Generation Event Stats</h2>
+        </header>
+
+        <div class="ethstat">
+            <ul class="statistics topstat ethtotal">
+                <li class="style7">
+                    <span class="icon fa-dollar"></span>
+                    <strong>15,238.562</strong>ETH raised
+                </li>
+                <li class="style8">
+                    <span class="icon fa-users"></span>
+                    <strong>7082</strong>Backers
+                </li>
+            </ul>
+            <ul class="statistics ethdetails">
+                <li class="style5 rounded-bottom-left pre-ico-eth">
+
+                    <div style="color: #FAF3DD"> <i class="icon fa-battery-quarter smallicon"></i> Pre-ICO stage<strong>736</strong>Backers<br><strong>1305.068</strong>ETH
+                    </div>
+                </li>
+
+                <li class="style5 statschartcontainer" >
+                    <canvas id="statschart" height="200"></canvas>
+                </li>
+
+                <li class="style5 ico-eth">
+
+                    <div style="color: #BCFFDB"><i class="icon fa-battery-full smallicon"></i> ICO stage<strong>6346</strong>Backers<strong>13933.4</strong>ETH
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="lifstat">
+
+            <ul class="statistics liftotal">
+                <li class="style3 rounded-top-right ">
+                    <span class="icon fa-leaf"></span>
+                    <strong>26,736,145.941</strong>Lífs Generated
+                </li>
+            </ul>
+            <ul class="statistics lifdetails">
+                <li class="style2">
+                    <div class="lifstatitem" style="color: #FAF3DD"><i class="icon fa-leaf smallicon"></i> <i class="icon fa-users smallicon"></i><strong>20,052,109.5</strong>Lífs for Backers</div>
+
+                </li>
+                <li class="style2 statschartcontainer" >
+
+                    <canvas id="lifschart" height="200"></canvas>
+                </li>
+
+                <li class="style2 lifstatitem ">
+                    <div class="lifstatitem lifstatbottom" style="color: #BDADEA"><i class="icon fa-leaf smallicon"></i> <i class="icon fa-sitemap smallicon"></i>
+                        <strong>6,684,036.49</strong>Lífs for Team
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="mvmstat">
+
+            <ul class="statistics mvmtotal">
+                <li class="style9 rounded-top-right">
+                    <span class="icon fa-bank"></span>
+                    <strong>5,164</strong>ETH <a href="https://lif.windingtree.com/faq/#faq-15">in the MVM (?)</a>
+                </li>
+            </ul>
+
+            <ul class="statistics mvmdetails">
+                <li class="style10">
+                    <div class="mvmstatitem" style="color: #FAF3DD"><i class="icon fa-dollar smallicon"></i> <i class="icon fa-cog smallicon"></i><strong>10,074.562</strong>ETH for project funding</div>
+
+                </li>
+                <li class="style10 mvmchartcontainer" >
+                    <canvas id="mvmchart" height="200"></canvas>
+                </li>
+
+                <li class="style10 mvmstatitem ">
+                    <div class="mvmstatitem mvmstatbottom" style="color: #533745"><i class="icon fa-dollar smallicon"></i> <i class="icon fa-bank smallicon"></i>
+                        <strong>5,164</strong>ETH <a href="#what-mvm">in the MVM (?)</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+{% endblock %}
