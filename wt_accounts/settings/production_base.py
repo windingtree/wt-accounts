@@ -1,5 +1,7 @@
 from .base import *
 
+replace_in_production = '<replace in production>'
+
 DEBUG = False
 
 # https://lif.windingtree.com/
@@ -17,7 +19,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'wt',
         'USER': 'wt',
-        'PASSWORD': '<replace-in-production>',
+        'PASSWORD': replace_in_production,
         'HOST': 'wt-accounts.cvlintg75rfu.ap-northeast-1.rds.amazonaws.com',
         'OPTIONS': {'charset': 'utf8'},
     }
@@ -25,11 +27,11 @@ DATABASES = {
 
 # recaptcha
 RECAPTCHA_SITE_KEY = '6Ld090IUAAAAAHZZuWyteUJcLGZRBgUgOlQGspjO'
-RECAPTCHA_SITE_SECRET = ''
+RECAPTCHA_SITE_SECRET = replace_in_production
 
 import raven
 RAVEN_CONFIG = {
-    'dsn': '',
+    'dsn': replace_in_production, 
     # If you are using git, you can also automatically configure the
     # release based on the git info.
     'release': raven.fetch_git_sha(BASE_DIR),
@@ -37,7 +39,7 @@ RAVEN_CONFIG = {
 
 # mailing
 EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
-MAILGUN_ACCESS_KEY = ''
+MAILGUN_ACCESS_KEY = replace_in_production
 MAILGUN_SERVER_NAME = 'mg.windingtree.com'
 
 # static files
@@ -51,8 +53,8 @@ EMAIL_HOST_USER = 'walksource'
 EMAIL_HOST_PASSWORD = 't)RnnQUY?e3i^Gon3zG7iY7cfy)eYR'
 EMAIL_USE_TLS = True
 
-#EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-SENDGRID_API_KEY = ''
+EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+SENDGRID_API_KEY = replace_in_production
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 
 CACHES = {
@@ -61,4 +63,11 @@ CACHES = {
         'LOCATION': 'wt_cache_table',
     }
 }
+
+ONFIDO_TOKEN = replace_in_production
+ONFIDO_WEBHOOK_TOKEN = replace_in_production
+
+AWS_ACCESS_KEY_ID = "AKIAJHHI3JSHVUXA4JTQ"
+AWS_SECRET_ACCESS_KEY = replace_in_production
+AWS_S3_BUCKET_NAME = "files.lif.windingtree.com"
 
