@@ -124,11 +124,11 @@ $(document).ready(function() {
     var LifChart = new Chart(ctx2, {
         type: 'pie',
         data: {
-            labels: ['Lif for Backers', 'Lif for Team'],
+            labels: ['Lifs for Backers', 'Lifs for Project Funding'],
             datasets: [{
                 backgroundColor: ['#FAF3DD', '#BDADEA'],
                 borderColor: 'transparent',
-                data: [80, 20],
+                data: [75, 25],
                 datalabels: {
                     color: ['#FAF3DD', '#BDADEA'],
                     align: 'end',
